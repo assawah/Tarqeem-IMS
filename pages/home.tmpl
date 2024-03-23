@@ -2,8 +2,8 @@
 
 {{define "main"}}
 <div>
-<h2>Welecome to Interface Management System</h2>
-<p>Please use your credentials to login or create a new account.</p>
-    {{template "login" .}}
+<h2> {{message "welcome"}} </h2>
+<p> {{message "loginHelp"}} </p>
+    {{template "login-form" .}}
 </div>
 {{end}}

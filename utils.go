@@ -4,7 +4,10 @@ import (
 	"embed"
 	"html/template"
 	"io"
+	"log"
 	"path"
+
+	"github.com/tarqeem/ims/translate"
 )
 
 func getFSFilesRecursively(fs *embed.FS, dir string) (out []string, err error) {
@@ -44,7 +47,10 @@ type DebugTemplateExecutor struct {
 }
 
 func (e DebugTemplateExecutor) ExecuteTemplate(wr io.Writer, name string, data interface{}) error {
-	t := template.Must(template.ParseFiles(e.Glob...))
+	t, err := getTemplates()
+	if err != nil {
+		return err
+	}
 	return t.ExecuteTemplate(wr, name, data)
 }
 
@@ -54,4 +60,24 @@ type ReleaseTemplateExecutor struct {
 
 func (e ReleaseTemplateExecutor) ExecuteTemplate(wr io.Writer, name string, data interface{}) error {
 	return e.Template.ExecuteTemplate(wr, name, data)
+}
+
+//go:embed pages/*
+var views embed.FS
+
+func getTemplates() (*template.Template, error) {
+	files, err := getFSFilesRecursively(&views, "pages")
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	ts := template.Must(template.New("").Funcs(template.FuncMap{
+		"message": func(key string) string {
+			return translate.English[key]
+		},
+	}).ParseFiles(files...))
+
+	return ts, err
+
 }

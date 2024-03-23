@@ -1,15 +1,15 @@
-@media (min-width:700px) {
-    form {
+@media (min-width:1025px) {
+    #landloginform {
         position: relative;
     }
-
-    form::before{
+    #landloginform::before{
         content: "";
         position: absolute;
         top: 19px;
         right: -44px;
         width: 2px;
         height: 221px;
-        background-color: #737272;
+        padding: 1px;
+        background-color: black;
     }
 }
