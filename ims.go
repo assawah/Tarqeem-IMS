@@ -1,39 +1,47 @@
 package main
 
 import (
-	"html/template" // New import
-	"log"           // New import
+	"embed"
+	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
+//go:embed pages/*
+var views embed.FS
+
+func getTemplates() (*template.Template, error) {
+	files, err := getFSFilesRecursively(&views, "pages")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// Include the navigation partial in the template files.
-	files := []string{
-		"./pages/base.tmpl",
-		"./pages/partials/nav.tmpl",
-		"./pages/home.tmpl",
+	for _, value := range files {
+		fmt.Println(value)
 	}
 
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-		return
+		return nil, err
 	}
+	return ts, err
 
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-	}
 }
 
 func main() {
-	http.HandleFunc("/", home)
+	ts, err := getTemplates()
+	if err != nil {
+		log.Fatal(err)
+	}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		err := ts.ExecuteTemplate(w, "base", nil)
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(w, "Internal Server Error", 500)
+		}
+
+	})
 	http.ListenAndServe(":8080", nil)
 }
