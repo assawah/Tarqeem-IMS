@@ -1,7 +1,9 @@
 {{define "title"}}Home{{end}}
 
 {{define "main"}}
-<div >
-    {{template "login" .}}
+<div>
+<h2> {{message "welcome"}} </h2>
+<p> {{message "loginHelp"}} </p>
+    {{template "login-form" .}}
 </div>
 {{end}}
