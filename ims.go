@@ -30,11 +30,18 @@ func getTemplates() (*template.Template, error) {
 
 }
 
+//go:embed public/*
+var public embed.FS
+
 func main() {
 	ts, err := getTemplates()
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	staticHandler := http.FileServer(http.FS(public))
+	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		err := ts.ExecuteTemplate(w, "base", nil)
 		if err != nil {
