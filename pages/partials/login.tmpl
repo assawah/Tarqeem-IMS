@@ -1,18 +1,22 @@
 {{define "login"}}
-    <form>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+  <div class="login-container d-flex jusify-content-between align-items-center flex-wrap gap-5 p-5 shadow-sm border" >
+    <form action="/login" method="post">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+      </div>
+     <div class="btn w-100">
+      <button type="submit" class="btn btn-info w-100">Login</button>
+     </div>
+    </form>
+    <div class="links d-flex flex-column justify-content-center align-items-center m-auot">
+      <a href="/maintainer-register" class="btn btn-info mb-3">Register As Maintainer</a>
+      <a href="/contractor-register" class="btn btn-secondary">Register As Contractor</a>
+    </div>
+  </div>
 {{end}}
