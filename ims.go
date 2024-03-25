@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"github.com/tarqeem/ims/utl"
 	"log"
 	"net/http"
 )
@@ -9,14 +10,18 @@ import (
 //go:embed public/*
 var public embed.FS
 
+//go:embed pages/*
+var views embed.FS
+
 const debug = true
 
-var executor TemplateExecutor
+var executor utl.TemplateExecutor
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	utl.Views = views
 
-	ts, err := getTemplates()
+	ts, err := utl.GetTemplates()
 
 	if err != nil {
 		log.Fatal(err)
@@ -26,7 +31,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		executor = DebugTemplateExecutor{}
+		executor = utl.DebugTemplateExecutor{}
 
 	} else {
 		executor = ts

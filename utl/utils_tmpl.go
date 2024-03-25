@@ -1,4 +1,4 @@
-package main
+package utl
 
 import (
 	"embed"
@@ -9,6 +9,8 @@ import (
 
 	"github.com/tarqeem/ims/translate"
 )
+
+var Views embed.FS
 
 func getFSFilesRecursively(fs *embed.FS, dir string) (out []string, err error) {
 	if len(dir) == 0 {
@@ -47,7 +49,7 @@ type DebugTemplateExecutor struct {
 }
 
 func (e DebugTemplateExecutor) ExecuteTemplate(wr io.Writer, name string, data interface{}) error {
-	t, err := getTemplates()
+	t, err := GetTemplates()
 	if err != nil {
 		return err
 	}
@@ -62,11 +64,8 @@ func (e ReleaseTemplateExecutor) ExecuteTemplate(wr io.Writer, name string, data
 	return e.Template.ExecuteTemplate(wr, name, data)
 }
 
-//go:embed pages/*
-var views embed.FS
-
-func getTemplates() (*template.Template, error) {
-	files, err := getFSFilesRecursively(&views, "pages")
+func GetTemplates() (*template.Template, error) {
+	files, err := getFSFilesRecursively(&Views, "pages")
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
