@@ -4,4 +4,40 @@ body {
 
 * {
   border-radius: 0 !important;
+  box-sizing: border-box;
+}
+
+
+.background {
+  background-color: rgb(3, 39, 56);
+}
+
+.dashboard-content {
+  margin-top: 8rem;
+  margin-left: -33px;
+  overflow: scroll;
+  height: 60vh;
+}
+
+
+.tableOfContent li {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+ul li div {
+  width: 170px;
+}
+
+ul li:nth-child(odd) {
+  background-color: rgb(177, 175, 175);
+}
+
+.header {
+  background-color: rgb(95, 95, 95) !important;
+  color: white;
+
 }
