@@ -1,0 +1,27 @@
+{{define "login-form"}}
+
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+  <div class="login-container d-flex jusify-content-between align-items-center flex-wrap gap-5 p-5 shadow-sm border" >
+    <form id="landloginform" action="/login" method="post" class="">
+      <h5>{{message "welcome"}}</h5>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">{{message "email"}}</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text"> {{message "emailLoginNote"}} </div>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">{{message "password"}}</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+      </div>
+     <div class="btn w-100">
+      <button type="submit" class="btn btn-prm w-100">Login</button>
+     </div>
+    </form>
+    <div class="links d-flex flex-column justify-content-center align-items-center m-5">
+      <a href="/maintainer-register" class="btn btn-warning mb-1 col-12">{{message "regCoordinator"}}</a>
+      <a href="/contractor-register" class="btn btn-dark mb-1 col-12">{{message "regMember"}}</a>
+    </div>
+  </div>
+</div>
+
+{{end}}
