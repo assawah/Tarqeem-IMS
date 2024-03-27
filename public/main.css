@@ -15,7 +15,6 @@ body {
 .dashboard-content {
   margin-top: 8rem;
   margin-left: -33px;
-  overflow: scroll;
   height: 60vh;
 }
 
@@ -25,7 +24,9 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px;
+  padding: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 ul li div {
