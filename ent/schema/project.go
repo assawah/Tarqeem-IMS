@@ -2,7 +2,9 @@ package schema
 
 import (
 	"entgo.io/ent"
-	. "github.com/tarqeem/ims/utl"
+	"entgo.io/ent/schema/field"
+
+	. "github.com/tarqeem/template/utl/ent"
 )
 
 // Project holds the schema definition for the Project entity.
@@ -13,14 +15,26 @@ type Project struct {
 // Fields of the Project.
 func (Project) Fields() []ent.Field {
 	return []ent.Field{
-		EntString("name"),
-		EntString("title"),
-		EntString("owner"),
-		// EntNormalString("type"), TODO determine what's a type first.
-		EntNumber("top_level_packages_number"),
-		EntNumber("joint_venture_number"),
-		EntNumber("dollar_value"),
-		EntNumber("dollar_value"),
+		String("name"),
+		String("title"),
+		String("owner"),
+		field.Enum("type").Values(
+			"Chemical manufacturing",
+			"Stadium musuem",
+			"Dam",
+			"Metal refining/processing",
+			"Oil exploration/production",
+			"Oil refining",
+			"Natural gas processing",
+			"Highway",
+			"Power generation",
+			"Water/wastewater",
+			"Consumer products manufacturing",
+		),
+		NonNegative("top_level_packages_number"),
+		NonNegative("joint_venture_number"),
+		NonNegative("dollar_value"),
+		NonNegative("dollar_value"),
 	}
 }
 
