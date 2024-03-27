@@ -7,7 +7,6 @@ body {
   box-sizing: border-box;
 }
 
-
 .background {
   background-color: rgb(3, 39, 56);
 }
@@ -41,4 +40,9 @@ ul li:nth-child(odd) {
   background-color: rgb(95, 95, 95) !important;
   color: white;
 
+}
+.btn-prm {
+    color: white;
+    background-color: cadetblue;
+    border-color: cadetblue;
 }

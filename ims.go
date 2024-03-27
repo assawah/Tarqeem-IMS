@@ -4,19 +4,37 @@ import (
 	"embed"
 	"log"
 	"net/http"
+	"text/template"
+
+	"github.com/tarqeem/template/utl"
 )
 
 //go:embed public/*
 var public embed.FS
 
+//go:embed pages/*
+var views embed.FS
+
 const debug = true
 
-var executor TemplateExecutor
+var executor utl.TemplateExecutor
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	utl.Views = views
+	utl.TemplateFuncs = template.FuncMap{
+		"message": func(k string) string {
+			if val, ok := English[k]; ok {
+				return val
+			}
+			m := "Couldn't find key " + k
+			log.Println(m)
+			return m
 
-	ts, err := getTemplates()
+		},
+	}
+
+	ts, err := utl.GetTemplates()
 
 	if err != nil {
 		log.Fatal(err)
@@ -26,7 +44,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		executor = DebugTemplateExecutor{}
+		executor = utl.DebugTemplateExecutor{}
 
 	} else {
 		executor = ts
@@ -35,13 +53,10 @@ func main() {
 	staticHandler := http.FileServer(http.FS(public))
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		err := executor.ExecuteTemplate(w, "base", nil)
-		if err != nil {
-			log.Println(err.Error())
-			http.Error(w, "Internal Server Error: "+err.Error(), 500)
-		}
+	// routes
 
-	})
+	http.HandleFunc("/", NewHandler("login", nil))
+	http.HandleFunc("/home", NewHandler("dashboard", nil))
+
 	http.ListenAndServe(":8080", nil)
 }
