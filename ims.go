@@ -2,9 +2,11 @@ package main
 
 import (
 	"embed"
-	"github.com/tarqeem/template/utl"
 	"log"
 	"net/http"
+	"text/template"
+
+	"github.com/tarqeem/template/utl"
 )
 
 //go:embed public/*
@@ -28,6 +30,11 @@ var English map[string]string = map[string]string{
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	utl.Views = views
+	utl.TemplateFuncs = template.FuncMap{
+		"message": func(k string) string {
+			return English[k]
+		},
+	}
 
 	ts, err := utl.GetTemplates()
 
