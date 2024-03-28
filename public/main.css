@@ -59,21 +59,21 @@ ul li:nth-child(odd) {
   place-content: center;
 }
 
-form {
+#register-form {
   padding: 30px;
   box-shadow: 0 1px 10px #cbcaca;
   width: 700px;
 }
 
-form h1 {
+#register-form h1 {
   margin-bottom: 20px;
 }
 
-form label {
+#register-form label {
   margin-bottom: 5px;
 }
 
-.row {
+#register-form .row {
   margin-bottom: 10px;
 }
 
