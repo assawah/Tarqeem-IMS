@@ -8,8 +8,8 @@ body {
 }
 
 :root {
-  --main-color: #5f9ea0;
-  --hover-color: #4db2b6;
+  --main-color: #032738;
+  --secondary-color: #073950fa;
 }
 
 button {
@@ -18,7 +18,7 @@ button {
 }
 
 .background {
-  background-color: rgb(3, 39, 56);
+  background-color: var(--main-color);
 }
 
 .dashboard-content {
@@ -45,10 +45,13 @@ ul li:nth-child(odd) {
   background-color: rgb(177, 175, 175);
 }
 
-.header {
-  background-color: rgb(95, 95, 95) !important;
+#nav {
+  background-color: var(--main-color);
   color: white;
+}
 
+#nav a:hover {
+  color: var(--hover-color);
 }
 
 
@@ -64,8 +67,9 @@ ul li:nth-child(odd) {
 }
 
 .custom-btn:hover {
-  background-color: var(--hover-color);
-  border-color: var(--hover-color)
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: white;
 }
 
 
@@ -112,14 +116,55 @@ form .row {
 }
 
 .register-btn {
-  margin: auto;
-  width: 300px;
+  min-width: 250px;
 }
+
+/* 
+ #landloginform {
+  position: relative;
+} */
+
+
+
+#landloginform .dividing-line span {
+  position: relative;
+  top: 20px;
+}
+
+#landloginform .dividing-line span::after {
+  position: absolute;
+  content: "";
+  top: 8px;
+  right: 28px;
+  width: 298px;
+  height: 2px;
+  background-color: #8f8f8f;
+}
+
+#landloginform .dividing-line span::before {
+  position: absolute;
+  content: "";
+  top: 8px;
+  left: 28px;
+  width: 298px;
+  height: 2px;
+  background-color: #8f8f8f;
+}
+
+@media(max-width:700px) {
+
+  #landloginform .dividing-line span::before,
+  #landloginform .dividing-line span::after {
+    width: 100px;
+    height: 2px;
+  }
+}
+
 
 .footer {
 
   padding: 10px 25px;
-  background-color: #6c757d;
+  background-color: var(--hover-color);
 }
 
 .footer a {

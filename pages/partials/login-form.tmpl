@@ -1,7 +1,13 @@
 {{define "login-form"}}
+<html>
+{{template "head" .}}
 
-<div class="container-fluid d-flex justify-content-center align-items-center vh-100">
-  <div class="login-container d-flex jusify-content-between align-items-center flex-wrap gap-5 p-5 shadow-sm border" >
+</html>
+
+<body>
+
+
+  <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
     <form id="landloginform" action="/login" method="post" class="">
       <h5>{{message "welcome"}}</h5>
       <div class="mb-3">
@@ -13,15 +19,18 @@
         <label for="exampleInputPassword1" class="form-label">{{message "password"}}</label>
         <input type="password" class="form-control" id="exampleInputPassword1">
       </div>
-     <div class="btn w-100">
-      <button type="submit" class="btn custom-btn w-100">Login</button>
-     </div>
+      <div class="">
+        <button type="submit" class="btn btn-dark col-12">Login</button>
+      </div>
+      <div class="dividing-line col-12 text-center mt-3">
+        <span>OR</span>
+      </div>
+      <div class="links d-flex  flex-column justify-content-center align-items-center mt-5">
+        <a href="/register" class="btn btn-warning  col-12 register-btn">{{message "regCoordinator"}}</a>
+        <a href="/register" class="btn btn-dark my-1 col-12 register-btn ">{{message "regMember"}}</a>
+      </div>
     </form>
-    <div class="links d-flex flex-column justify-content-center align-items-center m-5">
-      <a href="/maintainer-register" class="btn btn-warning mb-1 col-12">{{message "regCoordinator"}}</a>
-      <a href="/contractor-register" class="btn btn-dark mb-1 col-12">{{message "regMember"}}</a>
-    </div>
   </div>
-</div>
+</body>
 
 {{end}}
