@@ -2,8 +2,9 @@
 
 <html>
 {{template "head" .}}
+
 <body>
-    <div class="register">
+    <section class="register">
         <form id="register-form">
             <h1>
                 Register
@@ -17,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="email">E-mail</label>
+                    <label for="email" aria-required="true">E-mail</label>
                     <input type="text" class="form-control" id="email" placeholder="example@gmail.com"
                         aria-label="email">
                 </div>
@@ -47,10 +48,11 @@
             </div>
 
             <div class="btn btn-primary register-btn">
-                Register
+                <button type="submit"> Register</button>
             </div>
         </form>
-    </div>
+    </section>
+
 </body>
 
 </html>

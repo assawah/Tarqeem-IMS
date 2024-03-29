@@ -67,6 +67,10 @@ func main() {
 		return c.Render(http.StatusOK, "register", nil)
 	})
 
+	e.GET("/project", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "project", nil)
+	})
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
 

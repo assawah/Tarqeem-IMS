@@ -1,0 +1,90 @@
+{{define "project"}}
+
+<html>
+{{template "head" .}}
+
+<body>
+    <section class="project">
+        <form action="/create-project" id="project">
+            <h1>create a new project</h1>
+            <div class="row">
+                <div class="col">
+                    <label for="project-name">Project Name</label>
+                    <input type="text" class="form-control" id="project-name" placeholder="Project Name"
+                        aria-label="Project Name">
+                </div>
+                <div class="col">
+                    <label for="project-type">Project Type</label>
+                    <select name="project-type" id="project-type" class="form-control">
+                        <option value="type1">type 1</option>
+                        <option value="type2">type 2</option>
+                        <option value="type3">type 3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="project-delivery">Project Delivery Strategies</label>
+                    <select name="project-type" id="project-delivery" class="form-control">
+                        <option value="Strategy">Strategy 1</option>
+                        <option value="Strategy">Strategy 2</option>
+                        <option value="Strategy">Strategy 3</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="project-current-state">Project Current State:</label>
+                    <select name="project-type" id="project-current-state" class="form-control">
+                        <option value="State">State 1</option>
+                        <option value="State">State 2</option>
+                        <option value="State">State 3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="project-contracting-strategies">Project Contracting Strategies</label>
+                    <select name="project-type" id="project-contracting-strategies" class="form-control ">
+                        <option value="Strategy">Strategy 1</option>
+                        <option value="Strategy">Strategy 2</option>
+                        <option value="Strategy">Strategy 3</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="dollarValue">Project Dollar Value:</label>
+                    <input type="number" class="form-control" id="dollarValue" placeholder="$">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="project-location">Location</label>
+                    <input type="text" class="form-control" id="project-location" placeholder="Location">
+                </div>
+                <div class="col">
+                    <label for="execution-locations">Project Execution Location</label>
+                    <input type="text" class="form-control" id="execution-locations" placeholder="locattion">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="owners">Owners</label>
+                    <input type="text" class="form-control" id="owners" placeholder="owner Name">
+
+                </div>
+                <div class="col">
+                    <label for="project-nature">project Nature</label>
+                    <select name="project-type" id="project-nature" class="form-control ">
+                        <option value="option1"> 1</option>
+                        <option value="option2"> 2</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="custom-btn">Create</button>
+        </form>
+    </section>
+
+</body>
+
+</html>
+{{end}}
