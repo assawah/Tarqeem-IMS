@@ -4,6 +4,7 @@ import (
 	. "github.com/tarqeem/ims/translate"
 
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 
 	. "github.com/tarqeem/template/utl/ent"
@@ -34,7 +35,6 @@ func (Project) Fields() []ent.Field {
 }
 
 // Edges of the Project.
-// TODO
 func (Project) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{edge.From("user", User.Type).Unique()}
 }
