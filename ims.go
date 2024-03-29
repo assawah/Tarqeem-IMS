@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	. "github.com/tarqeem/ims/translate"
 	. "github.com/tarqeem/template/utl"
 )
 
