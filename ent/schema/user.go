@@ -13,8 +13,14 @@ type User struct {
 
 // Fields of the User.
 func (User) Fields() []ent.Field {
-	return []ent.Field{String("name"), Passowrd(), Email(), Phone(),
-		Created_at(), String("Organization"), String("Title"),
+	return []ent.Field{
+		String("name"),
+		Passowrd(),
+		Email(),
+		Phone(),
+		Created_at(),
+		String("Organization"),
+		String("Title"),
 		field.Enum("type").Values("coordinator", "member"),
 	}
 }
