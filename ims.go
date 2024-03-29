@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"io"
 	"log"
@@ -10,6 +11,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/tarqeem/ims/ent"
 	. "github.com/tarqeem/ims/translate"
 	. "github.com/tarqeem/template/utl"
 )
@@ -22,6 +25,7 @@ const debug = true
 var executor TemplateExecutor
 
 func main() {
+	// Views
 	Views = views
 	TemplateFuncs = template.FuncMap{
 		"message": func(k string) string {
@@ -50,6 +54,18 @@ func main() {
 		executor = ts
 	}
 
+	// Database
+	client, err := ent.Open("sqlite3", "file:ent?mode=memory&cache=shared&_fk=1")
+	if err != nil {
+		log.Fatalf("failed opening connection to sqlite: %v", err)
+	}
+	defer client.Close()
+	// Run the auto migration tool.
+	if err := client.Schema.Create(context.Background()); err != nil {
+		log.Fatalf("failed creating schema resources: %v", err)
+	}
+
+	// Controllers
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())

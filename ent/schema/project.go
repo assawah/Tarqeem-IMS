@@ -22,7 +22,7 @@ func (Project) Fields() []ent.Field {
 		String("owner"),
 		String("location"),
 		StringOneOf("type", ValidProjectTypes),
-		field.Enum("Project_nature"),
+		field.Enum("Project_nature").Values("greenfield", "brownfield"),
 		NonNegative("top_level_packages_number"),
 		NonNegative("joint_venture_number"),
 		String("execution_location"),
@@ -36,5 +36,5 @@ func (Project) Fields() []ent.Field {
 
 // Edges of the Project.
 func (Project) Edges() []ent.Edge {
-	return []ent.Edge{edge.From("user", User.Type).Unique()}
+	return []ent.Edge{edge.From("user", User.Type).Ref("projects").Unique().Required()}
 }
