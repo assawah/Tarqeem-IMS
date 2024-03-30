@@ -13,6 +13,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/tarqeem/ims/ent"
+	"github.com/tarqeem/ims/models"
 	. "github.com/tarqeem/ims/translate"
 	. "github.com/tarqeem/template/utl"
 )
@@ -28,15 +29,7 @@ func main() {
 	// Views
 	Views = views
 	TemplateFuncs = template.FuncMap{
-		"message": func(k string) string {
-			if val, ok := English[k]; ok {
-				return val
-			}
-			m := "Couldn't find key " + k
-			log.Println(m)
-			return m
-
-		},
+		"message": Message,
 	}
 	ts, err := GetTemplates()
 
@@ -55,7 +48,7 @@ func main() {
 	}
 
 	// Database
-	client, err := ent.Open("sqlite3", "file:ent?mode=memory&cache=shared&_fk=1")
+	client, err := ent.Open("sqlite3", "file:ent.db?_fk=1")
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v", err)
 	}
@@ -81,7 +74,18 @@ func main() {
 	})
 
 	e.GET("/register", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "register", nil)
+		t := c.QueryParam("t")
+		var m models.Register
+		m.Type = "t"
+
+		if t == "c" {
+			m.PageTitle = Message("regCoordinator")
+		} else if t == "m" {
+			m.PageTitle = Message("regMember")
+		} else {
+			return c.Render(http.StatusNotFound, "404", nil)
+		}
+		return c.Render(http.StatusOK, "register", m)
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))

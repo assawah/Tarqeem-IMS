@@ -1,5 +1,7 @@
 package translate
 
+import "log"
+
 var English map[string]string = map[string]string{
 	"emailLoginNote": "Use the same email address you used for registeration.",
 	"welcome":        "Welecome to Interface Management System (IMS).",
@@ -36,4 +38,13 @@ var ValidProjectStages []string = []string{
 	"Commissions",
 	"Start-up",
 	"Completed",
+}
+
+func Message(k string) string {
+	if val, ok := English[k]; ok {
+		return val
+	}
+	m := "Couldn't find key " + k
+	log.Println(m)
+	return m
 }
