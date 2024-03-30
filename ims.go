@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"io"
 	"log"
@@ -10,6 +11,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/tarqeem/ims/ent"
+	"github.com/tarqeem/ims/models"
 	. "github.com/tarqeem/ims/translate"
 	. "github.com/tarqeem/template/utl"
 )
@@ -22,17 +26,10 @@ const debug = true
 var executor TemplateExecutor
 
 func main() {
+	// Views
 	Views = views
 	TemplateFuncs = template.FuncMap{
-		"message": func(k string) string {
-			if val, ok := English[k]; ok {
-				return val
-			}
-			m := "Couldn't find key " + k
-			log.Println(m)
-			return m
-
-		},
+		"message": Message,
 	}
 	ts, err := GetTemplates()
 
@@ -50,6 +47,18 @@ func main() {
 		executor = ts
 	}
 
+	// Database
+	client, err := ent.Open("sqlite3", "file:ent.db?_fk=1")
+	if err != nil {
+		log.Fatalf("failed opening connection to sqlite: %v", err)
+	}
+	defer client.Close()
+	// Run the auto migration tool.
+	if err := client.Schema.Create(context.Background()); err != nil {
+		log.Fatalf("failed creating schema resources: %v", err)
+	}
+
+	// Controllers
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -65,7 +74,18 @@ func main() {
 	})
 
 	e.GET("/register", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "register", nil)
+		t := c.QueryParam("t")
+		var m models.Register
+		m.Type = "t"
+
+		if t == "c" {
+			m.PageTitle = Message("regCoordinator")
+		} else if t == "m" {
+			m.PageTitle = Message("regMember")
+		} else {
+			return c.Render(http.StatusNotFound, "404", nil)
+		}
+		return c.Render(http.StatusOK, "register", m)
 	})
 
 	e.GET("/project", func(c echo.Context) error {
