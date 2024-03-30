@@ -1,0 +1,7 @@
+{{define "error"}}
+    {{if ne .Err ""}}
+    <div class="alert alert-danger" role="alert">
+      {{.Err}}
+    </div>
+    {{end}}
+{{end}}
