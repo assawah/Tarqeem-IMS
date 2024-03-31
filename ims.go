@@ -93,6 +93,10 @@ func main() {
 		return c.Render(http.StatusOK, "project", nil)
 	})
 
+	E.GET("/404", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "notFound", nil)
+	})
+
 	E.Logger.Fatal(E.Start(":8080"))
 }
 

@@ -1,53 +1,54 @@
 {{define "register-form"}}
 <section class="register">
-        <form id="register-form" action="/register" method="post">
-            <h1>
-                {{.PageTitle}}
-            </h1>
-            <div class="row">
-                <div class="col">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" class="form-control" name="name" placeholder="Full Name"
-                        aria-label="Full Name">
-                </div>
+    <form id="register-form" action="/register" method="post">
+        <h1>
+            {{.PageTitle}}
+        </h1>
+        <div class="row">
+            <div class="col">
+                <label for="fullName">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="name" placeholder="Full Name"
+                    aria-label="Full Name">
             </div>
-            <div class="row">
-                <div class="col">
-                    <label for="email" aria-required="true">E-mail</label>
-                    <input type="text" class="form-control" name="email" placeholder="example@gmail.com"
-                        aria-label="email">
-                </div>
-                <div class="col">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" aria-label=" password" placeholder="Title">
-                </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="email" aria-required="true">E-mail</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="example@gmail.com"
+                    aria-label="email">
             </div>
+            <div class="col">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" aria-label=" password"
+                    placeholder="Title">
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    <label for="phone">Phone</label>
-                    <input type="number" class="form-control" name="phone" placeholder="+201165*******"
-                        aria-label="email">
-                </div>
-                <div class="col">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" aria-label=" password">
-                </div>
+        <div class="row">
+            <div class="col">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="+201165*******"
+                    aria-label="email">
             </div>
-            <div class="row">
-                <div class="col">
-                    <label for="organization">Organization</label>
-                    <input type="text" class="form-control" name="organization" placeholder="EX:Company Name"
-                        aria-label="organization">
-                </div>
+            <div class="col">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" aria-label=" password">
             </div>
-
-            <input type="hidden" id="type" name="type" value="{{.Type}}" />
-
-
-            <div class="btn btn-primary register-btn">
-                <button type="submit"> Register</button>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="organization">Organization</label>
+                <input type="text" class="form-control" id="organization" name="organization"
+                    placeholder="EX:Company Name" aria-label="organization">
             </div>
-        </form>
+        </div>
+
+        <input type="hidden" id="type" name="type" value="{{.Type}}" />
+
+
+        <div class="btn btn-primary register-btn">
+            <button type="submit"> Register</button>
+        </div>
+    </form>
 </section>
 {{end}}
