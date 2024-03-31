@@ -1,0 +1,75 @@
+{{define "notification"}}
+
+<html lang="en">
+{{template "head" .}}
+
+<body>
+    <div class="icon " id="icon">
+        <span class="numberOfNotifications">
+            1
+        </span>
+        <i class="fa-solid fa-envelope"></i>
+    </div>
+    <div class="notifications" id="notifications">
+        <div class="title">
+            Notifications
+        </div>
+        <div class="notifications_container">
+            <div class="notifications_content">
+                <div class="notification">
+                    <div class="sub_title">
+                        test notification
+                    </div>
+                    <div class="body">
+                        <p>please check your configuration.ymal</p>
+                    </div>
+                    <div class="time">
+                        1 minute age
+                    </div>
+                    <div class="close_btn">
+                        <button class="dismiss_btn"> Dismiss</button>
+                    </div>
+                </div>
+                <div class="notification">
+                    <div class="sub_title">
+                        test notification
+                    </div>
+                    <div class="body">
+                        <p>please check your configuration.ymal</p>
+                    </div>
+                    <div class="time">
+                        1 minute age
+                    </div>
+                    <div class="close_btn">
+                        <button class="dismiss_btn"> Dismiss</button>
+                    </div>
+                </div>
+                <div class="notification">
+                    <div class="sub_title">
+                        test notification
+                    </div>
+                    <div class="body">
+                        <p>please check your configuration.ymal</p>
+                    </div>
+                    <div class="time">
+                        1 minute age
+                    </div>
+                    <div class="close_btn">
+                        <button class="dismiss_btn"> Dismiss</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="dismissAll_btn ">
+                <button>Dismiss All</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
+
+
+{{end}}
