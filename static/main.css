@@ -192,18 +192,25 @@ form .row {
 }
 
 .notifications {
-  /* background-color: red; */
   position: fixed;
   left: 0;
   bottom: 10px;
   width: 450px;
   transform: translateX(-500px);
   transition: all 0.5s linear;
-  height: 90vh;
+  height: 100vh;
   overflow-y: scroll;
   z-index: 1000;
+  background-color: white;
 }
-.notifications.show{
+
+@media(max-width:700px) {
+  .notifications {
+    width: 300px;
+  }
+}
+
+.notifications.show {
   transform: translateX(0);
 
 }
@@ -241,13 +248,18 @@ form .row {
 
 
 .notifications .title {
+
   font-size: 26px;
   text-transform: capitalize;
   margin-bottom: 10px;
   border-bottom: 1px solid #cecaca;
-  padding-left: 10px;
-  padding-bottom: 10px;
+  padding: 17px;
   box-shadow: 0 1px 10px #cbcaca;
+}
+
+.notifications .title i {
+  cursor: pointer;
+  font-size: 40px;
 }
 
 
@@ -291,13 +303,14 @@ form .row {
 }
 
 .dismissAll_btn {
-  position: absolute;
+  position: relative;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   padding: 10px;
   background-color: rgb(11, 169, 197);
   overflow: hidden;
+  width: fit-content;
 }
 
 .dismissAll_btn button {
