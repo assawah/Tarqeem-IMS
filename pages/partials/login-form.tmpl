@@ -2,22 +2,22 @@
 <html>
 {{template "head" .}}
 
-</html>
-
 <body>
 
 
   <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
-    <form id="landloginform" action="/login" method="post" class="">
+    <form id="landloginform" action="/login" method="post" class="needs-validation" novalidate>
       <h5>{{message "welcome"}}</h5>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">{{message "email"}}</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div class="invalid-feedback">Email Not Valid</div>
         <div id="emailHelp" class="form-text"> {{message "emailLoginNote"}} </div>
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">{{message "password"}}</label>
         <input type="password" class="form-control" id="exampleInputPassword1">
+        <div class="invalid-feedback">Password is required</div>
       </div>
       <div class="">
         <button type="submit" class="btn btn-dark col-12">Login</button>
@@ -31,6 +31,25 @@
       </div>
     </form>
   </div>
+
+  <script>
+    var forms = document.querySelectorAll('.needs-validation')
+
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+  </script>
 </body>
+
+</html>
+
 
 {{end}}

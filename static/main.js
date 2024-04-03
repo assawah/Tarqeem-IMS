@@ -10,7 +10,6 @@ NotificationIcon.addEventListener("click", () => {
 
 })
 
-
 cancel_btn.addEventListener("click", () => {
     Notifications.classList.remove("show")
     NotificationIcon.classList.remove("hidden")
@@ -18,4 +17,4 @@ cancel_btn.addEventListener("click", () => {
 })
 
 
-console.log(NotificationIcon)
+

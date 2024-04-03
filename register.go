@@ -88,5 +88,6 @@ func register() {
 
 		E.Logger.Infof("added user %+v", u)
 		return c.Redirect(http.StatusFound, DashboardEnd)
+	
 	})
 }
