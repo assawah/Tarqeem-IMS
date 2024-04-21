@@ -68,29 +68,19 @@ func Location(v string) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldLocation, v))
 }
 
-// Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldType, v))
+// DeliveryStrategies applies equality check predicate on the "delivery_strategies" field. It's identical to DeliveryStrategiesEQ.
+func DeliveryStrategies(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDeliveryStrategies, v))
 }
 
-// TopLevelPackagesNumber applies equality check predicate on the "top_level_packages_number" field. It's identical to TopLevelPackagesNumberEQ.
-func TopLevelPackagesNumber(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldTopLevelPackagesNumber, v))
+// State applies equality check predicate on the "state" field. It's identical to StateEQ.
+func State(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldState, v))
 }
 
-// JointVentureNumber applies equality check predicate on the "joint_venture_number" field. It's identical to JointVentureNumberEQ.
-func JointVentureNumber(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldJointVentureNumber, v))
-}
-
-// ExecutionLocation applies equality check predicate on the "execution_location" field. It's identical to ExecutionLocationEQ.
-func ExecutionLocation(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldExecutionLocation, v))
-}
-
-// InvolvedStockholders applies equality check predicate on the "involved_stockholders" field. It's identical to InvolvedStockholdersEQ.
-func InvolvedStockholders(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldInvolvedStockholders, v))
+// ContractingStrategies applies equality check predicate on the "contracting_strategies" field. It's identical to ContractingStrategiesEQ.
+func ContractingStrategies(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldContractingStrategies, v))
 }
 
 // DollarValue applies equality check predicate on the "dollar_value" field. It's identical to DollarValueEQ.
@@ -98,19 +88,9 @@ func DollarValue(v int) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldDollarValue, v))
 }
 
-// Stage applies equality check predicate on the "stage" field. It's identical to StageEQ.
-func Stage(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldStage, v))
-}
-
-// DeliveryStratigies applies equality check predicate on the "delivery_stratigies" field. It's identical to DeliveryStratigiesEQ.
-func DeliveryStratigies(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldDeliveryStratigies, v))
-}
-
-// ContractingStratigies applies equality check predicate on the "contracting_stratigies" field. It's identical to ContractingStratigiesEQ.
-func ContractingStratigies(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractingStratigies, v))
+// ExecutionLocation applies equality check predicate on the "execution_location" field. It's identical to ExecutionLocationEQ.
+func ExecutionLocation(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldExecutionLocation, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -309,168 +289,278 @@ func LocationContainsFold(v string) predicate.Project {
 }
 
 // TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v string) predicate.Project {
+func TypeEQ(v Type) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldType, v))
 }
 
 // TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v string) predicate.Project {
+func TypeNEQ(v Type) predicate.Project {
 	return predicate.Project(sql.FieldNEQ(FieldType, v))
 }
 
 // TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...string) predicate.Project {
+func TypeIn(vs ...Type) predicate.Project {
 	return predicate.Project(sql.FieldIn(FieldType, vs...))
 }
 
 // TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...string) predicate.Project {
+func TypeNotIn(vs ...Type) predicate.Project {
 	return predicate.Project(sql.FieldNotIn(FieldType, vs...))
 }
 
-// TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldType, v))
-}
-
-// TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldType, v))
-}
-
-// TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldType, v))
-}
-
-// TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldType, v))
-}
-
-// TypeContains applies the Contains predicate on the "type" field.
-func TypeContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldType, v))
-}
-
-// TypeHasPrefix applies the HasPrefix predicate on the "type" field.
-func TypeHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldType, v))
-}
-
-// TypeHasSuffix applies the HasSuffix predicate on the "type" field.
-func TypeHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldType, v))
-}
-
-// TypeEqualFold applies the EqualFold predicate on the "type" field.
-func TypeEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldType, v))
-}
-
-// TypeContainsFold applies the ContainsFold predicate on the "type" field.
-func TypeContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldType, v))
-}
-
-// ProjectNatureEQ applies the EQ predicate on the "Project_nature" field.
+// ProjectNatureEQ applies the EQ predicate on the "project_nature" field.
 func ProjectNatureEQ(v ProjectNature) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldProjectNature, v))
 }
 
-// ProjectNatureNEQ applies the NEQ predicate on the "Project_nature" field.
+// ProjectNatureNEQ applies the NEQ predicate on the "project_nature" field.
 func ProjectNatureNEQ(v ProjectNature) predicate.Project {
 	return predicate.Project(sql.FieldNEQ(FieldProjectNature, v))
 }
 
-// ProjectNatureIn applies the In predicate on the "Project_nature" field.
+// ProjectNatureIn applies the In predicate on the "project_nature" field.
 func ProjectNatureIn(vs ...ProjectNature) predicate.Project {
 	return predicate.Project(sql.FieldIn(FieldProjectNature, vs...))
 }
 
-// ProjectNatureNotIn applies the NotIn predicate on the "Project_nature" field.
+// ProjectNatureNotIn applies the NotIn predicate on the "project_nature" field.
 func ProjectNatureNotIn(vs ...ProjectNature) predicate.Project {
 	return predicate.Project(sql.FieldNotIn(FieldProjectNature, vs...))
 }
 
-// TopLevelPackagesNumberEQ applies the EQ predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldTopLevelPackagesNumber, v))
+// DeliveryStrategiesEQ applies the EQ predicate on the "delivery_strategies" field.
+func DeliveryStrategiesEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDeliveryStrategies, v))
 }
 
-// TopLevelPackagesNumberNEQ applies the NEQ predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldTopLevelPackagesNumber, v))
+// DeliveryStrategiesNEQ applies the NEQ predicate on the "delivery_strategies" field.
+func DeliveryStrategiesNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDeliveryStrategies, v))
 }
 
-// TopLevelPackagesNumberIn applies the In predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldTopLevelPackagesNumber, vs...))
+// DeliveryStrategiesIn applies the In predicate on the "delivery_strategies" field.
+func DeliveryStrategiesIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDeliveryStrategies, vs...))
 }
 
-// TopLevelPackagesNumberNotIn applies the NotIn predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldTopLevelPackagesNumber, vs...))
+// DeliveryStrategiesNotIn applies the NotIn predicate on the "delivery_strategies" field.
+func DeliveryStrategiesNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDeliveryStrategies, vs...))
 }
 
-// TopLevelPackagesNumberGT applies the GT predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldTopLevelPackagesNumber, v))
+// DeliveryStrategiesGT applies the GT predicate on the "delivery_strategies" field.
+func DeliveryStrategiesGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDeliveryStrategies, v))
 }
 
-// TopLevelPackagesNumberGTE applies the GTE predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldTopLevelPackagesNumber, v))
+// DeliveryStrategiesGTE applies the GTE predicate on the "delivery_strategies" field.
+func DeliveryStrategiesGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDeliveryStrategies, v))
 }
 
-// TopLevelPackagesNumberLT applies the LT predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldTopLevelPackagesNumber, v))
+// DeliveryStrategiesLT applies the LT predicate on the "delivery_strategies" field.
+func DeliveryStrategiesLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDeliveryStrategies, v))
 }
 
-// TopLevelPackagesNumberLTE applies the LTE predicate on the "top_level_packages_number" field.
-func TopLevelPackagesNumberLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldTopLevelPackagesNumber, v))
+// DeliveryStrategiesLTE applies the LTE predicate on the "delivery_strategies" field.
+func DeliveryStrategiesLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDeliveryStrategies, v))
 }
 
-// JointVentureNumberEQ applies the EQ predicate on the "joint_venture_number" field.
-func JointVentureNumberEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldJointVentureNumber, v))
+// DeliveryStrategiesContains applies the Contains predicate on the "delivery_strategies" field.
+func DeliveryStrategiesContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldDeliveryStrategies, v))
 }
 
-// JointVentureNumberNEQ applies the NEQ predicate on the "joint_venture_number" field.
-func JointVentureNumberNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldJointVentureNumber, v))
+// DeliveryStrategiesHasPrefix applies the HasPrefix predicate on the "delivery_strategies" field.
+func DeliveryStrategiesHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldDeliveryStrategies, v))
 }
 
-// JointVentureNumberIn applies the In predicate on the "joint_venture_number" field.
-func JointVentureNumberIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldJointVentureNumber, vs...))
+// DeliveryStrategiesHasSuffix applies the HasSuffix predicate on the "delivery_strategies" field.
+func DeliveryStrategiesHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldDeliveryStrategies, v))
 }
 
-// JointVentureNumberNotIn applies the NotIn predicate on the "joint_venture_number" field.
-func JointVentureNumberNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldJointVentureNumber, vs...))
+// DeliveryStrategiesEqualFold applies the EqualFold predicate on the "delivery_strategies" field.
+func DeliveryStrategiesEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldDeliveryStrategies, v))
 }
 
-// JointVentureNumberGT applies the GT predicate on the "joint_venture_number" field.
-func JointVentureNumberGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldJointVentureNumber, v))
+// DeliveryStrategiesContainsFold applies the ContainsFold predicate on the "delivery_strategies" field.
+func DeliveryStrategiesContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldDeliveryStrategies, v))
 }
 
-// JointVentureNumberGTE applies the GTE predicate on the "joint_venture_number" field.
-func JointVentureNumberGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldJointVentureNumber, v))
+// StateEQ applies the EQ predicate on the "state" field.
+func StateEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldState, v))
 }
 
-// JointVentureNumberLT applies the LT predicate on the "joint_venture_number" field.
-func JointVentureNumberLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldJointVentureNumber, v))
+// StateNEQ applies the NEQ predicate on the "state" field.
+func StateNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldState, v))
 }
 
-// JointVentureNumberLTE applies the LTE predicate on the "joint_venture_number" field.
-func JointVentureNumberLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldJointVentureNumber, v))
+// StateIn applies the In predicate on the "state" field.
+func StateIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldState, vs...))
+}
+
+// StateNotIn applies the NotIn predicate on the "state" field.
+func StateNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldState, vs...))
+}
+
+// StateGT applies the GT predicate on the "state" field.
+func StateGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldState, v))
+}
+
+// StateGTE applies the GTE predicate on the "state" field.
+func StateGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldState, v))
+}
+
+// StateLT applies the LT predicate on the "state" field.
+func StateLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldState, v))
+}
+
+// StateLTE applies the LTE predicate on the "state" field.
+func StateLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldState, v))
+}
+
+// StateContains applies the Contains predicate on the "state" field.
+func StateContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldState, v))
+}
+
+// StateHasPrefix applies the HasPrefix predicate on the "state" field.
+func StateHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldState, v))
+}
+
+// StateHasSuffix applies the HasSuffix predicate on the "state" field.
+func StateHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldState, v))
+}
+
+// StateEqualFold applies the EqualFold predicate on the "state" field.
+func StateEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldState, v))
+}
+
+// StateContainsFold applies the ContainsFold predicate on the "state" field.
+func StateContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldState, v))
+}
+
+// ContractingStrategiesEQ applies the EQ predicate on the "contracting_strategies" field.
+func ContractingStrategiesEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesNEQ applies the NEQ predicate on the "contracting_strategies" field.
+func ContractingStrategiesNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesIn applies the In predicate on the "contracting_strategies" field.
+func ContractingStrategiesIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldContractingStrategies, vs...))
+}
+
+// ContractingStrategiesNotIn applies the NotIn predicate on the "contracting_strategies" field.
+func ContractingStrategiesNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldContractingStrategies, vs...))
+}
+
+// ContractingStrategiesGT applies the GT predicate on the "contracting_strategies" field.
+func ContractingStrategiesGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesGTE applies the GTE predicate on the "contracting_strategies" field.
+func ContractingStrategiesGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesLT applies the LT predicate on the "contracting_strategies" field.
+func ContractingStrategiesLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesLTE applies the LTE predicate on the "contracting_strategies" field.
+func ContractingStrategiesLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesContains applies the Contains predicate on the "contracting_strategies" field.
+func ContractingStrategiesContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesHasPrefix applies the HasPrefix predicate on the "contracting_strategies" field.
+func ContractingStrategiesHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesHasSuffix applies the HasSuffix predicate on the "contracting_strategies" field.
+func ContractingStrategiesHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesEqualFold applies the EqualFold predicate on the "contracting_strategies" field.
+func ContractingStrategiesEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldContractingStrategies, v))
+}
+
+// ContractingStrategiesContainsFold applies the ContainsFold predicate on the "contracting_strategies" field.
+func ContractingStrategiesContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldContractingStrategies, v))
+}
+
+// DollarValueEQ applies the EQ predicate on the "dollar_value" field.
+func DollarValueEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDollarValue, v))
+}
+
+// DollarValueNEQ applies the NEQ predicate on the "dollar_value" field.
+func DollarValueNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDollarValue, v))
+}
+
+// DollarValueIn applies the In predicate on the "dollar_value" field.
+func DollarValueIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDollarValue, vs...))
+}
+
+// DollarValueNotIn applies the NotIn predicate on the "dollar_value" field.
+func DollarValueNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDollarValue, vs...))
+}
+
+// DollarValueGT applies the GT predicate on the "dollar_value" field.
+func DollarValueGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDollarValue, v))
+}
+
+// DollarValueGTE applies the GTE predicate on the "dollar_value" field.
+func DollarValueGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDollarValue, v))
+}
+
+// DollarValueLT applies the LT predicate on the "dollar_value" field.
+func DollarValueLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDollarValue, v))
+}
+
+// DollarValueLTE applies the LTE predicate on the "dollar_value" field.
+func DollarValueLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDollarValue, v))
 }
 
 // ExecutionLocationEQ applies the EQ predicate on the "execution_location" field.
@@ -538,296 +628,67 @@ func ExecutionLocationContainsFold(v string) predicate.Project {
 	return predicate.Project(sql.FieldContainsFold(FieldExecutionLocation, v))
 }
 
-// InvolvedStockholdersEQ applies the EQ predicate on the "involved_stockholders" field.
-func InvolvedStockholdersEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldInvolvedStockholders, v))
-}
-
-// InvolvedStockholdersNEQ applies the NEQ predicate on the "involved_stockholders" field.
-func InvolvedStockholdersNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldInvolvedStockholders, v))
-}
-
-// InvolvedStockholdersIn applies the In predicate on the "involved_stockholders" field.
-func InvolvedStockholdersIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldInvolvedStockholders, vs...))
-}
-
-// InvolvedStockholdersNotIn applies the NotIn predicate on the "involved_stockholders" field.
-func InvolvedStockholdersNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldInvolvedStockholders, vs...))
-}
-
-// InvolvedStockholdersGT applies the GT predicate on the "involved_stockholders" field.
-func InvolvedStockholdersGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldInvolvedStockholders, v))
-}
-
-// InvolvedStockholdersGTE applies the GTE predicate on the "involved_stockholders" field.
-func InvolvedStockholdersGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldInvolvedStockholders, v))
-}
-
-// InvolvedStockholdersLT applies the LT predicate on the "involved_stockholders" field.
-func InvolvedStockholdersLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldInvolvedStockholders, v))
-}
-
-// InvolvedStockholdersLTE applies the LTE predicate on the "involved_stockholders" field.
-func InvolvedStockholdersLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldInvolvedStockholders, v))
-}
-
-// DollarValueEQ applies the EQ predicate on the "dollar_value" field.
-func DollarValueEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldDollarValue, v))
-}
-
-// DollarValueNEQ applies the NEQ predicate on the "dollar_value" field.
-func DollarValueNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldDollarValue, v))
-}
-
-// DollarValueIn applies the In predicate on the "dollar_value" field.
-func DollarValueIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldDollarValue, vs...))
-}
-
-// DollarValueNotIn applies the NotIn predicate on the "dollar_value" field.
-func DollarValueNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldDollarValue, vs...))
-}
-
-// DollarValueGT applies the GT predicate on the "dollar_value" field.
-func DollarValueGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldDollarValue, v))
-}
-
-// DollarValueGTE applies the GTE predicate on the "dollar_value" field.
-func DollarValueGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldDollarValue, v))
-}
-
-// DollarValueLT applies the LT predicate on the "dollar_value" field.
-func DollarValueLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldDollarValue, v))
-}
-
-// DollarValueLTE applies the LTE predicate on the "dollar_value" field.
-func DollarValueLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldDollarValue, v))
-}
-
-// StageEQ applies the EQ predicate on the "stage" field.
-func StageEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldStage, v))
-}
-
-// StageNEQ applies the NEQ predicate on the "stage" field.
-func StageNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldStage, v))
-}
-
-// StageIn applies the In predicate on the "stage" field.
-func StageIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldStage, vs...))
-}
-
-// StageNotIn applies the NotIn predicate on the "stage" field.
-func StageNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldStage, vs...))
-}
-
-// StageGT applies the GT predicate on the "stage" field.
-func StageGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldStage, v))
-}
-
-// StageGTE applies the GTE predicate on the "stage" field.
-func StageGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldStage, v))
-}
-
-// StageLT applies the LT predicate on the "stage" field.
-func StageLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldStage, v))
-}
-
-// StageLTE applies the LTE predicate on the "stage" field.
-func StageLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldStage, v))
-}
-
-// StageContains applies the Contains predicate on the "stage" field.
-func StageContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldStage, v))
-}
-
-// StageHasPrefix applies the HasPrefix predicate on the "stage" field.
-func StageHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldStage, v))
-}
-
-// StageHasSuffix applies the HasSuffix predicate on the "stage" field.
-func StageHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldStage, v))
-}
-
-// StageEqualFold applies the EqualFold predicate on the "stage" field.
-func StageEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldStage, v))
-}
-
-// StageContainsFold applies the ContainsFold predicate on the "stage" field.
-func StageContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldStage, v))
-}
-
-// DeliveryStratigiesEQ applies the EQ predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesNEQ applies the NEQ predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesIn applies the In predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldDeliveryStratigies, vs...))
-}
-
-// DeliveryStratigiesNotIn applies the NotIn predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldDeliveryStratigies, vs...))
-}
-
-// DeliveryStratigiesGT applies the GT predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesGTE applies the GTE predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesLT applies the LT predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesLTE applies the LTE predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesContains applies the Contains predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesHasPrefix applies the HasPrefix predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesHasSuffix applies the HasSuffix predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesEqualFold applies the EqualFold predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldDeliveryStratigies, v))
-}
-
-// DeliveryStratigiesContainsFold applies the ContainsFold predicate on the "delivery_stratigies" field.
-func DeliveryStratigiesContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldDeliveryStratigies, v))
-}
-
-// ContractingStratigiesEQ applies the EQ predicate on the "contracting_stratigies" field.
-func ContractingStratigiesEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesNEQ applies the NEQ predicate on the "contracting_stratigies" field.
-func ContractingStratigiesNEQ(v string) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesIn applies the In predicate on the "contracting_stratigies" field.
-func ContractingStratigiesIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldContractingStratigies, vs...))
-}
-
-// ContractingStratigiesNotIn applies the NotIn predicate on the "contracting_stratigies" field.
-func ContractingStratigiesNotIn(vs ...string) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldContractingStratigies, vs...))
-}
-
-// ContractingStratigiesGT applies the GT predicate on the "contracting_stratigies" field.
-func ContractingStratigiesGT(v string) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesGTE applies the GTE predicate on the "contracting_stratigies" field.
-func ContractingStratigiesGTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesLT applies the LT predicate on the "contracting_stratigies" field.
-func ContractingStratigiesLT(v string) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesLTE applies the LTE predicate on the "contracting_stratigies" field.
-func ContractingStratigiesLTE(v string) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesContains applies the Contains predicate on the "contracting_stratigies" field.
-func ContractingStratigiesContains(v string) predicate.Project {
-	return predicate.Project(sql.FieldContains(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesHasPrefix applies the HasPrefix predicate on the "contracting_stratigies" field.
-func ContractingStratigiesHasPrefix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasPrefix(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesHasSuffix applies the HasSuffix predicate on the "contracting_stratigies" field.
-func ContractingStratigiesHasSuffix(v string) predicate.Project {
-	return predicate.Project(sql.FieldHasSuffix(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesEqualFold applies the EqualFold predicate on the "contracting_stratigies" field.
-func ContractingStratigiesEqualFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldEqualFold(FieldContractingStratigies, v))
-}
-
-// ContractingStratigiesContainsFold applies the ContainsFold predicate on the "contracting_stratigies" field.
-func ContractingStratigiesContainsFold(v string) predicate.Project {
-	return predicate.Project(sql.FieldContainsFold(FieldContractingStratigies, v))
-}
-
-// HasUser applies the HasEdge predicate on the "user" edge.
-func HasUser() predicate.Project {
+// HasLeader applies the HasEdge predicate on the "leader" edge.
+func HasLeader() predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
+			sqlgraph.Edge(sqlgraph.M2M, true, LeaderTable, LeaderPrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasUserWith applies the HasEdge predicate on the "user" edge with a given conditions (other predicates).
-func HasUserWith(preds ...predicate.User) predicate.Project {
+// HasLeaderWith applies the HasEdge predicate on the "leader" edge with a given conditions (other predicates).
+func HasLeaderWith(preds ...predicate.User) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
-		step := newUserStep()
+		step := newLeaderStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasCoordinator applies the HasEdge predicate on the "coordinator" edge.
+func HasCoordinator() predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, CoordinatorTable, CoordinatorPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCoordinatorWith applies the HasEdge predicate on the "coordinator" edge with a given conditions (other predicates).
+func HasCoordinatorWith(preds ...predicate.User) predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := newCoordinatorStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasMembers applies the HasEdge predicate on the "members" edge.
+func HasMembers() predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, MembersTable, MembersPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasMembersWith applies the HasEdge predicate on the "members" edge with a given conditions (other predicates).
+func HasMembersWith(preds ...predicate.User) predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := newMembersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

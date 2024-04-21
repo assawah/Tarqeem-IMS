@@ -43,17 +43,29 @@ func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
 	return uu
 }
 
-// SetPassowrd sets the "passowrd" field.
-func (uu *UserUpdate) SetPassowrd(s string) *UserUpdate {
-	uu.mutation.SetPassowrd(s)
+// ClearName clears the value of the "name" field.
+func (uu *UserUpdate) ClearName() *UserUpdate {
+	uu.mutation.ClearName()
 	return uu
 }
 
-// SetNillablePassowrd sets the "passowrd" field if the given value is not nil.
-func (uu *UserUpdate) SetNillablePassowrd(s *string) *UserUpdate {
+// SetPassword sets the "password" field.
+func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
+	uu.mutation.SetPassword(s)
+	return uu
+}
+
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (uu *UserUpdate) SetNillablePassword(s *string) *UserUpdate {
 	if s != nil {
-		uu.SetPassowrd(*s)
+		uu.SetPassword(*s)
 	}
+	return uu
+}
+
+// ClearPassword clears the value of the "password" field.
+func (uu *UserUpdate) ClearPassword() *UserUpdate {
+	uu.mutation.ClearPassword()
 	return uu
 }
 
@@ -85,6 +97,12 @@ func (uu *UserUpdate) SetNillablePhone(s *string) *UserUpdate {
 	return uu
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (uu *UserUpdate) ClearPhone() *UserUpdate {
+	uu.mutation.ClearPhone()
+	return uu
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (uu *UserUpdate) SetCreatedAt(t time.Time) *UserUpdate {
 	uu.mutation.SetCreatedAt(t)
@@ -99,13 +117,13 @@ func (uu *UserUpdate) SetNillableCreatedAt(t *time.Time) *UserUpdate {
 	return uu
 }
 
-// SetOrganization sets the "Organization" field.
+// SetOrganization sets the "organization" field.
 func (uu *UserUpdate) SetOrganization(s string) *UserUpdate {
 	uu.mutation.SetOrganization(s)
 	return uu
 }
 
-// SetNillableOrganization sets the "Organization" field if the given value is not nil.
+// SetNillableOrganization sets the "organization" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableOrganization(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetOrganization(*s)
@@ -113,16 +131,42 @@ func (uu *UserUpdate) SetNillableOrganization(s *string) *UserUpdate {
 	return uu
 }
 
-// SetTitle sets the "Title" field.
+// ClearOrganization clears the value of the "organization" field.
+func (uu *UserUpdate) ClearOrganization() *UserUpdate {
+	uu.mutation.ClearOrganization()
+	return uu
+}
+
+// SetTitle sets the "title" field.
 func (uu *UserUpdate) SetTitle(s string) *UserUpdate {
 	uu.mutation.SetTitle(s)
 	return uu
 }
 
-// SetNillableTitle sets the "Title" field if the given value is not nil.
+// SetNillableTitle sets the "title" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableTitle(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetTitle(*s)
+	}
+	return uu
+}
+
+// ClearTitle clears the value of the "title" field.
+func (uu *UserUpdate) ClearTitle() *UserUpdate {
+	uu.mutation.ClearTitle()
+	return uu
+}
+
+// SetIsActive sets the "is_active" field.
+func (uu *UserUpdate) SetIsActive(b bool) *UserUpdate {
+	uu.mutation.SetIsActive(b)
+	return uu
+}
+
+// SetNillableIsActive sets the "is_active" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsActive(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsActive(*b)
 	}
 	return uu
 }
@@ -156,6 +200,36 @@ func (uu *UserUpdate) AddProjects(p ...*Project) *UserUpdate {
 	return uu.AddProjectIDs(ids...)
 }
 
+// AddLeaderOfProjectIDs adds the "leader_of_project" edge to the Project entity by IDs.
+func (uu *UserUpdate) AddLeaderOfProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddLeaderOfProjectIDs(ids...)
+	return uu
+}
+
+// AddLeaderOfProject adds the "leader_of_project" edges to the Project entity.
+func (uu *UserUpdate) AddLeaderOfProject(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.AddLeaderOfProjectIDs(ids...)
+}
+
+// AddCoordinatorOfProjectIDs adds the "coordinator_of_project" edge to the Project entity by IDs.
+func (uu *UserUpdate) AddCoordinatorOfProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddCoordinatorOfProjectIDs(ids...)
+	return uu
+}
+
+// AddCoordinatorOfProject adds the "coordinator_of_project" edges to the Project entity.
+func (uu *UserUpdate) AddCoordinatorOfProject(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.AddCoordinatorOfProjectIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -180,6 +254,48 @@ func (uu *UserUpdate) RemoveProjects(p ...*Project) *UserUpdate {
 		ids[i] = p[i].ID
 	}
 	return uu.RemoveProjectIDs(ids...)
+}
+
+// ClearLeaderOfProject clears all "leader_of_project" edges to the Project entity.
+func (uu *UserUpdate) ClearLeaderOfProject() *UserUpdate {
+	uu.mutation.ClearLeaderOfProject()
+	return uu
+}
+
+// RemoveLeaderOfProjectIDs removes the "leader_of_project" edge to Project entities by IDs.
+func (uu *UserUpdate) RemoveLeaderOfProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveLeaderOfProjectIDs(ids...)
+	return uu
+}
+
+// RemoveLeaderOfProject removes "leader_of_project" edges to Project entities.
+func (uu *UserUpdate) RemoveLeaderOfProject(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.RemoveLeaderOfProjectIDs(ids...)
+}
+
+// ClearCoordinatorOfProject clears all "coordinator_of_project" edges to the Project entity.
+func (uu *UserUpdate) ClearCoordinatorOfProject() *UserUpdate {
+	uu.mutation.ClearCoordinatorOfProject()
+	return uu
+}
+
+// RemoveCoordinatorOfProjectIDs removes the "coordinator_of_project" edge to Project entities by IDs.
+func (uu *UserUpdate) RemoveCoordinatorOfProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveCoordinatorOfProjectIDs(ids...)
+	return uu
+}
+
+// RemoveCoordinatorOfProject removes "coordinator_of_project" edges to Project entities.
+func (uu *UserUpdate) RemoveCoordinatorOfProject(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.RemoveCoordinatorOfProjectIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -211,36 +327,6 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uu *UserUpdate) check() error {
-	if v, ok := uu.mutation.Name(); ok {
-		if err := user.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
-		}
-	}
-	if v, ok := uu.mutation.Passowrd(); ok {
-		if err := user.PassowrdValidator(v); err != nil {
-			return &ValidationError{Name: "passowrd", err: fmt.Errorf(`ent: validator failed for field "User.passowrd": %w`, err)}
-		}
-	}
-	if v, ok := uu.mutation.Email(); ok {
-		if err := user.EmailValidator(v); err != nil {
-			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "User.email": %w`, err)}
-		}
-	}
-	if v, ok := uu.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "User.phone": %w`, err)}
-		}
-	}
-	if v, ok := uu.mutation.Organization(); ok {
-		if err := user.OrganizationValidator(v); err != nil {
-			return &ValidationError{Name: "Organization", err: fmt.Errorf(`ent: validator failed for field "User.Organization": %w`, err)}
-		}
-	}
-	if v, ok := uu.mutation.Title(); ok {
-		if err := user.TitleValidator(v); err != nil {
-			return &ValidationError{Name: "Title", err: fmt.Errorf(`ent: validator failed for field "User.Title": %w`, err)}
-		}
-	}
 	if v, ok := uu.mutation.GetType(); ok {
 		if err := user.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "User.type": %w`, err)}
@@ -264,8 +350,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.Passowrd(); ok {
-		_spec.SetField(user.FieldPassowrd, field.TypeString, value)
+	if uu.mutation.NameCleared() {
+		_spec.ClearField(user.FieldName, field.TypeString)
+	}
+	if value, ok := uu.mutation.Password(); ok {
+		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if uu.mutation.PasswordCleared() {
+		_spec.ClearField(user.FieldPassword, field.TypeString)
 	}
 	if value, ok := uu.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
@@ -273,24 +365,36 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
+	if uu.mutation.PhoneCleared() {
+		_spec.ClearField(user.FieldPhone, field.TypeString)
+	}
 	if value, ok := uu.mutation.CreatedAt(); ok {
 		_spec.SetField(user.FieldCreatedAt, field.TypeTime, value)
 	}
 	if value, ok := uu.mutation.Organization(); ok {
 		_spec.SetField(user.FieldOrganization, field.TypeString, value)
 	}
+	if uu.mutation.OrganizationCleared() {
+		_spec.ClearField(user.FieldOrganization, field.TypeString)
+	}
 	if value, ok := uu.mutation.Title(); ok {
 		_spec.SetField(user.FieldTitle, field.TypeString, value)
+	}
+	if uu.mutation.TitleCleared() {
+		_spec.ClearField(user.FieldTitle, field.TypeString)
+	}
+	if value, ok := uu.mutation.IsActive(); ok {
+		_spec.SetField(user.FieldIsActive, field.TypeBool, value)
 	}
 	if value, ok := uu.mutation.GetType(); ok {
 		_spec.SetField(user.FieldType, field.TypeEnum, value)
 	}
 	if uu.mutation.ProjectsCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
@@ -300,10 +404,10 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if nodes := uu.mutation.RemovedProjectsIDs(); len(nodes) > 0 && !uu.mutation.ProjectsCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
@@ -316,10 +420,100 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if nodes := uu.mutation.ProjectsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.LeaderOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedLeaderOfProjectIDs(); len(nodes) > 0 && !uu.mutation.LeaderOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.LeaderOfProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.CoordinatorOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedCoordinatorOfProjectIDs(); len(nodes) > 0 && !uu.mutation.CoordinatorOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.CoordinatorOfProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
@@ -364,17 +558,29 @@ func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetPassowrd sets the "passowrd" field.
-func (uuo *UserUpdateOne) SetPassowrd(s string) *UserUpdateOne {
-	uuo.mutation.SetPassowrd(s)
+// ClearName clears the value of the "name" field.
+func (uuo *UserUpdateOne) ClearName() *UserUpdateOne {
+	uuo.mutation.ClearName()
 	return uuo
 }
 
-// SetNillablePassowrd sets the "passowrd" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillablePassowrd(s *string) *UserUpdateOne {
+// SetPassword sets the "password" field.
+func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
+	uuo.mutation.SetPassword(s)
+	return uuo
+}
+
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillablePassword(s *string) *UserUpdateOne {
 	if s != nil {
-		uuo.SetPassowrd(*s)
+		uuo.SetPassword(*s)
 	}
+	return uuo
+}
+
+// ClearPassword clears the value of the "password" field.
+func (uuo *UserUpdateOne) ClearPassword() *UserUpdateOne {
+	uuo.mutation.ClearPassword()
 	return uuo
 }
 
@@ -406,6 +612,12 @@ func (uuo *UserUpdateOne) SetNillablePhone(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (uuo *UserUpdateOne) ClearPhone() *UserUpdateOne {
+	uuo.mutation.ClearPhone()
+	return uuo
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (uuo *UserUpdateOne) SetCreatedAt(t time.Time) *UserUpdateOne {
 	uuo.mutation.SetCreatedAt(t)
@@ -420,13 +632,13 @@ func (uuo *UserUpdateOne) SetNillableCreatedAt(t *time.Time) *UserUpdateOne {
 	return uuo
 }
 
-// SetOrganization sets the "Organization" field.
+// SetOrganization sets the "organization" field.
 func (uuo *UserUpdateOne) SetOrganization(s string) *UserUpdateOne {
 	uuo.mutation.SetOrganization(s)
 	return uuo
 }
 
-// SetNillableOrganization sets the "Organization" field if the given value is not nil.
+// SetNillableOrganization sets the "organization" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableOrganization(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetOrganization(*s)
@@ -434,16 +646,42 @@ func (uuo *UserUpdateOne) SetNillableOrganization(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetTitle sets the "Title" field.
+// ClearOrganization clears the value of the "organization" field.
+func (uuo *UserUpdateOne) ClearOrganization() *UserUpdateOne {
+	uuo.mutation.ClearOrganization()
+	return uuo
+}
+
+// SetTitle sets the "title" field.
 func (uuo *UserUpdateOne) SetTitle(s string) *UserUpdateOne {
 	uuo.mutation.SetTitle(s)
 	return uuo
 }
 
-// SetNillableTitle sets the "Title" field if the given value is not nil.
+// SetNillableTitle sets the "title" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableTitle(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetTitle(*s)
+	}
+	return uuo
+}
+
+// ClearTitle clears the value of the "title" field.
+func (uuo *UserUpdateOne) ClearTitle() *UserUpdateOne {
+	uuo.mutation.ClearTitle()
+	return uuo
+}
+
+// SetIsActive sets the "is_active" field.
+func (uuo *UserUpdateOne) SetIsActive(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsActive(b)
+	return uuo
+}
+
+// SetNillableIsActive sets the "is_active" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsActive(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsActive(*b)
 	}
 	return uuo
 }
@@ -477,6 +715,36 @@ func (uuo *UserUpdateOne) AddProjects(p ...*Project) *UserUpdateOne {
 	return uuo.AddProjectIDs(ids...)
 }
 
+// AddLeaderOfProjectIDs adds the "leader_of_project" edge to the Project entity by IDs.
+func (uuo *UserUpdateOne) AddLeaderOfProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddLeaderOfProjectIDs(ids...)
+	return uuo
+}
+
+// AddLeaderOfProject adds the "leader_of_project" edges to the Project entity.
+func (uuo *UserUpdateOne) AddLeaderOfProject(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.AddLeaderOfProjectIDs(ids...)
+}
+
+// AddCoordinatorOfProjectIDs adds the "coordinator_of_project" edge to the Project entity by IDs.
+func (uuo *UserUpdateOne) AddCoordinatorOfProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddCoordinatorOfProjectIDs(ids...)
+	return uuo
+}
+
+// AddCoordinatorOfProject adds the "coordinator_of_project" edges to the Project entity.
+func (uuo *UserUpdateOne) AddCoordinatorOfProject(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.AddCoordinatorOfProjectIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -501,6 +769,48 @@ func (uuo *UserUpdateOne) RemoveProjects(p ...*Project) *UserUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return uuo.RemoveProjectIDs(ids...)
+}
+
+// ClearLeaderOfProject clears all "leader_of_project" edges to the Project entity.
+func (uuo *UserUpdateOne) ClearLeaderOfProject() *UserUpdateOne {
+	uuo.mutation.ClearLeaderOfProject()
+	return uuo
+}
+
+// RemoveLeaderOfProjectIDs removes the "leader_of_project" edge to Project entities by IDs.
+func (uuo *UserUpdateOne) RemoveLeaderOfProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveLeaderOfProjectIDs(ids...)
+	return uuo
+}
+
+// RemoveLeaderOfProject removes "leader_of_project" edges to Project entities.
+func (uuo *UserUpdateOne) RemoveLeaderOfProject(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.RemoveLeaderOfProjectIDs(ids...)
+}
+
+// ClearCoordinatorOfProject clears all "coordinator_of_project" edges to the Project entity.
+func (uuo *UserUpdateOne) ClearCoordinatorOfProject() *UserUpdateOne {
+	uuo.mutation.ClearCoordinatorOfProject()
+	return uuo
+}
+
+// RemoveCoordinatorOfProjectIDs removes the "coordinator_of_project" edge to Project entities by IDs.
+func (uuo *UserUpdateOne) RemoveCoordinatorOfProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveCoordinatorOfProjectIDs(ids...)
+	return uuo
+}
+
+// RemoveCoordinatorOfProject removes "coordinator_of_project" edges to Project entities.
+func (uuo *UserUpdateOne) RemoveCoordinatorOfProject(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.RemoveCoordinatorOfProjectIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -545,36 +855,6 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uuo *UserUpdateOne) check() error {
-	if v, ok := uuo.mutation.Name(); ok {
-		if err := user.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
-		}
-	}
-	if v, ok := uuo.mutation.Passowrd(); ok {
-		if err := user.PassowrdValidator(v); err != nil {
-			return &ValidationError{Name: "passowrd", err: fmt.Errorf(`ent: validator failed for field "User.passowrd": %w`, err)}
-		}
-	}
-	if v, ok := uuo.mutation.Email(); ok {
-		if err := user.EmailValidator(v); err != nil {
-			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "User.email": %w`, err)}
-		}
-	}
-	if v, ok := uuo.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "User.phone": %w`, err)}
-		}
-	}
-	if v, ok := uuo.mutation.Organization(); ok {
-		if err := user.OrganizationValidator(v); err != nil {
-			return &ValidationError{Name: "Organization", err: fmt.Errorf(`ent: validator failed for field "User.Organization": %w`, err)}
-		}
-	}
-	if v, ok := uuo.mutation.Title(); ok {
-		if err := user.TitleValidator(v); err != nil {
-			return &ValidationError{Name: "Title", err: fmt.Errorf(`ent: validator failed for field "User.Title": %w`, err)}
-		}
-	}
 	if v, ok := uuo.mutation.GetType(); ok {
 		if err := user.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "User.type": %w`, err)}
@@ -615,8 +895,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.Passowrd(); ok {
-		_spec.SetField(user.FieldPassowrd, field.TypeString, value)
+	if uuo.mutation.NameCleared() {
+		_spec.ClearField(user.FieldName, field.TypeString)
+	}
+	if value, ok := uuo.mutation.Password(); ok {
+		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if uuo.mutation.PasswordCleared() {
+		_spec.ClearField(user.FieldPassword, field.TypeString)
 	}
 	if value, ok := uuo.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
@@ -624,24 +910,36 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
+	if uuo.mutation.PhoneCleared() {
+		_spec.ClearField(user.FieldPhone, field.TypeString)
+	}
 	if value, ok := uuo.mutation.CreatedAt(); ok {
 		_spec.SetField(user.FieldCreatedAt, field.TypeTime, value)
 	}
 	if value, ok := uuo.mutation.Organization(); ok {
 		_spec.SetField(user.FieldOrganization, field.TypeString, value)
 	}
+	if uuo.mutation.OrganizationCleared() {
+		_spec.ClearField(user.FieldOrganization, field.TypeString)
+	}
 	if value, ok := uuo.mutation.Title(); ok {
 		_spec.SetField(user.FieldTitle, field.TypeString, value)
+	}
+	if uuo.mutation.TitleCleared() {
+		_spec.ClearField(user.FieldTitle, field.TypeString)
+	}
+	if value, ok := uuo.mutation.IsActive(); ok {
+		_spec.SetField(user.FieldIsActive, field.TypeBool, value)
 	}
 	if value, ok := uuo.mutation.GetType(); ok {
 		_spec.SetField(user.FieldType, field.TypeEnum, value)
 	}
 	if uuo.mutation.ProjectsCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
@@ -651,10 +949,10 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if nodes := uuo.mutation.RemovedProjectsIDs(); len(nodes) > 0 && !uuo.mutation.ProjectsCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
@@ -667,10 +965,100 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if nodes := uuo.mutation.ProjectsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.LeaderOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedLeaderOfProjectIDs(); len(nodes) > 0 && !uuo.mutation.LeaderOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.LeaderOfProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.CoordinatorOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedCoordinatorOfProjectIDs(); len(nodes) > 0 && !uuo.mutation.CoordinatorOfProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.CoordinatorOfProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),

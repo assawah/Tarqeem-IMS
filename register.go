@@ -63,8 +63,9 @@ func register() {
 			SetEmail(r.Email).
 			SetTitle(r.Title).
 			SetPhone(r.Phone).
-			SetPassowrd(r.Password).
+			SetPassword(r.Password).
 			SetOrganization(r.Organization).
+			SetIsActive(true).
 			SetType(t).Save(c.Request().Context())
 		if err != nil {
 			E.Logger.Errorf("ent: %s", err.Error())
@@ -88,6 +89,6 @@ func register() {
 
 		E.Logger.Infof("added user %+v", u)
 		return c.Redirect(http.StatusFound, DashboardEnd)
-	
+
 	})
 }

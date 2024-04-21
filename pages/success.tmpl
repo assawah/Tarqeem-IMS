@@ -1,0 +1,15 @@
+{{define "success"}}
+<html lang='en'>
+{{template "head" .}}
+
+<body>
+    <h2>Project Created Successfully</h2>
+    <script>
+        setTimeout(function() {
+            window.location.href = "/dashboard"; // Redirect to another page after a delay
+        }, 2000); // 3000 milliseconds delay (3 seconds), adjust as needed
+    </script>
+</body>
+
+</html>
+{{end}}

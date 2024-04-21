@@ -71,26 +71,26 @@ func (pu *ProjectUpdate) SetNillableLocation(s *string) *ProjectUpdate {
 }
 
 // SetType sets the "type" field.
-func (pu *ProjectUpdate) SetType(s string) *ProjectUpdate {
-	pu.mutation.SetType(s)
+func (pu *ProjectUpdate) SetType(pr project.Type) *ProjectUpdate {
+	pu.mutation.SetType(pr)
 	return pu
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableType(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetType(*s)
+func (pu *ProjectUpdate) SetNillableType(pr *project.Type) *ProjectUpdate {
+	if pr != nil {
+		pu.SetType(*pr)
 	}
 	return pu
 }
 
-// SetProjectNature sets the "Project_nature" field.
+// SetProjectNature sets the "project_nature" field.
 func (pu *ProjectUpdate) SetProjectNature(pn project.ProjectNature) *ProjectUpdate {
 	pu.mutation.SetProjectNature(pn)
 	return pu
 }
 
-// SetNillableProjectNature sets the "Project_nature" field if the given value is not nil.
+// SetNillableProjectNature sets the "project_nature" field if the given value is not nil.
 func (pu *ProjectUpdate) SetNillableProjectNature(pn *project.ProjectNature) *ProjectUpdate {
 	if pn != nil {
 		pu.SetProjectNature(*pn)
@@ -98,80 +98,45 @@ func (pu *ProjectUpdate) SetNillableProjectNature(pn *project.ProjectNature) *Pr
 	return pu
 }
 
-// SetTopLevelPackagesNumber sets the "top_level_packages_number" field.
-func (pu *ProjectUpdate) SetTopLevelPackagesNumber(i int) *ProjectUpdate {
-	pu.mutation.ResetTopLevelPackagesNumber()
-	pu.mutation.SetTopLevelPackagesNumber(i)
+// SetDeliveryStrategies sets the "delivery_strategies" field.
+func (pu *ProjectUpdate) SetDeliveryStrategies(s string) *ProjectUpdate {
+	pu.mutation.SetDeliveryStrategies(s)
 	return pu
 }
 
-// SetNillableTopLevelPackagesNumber sets the "top_level_packages_number" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableTopLevelPackagesNumber(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetTopLevelPackagesNumber(*i)
-	}
-	return pu
-}
-
-// AddTopLevelPackagesNumber adds i to the "top_level_packages_number" field.
-func (pu *ProjectUpdate) AddTopLevelPackagesNumber(i int) *ProjectUpdate {
-	pu.mutation.AddTopLevelPackagesNumber(i)
-	return pu
-}
-
-// SetJointVentureNumber sets the "joint_venture_number" field.
-func (pu *ProjectUpdate) SetJointVentureNumber(i int) *ProjectUpdate {
-	pu.mutation.ResetJointVentureNumber()
-	pu.mutation.SetJointVentureNumber(i)
-	return pu
-}
-
-// SetNillableJointVentureNumber sets the "joint_venture_number" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableJointVentureNumber(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetJointVentureNumber(*i)
-	}
-	return pu
-}
-
-// AddJointVentureNumber adds i to the "joint_venture_number" field.
-func (pu *ProjectUpdate) AddJointVentureNumber(i int) *ProjectUpdate {
-	pu.mutation.AddJointVentureNumber(i)
-	return pu
-}
-
-// SetExecutionLocation sets the "execution_location" field.
-func (pu *ProjectUpdate) SetExecutionLocation(s string) *ProjectUpdate {
-	pu.mutation.SetExecutionLocation(s)
-	return pu
-}
-
-// SetNillableExecutionLocation sets the "execution_location" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableExecutionLocation(s *string) *ProjectUpdate {
+// SetNillableDeliveryStrategies sets the "delivery_strategies" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDeliveryStrategies(s *string) *ProjectUpdate {
 	if s != nil {
-		pu.SetExecutionLocation(*s)
+		pu.SetDeliveryStrategies(*s)
 	}
 	return pu
 }
 
-// SetInvolvedStockholders sets the "involved_stockholders" field.
-func (pu *ProjectUpdate) SetInvolvedStockholders(i int) *ProjectUpdate {
-	pu.mutation.ResetInvolvedStockholders()
-	pu.mutation.SetInvolvedStockholders(i)
+// SetState sets the "state" field.
+func (pu *ProjectUpdate) SetState(s string) *ProjectUpdate {
+	pu.mutation.SetState(s)
 	return pu
 }
 
-// SetNillableInvolvedStockholders sets the "involved_stockholders" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableInvolvedStockholders(i *int) *ProjectUpdate {
-	if i != nil {
-		pu.SetInvolvedStockholders(*i)
+// SetNillableState sets the "state" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableState(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetState(*s)
 	}
 	return pu
 }
 
-// AddInvolvedStockholders adds i to the "involved_stockholders" field.
-func (pu *ProjectUpdate) AddInvolvedStockholders(i int) *ProjectUpdate {
-	pu.mutation.AddInvolvedStockholders(i)
+// SetContractingStrategies sets the "contracting_strategies" field.
+func (pu *ProjectUpdate) SetContractingStrategies(s string) *ProjectUpdate {
+	pu.mutation.SetContractingStrategies(s)
+	return pu
+}
+
+// SetNillableContractingStrategies sets the "contracting_strategies" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableContractingStrategies(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetContractingStrategies(*s)
+	}
 	return pu
 }
 
@@ -196,57 +161,63 @@ func (pu *ProjectUpdate) AddDollarValue(i int) *ProjectUpdate {
 	return pu
 }
 
-// SetStage sets the "stage" field.
-func (pu *ProjectUpdate) SetStage(s string) *ProjectUpdate {
-	pu.mutation.SetStage(s)
+// SetExecutionLocation sets the "execution_location" field.
+func (pu *ProjectUpdate) SetExecutionLocation(s string) *ProjectUpdate {
+	pu.mutation.SetExecutionLocation(s)
 	return pu
 }
 
-// SetNillableStage sets the "stage" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableStage(s *string) *ProjectUpdate {
+// SetNillableExecutionLocation sets the "execution_location" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableExecutionLocation(s *string) *ProjectUpdate {
 	if s != nil {
-		pu.SetStage(*s)
+		pu.SetExecutionLocation(*s)
 	}
 	return pu
 }
 
-// SetDeliveryStratigies sets the "delivery_stratigies" field.
-func (pu *ProjectUpdate) SetDeliveryStratigies(s string) *ProjectUpdate {
-	pu.mutation.SetDeliveryStratigies(s)
+// AddLeaderIDs adds the "leader" edge to the User entity by IDs.
+func (pu *ProjectUpdate) AddLeaderIDs(ids ...int) *ProjectUpdate {
+	pu.mutation.AddLeaderIDs(ids...)
 	return pu
 }
 
-// SetNillableDeliveryStratigies sets the "delivery_stratigies" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableDeliveryStratigies(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetDeliveryStratigies(*s)
+// AddLeader adds the "leader" edges to the User entity.
+func (pu *ProjectUpdate) AddLeader(u ...*User) *ProjectUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
+	return pu.AddLeaderIDs(ids...)
+}
+
+// AddCoordinatorIDs adds the "coordinator" edge to the User entity by IDs.
+func (pu *ProjectUpdate) AddCoordinatorIDs(ids ...int) *ProjectUpdate {
+	pu.mutation.AddCoordinatorIDs(ids...)
 	return pu
 }
 
-// SetContractingStratigies sets the "contracting_stratigies" field.
-func (pu *ProjectUpdate) SetContractingStratigies(s string) *ProjectUpdate {
-	pu.mutation.SetContractingStratigies(s)
-	return pu
-}
-
-// SetNillableContractingStratigies sets the "contracting_stratigies" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableContractingStratigies(s *string) *ProjectUpdate {
-	if s != nil {
-		pu.SetContractingStratigies(*s)
+// AddCoordinator adds the "coordinator" edges to the User entity.
+func (pu *ProjectUpdate) AddCoordinator(u ...*User) *ProjectUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
+	return pu.AddCoordinatorIDs(ids...)
+}
+
+// AddMemberIDs adds the "members" edge to the User entity by IDs.
+func (pu *ProjectUpdate) AddMemberIDs(ids ...int) *ProjectUpdate {
+	pu.mutation.AddMemberIDs(ids...)
 	return pu
 }
 
-// SetUserID sets the "user" edge to the User entity by ID.
-func (pu *ProjectUpdate) SetUserID(id int) *ProjectUpdate {
-	pu.mutation.SetUserID(id)
-	return pu
-}
-
-// SetUser sets the "user" edge to the User entity.
-func (pu *ProjectUpdate) SetUser(u *User) *ProjectUpdate {
-	return pu.SetUserID(u.ID)
+// AddMembers adds the "members" edges to the User entity.
+func (pu *ProjectUpdate) AddMembers(u ...*User) *ProjectUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pu.AddMemberIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -254,10 +225,67 @@ func (pu *ProjectUpdate) Mutation() *ProjectMutation {
 	return pu.mutation
 }
 
-// ClearUser clears the "user" edge to the User entity.
-func (pu *ProjectUpdate) ClearUser() *ProjectUpdate {
-	pu.mutation.ClearUser()
+// ClearLeader clears all "leader" edges to the User entity.
+func (pu *ProjectUpdate) ClearLeader() *ProjectUpdate {
+	pu.mutation.ClearLeader()
 	return pu
+}
+
+// RemoveLeaderIDs removes the "leader" edge to User entities by IDs.
+func (pu *ProjectUpdate) RemoveLeaderIDs(ids ...int) *ProjectUpdate {
+	pu.mutation.RemoveLeaderIDs(ids...)
+	return pu
+}
+
+// RemoveLeader removes "leader" edges to User entities.
+func (pu *ProjectUpdate) RemoveLeader(u ...*User) *ProjectUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pu.RemoveLeaderIDs(ids...)
+}
+
+// ClearCoordinator clears all "coordinator" edges to the User entity.
+func (pu *ProjectUpdate) ClearCoordinator() *ProjectUpdate {
+	pu.mutation.ClearCoordinator()
+	return pu
+}
+
+// RemoveCoordinatorIDs removes the "coordinator" edge to User entities by IDs.
+func (pu *ProjectUpdate) RemoveCoordinatorIDs(ids ...int) *ProjectUpdate {
+	pu.mutation.RemoveCoordinatorIDs(ids...)
+	return pu
+}
+
+// RemoveCoordinator removes "coordinator" edges to User entities.
+func (pu *ProjectUpdate) RemoveCoordinator(u ...*User) *ProjectUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pu.RemoveCoordinatorIDs(ids...)
+}
+
+// ClearMembers clears all "members" edges to the User entity.
+func (pu *ProjectUpdate) ClearMembers() *ProjectUpdate {
+	pu.mutation.ClearMembers()
+	return pu
+}
+
+// RemoveMemberIDs removes the "members" edge to User entities by IDs.
+func (pu *ProjectUpdate) RemoveMemberIDs(ids ...int) *ProjectUpdate {
+	pu.mutation.RemoveMemberIDs(ids...)
+	return pu
+}
+
+// RemoveMembers removes "members" edges to User entities.
+func (pu *ProjectUpdate) RemoveMembers(u ...*User) *ProjectUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pu.RemoveMemberIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -289,21 +317,6 @@ func (pu *ProjectUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *ProjectUpdate) check() error {
-	if v, ok := pu.mutation.Name(); ok {
-		if err := project.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Project.name": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.Owner(); ok {
-		if err := project.OwnerValidator(v); err != nil {
-			return &ValidationError{Name: "owner", err: fmt.Errorf(`ent: validator failed for field "Project.owner": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.Location(); ok {
-		if err := project.LocationValidator(v); err != nil {
-			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "Project.location": %w`, err)}
-		}
-	}
 	if v, ok := pu.mutation.GetType(); ok {
 		if err := project.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "Project.type": %w`, err)}
@@ -311,51 +324,28 @@ func (pu *ProjectUpdate) check() error {
 	}
 	if v, ok := pu.mutation.ProjectNature(); ok {
 		if err := project.ProjectNatureValidator(v); err != nil {
-			return &ValidationError{Name: "Project_nature", err: fmt.Errorf(`ent: validator failed for field "Project.Project_nature": %w`, err)}
+			return &ValidationError{Name: "project_nature", err: fmt.Errorf(`ent: validator failed for field "Project.project_nature": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.TopLevelPackagesNumber(); ok {
-		if err := project.TopLevelPackagesNumberValidator(v); err != nil {
-			return &ValidationError{Name: "top_level_packages_number", err: fmt.Errorf(`ent: validator failed for field "Project.top_level_packages_number": %w`, err)}
+	if v, ok := pu.mutation.DeliveryStrategies(); ok {
+		if err := project.DeliveryStrategiesValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_strategies", err: fmt.Errorf(`ent: validator failed for field "Project.delivery_strategies": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.JointVentureNumber(); ok {
-		if err := project.JointVentureNumberValidator(v); err != nil {
-			return &ValidationError{Name: "joint_venture_number", err: fmt.Errorf(`ent: validator failed for field "Project.joint_venture_number": %w`, err)}
+	if v, ok := pu.mutation.State(); ok {
+		if err := project.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Project.state": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.ExecutionLocation(); ok {
-		if err := project.ExecutionLocationValidator(v); err != nil {
-			return &ValidationError{Name: "execution_location", err: fmt.Errorf(`ent: validator failed for field "Project.execution_location": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.InvolvedStockholders(); ok {
-		if err := project.InvolvedStockholdersValidator(v); err != nil {
-			return &ValidationError{Name: "involved_stockholders", err: fmt.Errorf(`ent: validator failed for field "Project.involved_stockholders": %w`, err)}
+	if v, ok := pu.mutation.ContractingStrategies(); ok {
+		if err := project.ContractingStrategiesValidator(v); err != nil {
+			return &ValidationError{Name: "contracting_strategies", err: fmt.Errorf(`ent: validator failed for field "Project.contracting_strategies": %w`, err)}
 		}
 	}
 	if v, ok := pu.mutation.DollarValue(); ok {
 		if err := project.DollarValueValidator(v); err != nil {
 			return &ValidationError{Name: "dollar_value", err: fmt.Errorf(`ent: validator failed for field "Project.dollar_value": %w`, err)}
 		}
-	}
-	if v, ok := pu.mutation.Stage(); ok {
-		if err := project.StageValidator(v); err != nil {
-			return &ValidationError{Name: "stage", err: fmt.Errorf(`ent: validator failed for field "Project.stage": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.DeliveryStratigies(); ok {
-		if err := project.DeliveryStratigiesValidator(v); err != nil {
-			return &ValidationError{Name: "delivery_stratigies", err: fmt.Errorf(`ent: validator failed for field "Project.delivery_stratigies": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.ContractingStratigies(); ok {
-		if err := project.ContractingStratigiesValidator(v); err != nil {
-			return &ValidationError{Name: "contracting_stratigies", err: fmt.Errorf(`ent: validator failed for field "Project.contracting_stratigies": %w`, err)}
-		}
-	}
-	if _, ok := pu.mutation.UserID(); pu.mutation.UserCleared() && !ok {
-		return errors.New(`ent: clearing a required unique edge "Project.user"`)
 	}
 	return nil
 }
@@ -382,31 +372,19 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(project.FieldLocation, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.GetType(); ok {
-		_spec.SetField(project.FieldType, field.TypeString, value)
+		_spec.SetField(project.FieldType, field.TypeEnum, value)
 	}
 	if value, ok := pu.mutation.ProjectNature(); ok {
 		_spec.SetField(project.FieldProjectNature, field.TypeEnum, value)
 	}
-	if value, ok := pu.mutation.TopLevelPackagesNumber(); ok {
-		_spec.SetField(project.FieldTopLevelPackagesNumber, field.TypeInt, value)
+	if value, ok := pu.mutation.DeliveryStrategies(); ok {
+		_spec.SetField(project.FieldDeliveryStrategies, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.AddedTopLevelPackagesNumber(); ok {
-		_spec.AddField(project.FieldTopLevelPackagesNumber, field.TypeInt, value)
+	if value, ok := pu.mutation.State(); ok {
+		_spec.SetField(project.FieldState, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.JointVentureNumber(); ok {
-		_spec.SetField(project.FieldJointVentureNumber, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedJointVentureNumber(); ok {
-		_spec.AddField(project.FieldJointVentureNumber, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.ExecutionLocation(); ok {
-		_spec.SetField(project.FieldExecutionLocation, field.TypeString, value)
-	}
-	if value, ok := pu.mutation.InvolvedStockholders(); ok {
-		_spec.SetField(project.FieldInvolvedStockholders, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedInvolvedStockholders(); ok {
-		_spec.AddField(project.FieldInvolvedStockholders, field.TypeInt, value)
+	if value, ok := pu.mutation.ContractingStrategies(); ok {
+		_spec.SetField(project.FieldContractingStrategies, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.DollarValue(); ok {
 		_spec.SetField(project.FieldDollarValue, field.TypeInt, value)
@@ -414,21 +392,15 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.AddedDollarValue(); ok {
 		_spec.AddField(project.FieldDollarValue, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.Stage(); ok {
-		_spec.SetField(project.FieldStage, field.TypeString, value)
+	if value, ok := pu.mutation.ExecutionLocation(); ok {
+		_spec.SetField(project.FieldExecutionLocation, field.TypeString, value)
 	}
-	if value, ok := pu.mutation.DeliveryStratigies(); ok {
-		_spec.SetField(project.FieldDeliveryStratigies, field.TypeString, value)
-	}
-	if value, ok := pu.mutation.ContractingStratigies(); ok {
-		_spec.SetField(project.FieldContractingStratigies, field.TypeString, value)
-	}
-	if pu.mutation.UserCleared() {
+	if pu.mutation.LeaderCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   project.UserTable,
-			Columns: []string{project.UserColumn},
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -436,12 +408,118 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.UserIDs(); len(nodes) > 0 {
+	if nodes := pu.mutation.RemovedLeaderIDs(); len(nodes) > 0 && !pu.mutation.LeaderCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   project.UserTable,
-			Columns: []string{project.UserColumn},
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pu.mutation.CoordinatorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedCoordinatorIDs(); len(nodes) > 0 && !pu.mutation.CoordinatorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.CoordinatorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pu.mutation.MembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedMembersIDs(); len(nodes) > 0 && !pu.mutation.MembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.MembersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -515,26 +593,26 @@ func (puo *ProjectUpdateOne) SetNillableLocation(s *string) *ProjectUpdateOne {
 }
 
 // SetType sets the "type" field.
-func (puo *ProjectUpdateOne) SetType(s string) *ProjectUpdateOne {
-	puo.mutation.SetType(s)
+func (puo *ProjectUpdateOne) SetType(pr project.Type) *ProjectUpdateOne {
+	puo.mutation.SetType(pr)
 	return puo
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableType(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetType(*s)
+func (puo *ProjectUpdateOne) SetNillableType(pr *project.Type) *ProjectUpdateOne {
+	if pr != nil {
+		puo.SetType(*pr)
 	}
 	return puo
 }
 
-// SetProjectNature sets the "Project_nature" field.
+// SetProjectNature sets the "project_nature" field.
 func (puo *ProjectUpdateOne) SetProjectNature(pn project.ProjectNature) *ProjectUpdateOne {
 	puo.mutation.SetProjectNature(pn)
 	return puo
 }
 
-// SetNillableProjectNature sets the "Project_nature" field if the given value is not nil.
+// SetNillableProjectNature sets the "project_nature" field if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillableProjectNature(pn *project.ProjectNature) *ProjectUpdateOne {
 	if pn != nil {
 		puo.SetProjectNature(*pn)
@@ -542,80 +620,45 @@ func (puo *ProjectUpdateOne) SetNillableProjectNature(pn *project.ProjectNature)
 	return puo
 }
 
-// SetTopLevelPackagesNumber sets the "top_level_packages_number" field.
-func (puo *ProjectUpdateOne) SetTopLevelPackagesNumber(i int) *ProjectUpdateOne {
-	puo.mutation.ResetTopLevelPackagesNumber()
-	puo.mutation.SetTopLevelPackagesNumber(i)
+// SetDeliveryStrategies sets the "delivery_strategies" field.
+func (puo *ProjectUpdateOne) SetDeliveryStrategies(s string) *ProjectUpdateOne {
+	puo.mutation.SetDeliveryStrategies(s)
 	return puo
 }
 
-// SetNillableTopLevelPackagesNumber sets the "top_level_packages_number" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableTopLevelPackagesNumber(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetTopLevelPackagesNumber(*i)
-	}
-	return puo
-}
-
-// AddTopLevelPackagesNumber adds i to the "top_level_packages_number" field.
-func (puo *ProjectUpdateOne) AddTopLevelPackagesNumber(i int) *ProjectUpdateOne {
-	puo.mutation.AddTopLevelPackagesNumber(i)
-	return puo
-}
-
-// SetJointVentureNumber sets the "joint_venture_number" field.
-func (puo *ProjectUpdateOne) SetJointVentureNumber(i int) *ProjectUpdateOne {
-	puo.mutation.ResetJointVentureNumber()
-	puo.mutation.SetJointVentureNumber(i)
-	return puo
-}
-
-// SetNillableJointVentureNumber sets the "joint_venture_number" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableJointVentureNumber(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetJointVentureNumber(*i)
-	}
-	return puo
-}
-
-// AddJointVentureNumber adds i to the "joint_venture_number" field.
-func (puo *ProjectUpdateOne) AddJointVentureNumber(i int) *ProjectUpdateOne {
-	puo.mutation.AddJointVentureNumber(i)
-	return puo
-}
-
-// SetExecutionLocation sets the "execution_location" field.
-func (puo *ProjectUpdateOne) SetExecutionLocation(s string) *ProjectUpdateOne {
-	puo.mutation.SetExecutionLocation(s)
-	return puo
-}
-
-// SetNillableExecutionLocation sets the "execution_location" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableExecutionLocation(s *string) *ProjectUpdateOne {
+// SetNillableDeliveryStrategies sets the "delivery_strategies" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDeliveryStrategies(s *string) *ProjectUpdateOne {
 	if s != nil {
-		puo.SetExecutionLocation(*s)
+		puo.SetDeliveryStrategies(*s)
 	}
 	return puo
 }
 
-// SetInvolvedStockholders sets the "involved_stockholders" field.
-func (puo *ProjectUpdateOne) SetInvolvedStockholders(i int) *ProjectUpdateOne {
-	puo.mutation.ResetInvolvedStockholders()
-	puo.mutation.SetInvolvedStockholders(i)
+// SetState sets the "state" field.
+func (puo *ProjectUpdateOne) SetState(s string) *ProjectUpdateOne {
+	puo.mutation.SetState(s)
 	return puo
 }
 
-// SetNillableInvolvedStockholders sets the "involved_stockholders" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableInvolvedStockholders(i *int) *ProjectUpdateOne {
-	if i != nil {
-		puo.SetInvolvedStockholders(*i)
+// SetNillableState sets the "state" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableState(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetState(*s)
 	}
 	return puo
 }
 
-// AddInvolvedStockholders adds i to the "involved_stockholders" field.
-func (puo *ProjectUpdateOne) AddInvolvedStockholders(i int) *ProjectUpdateOne {
-	puo.mutation.AddInvolvedStockholders(i)
+// SetContractingStrategies sets the "contracting_strategies" field.
+func (puo *ProjectUpdateOne) SetContractingStrategies(s string) *ProjectUpdateOne {
+	puo.mutation.SetContractingStrategies(s)
+	return puo
+}
+
+// SetNillableContractingStrategies sets the "contracting_strategies" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableContractingStrategies(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetContractingStrategies(*s)
+	}
 	return puo
 }
 
@@ -640,57 +683,63 @@ func (puo *ProjectUpdateOne) AddDollarValue(i int) *ProjectUpdateOne {
 	return puo
 }
 
-// SetStage sets the "stage" field.
-func (puo *ProjectUpdateOne) SetStage(s string) *ProjectUpdateOne {
-	puo.mutation.SetStage(s)
+// SetExecutionLocation sets the "execution_location" field.
+func (puo *ProjectUpdateOne) SetExecutionLocation(s string) *ProjectUpdateOne {
+	puo.mutation.SetExecutionLocation(s)
 	return puo
 }
 
-// SetNillableStage sets the "stage" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableStage(s *string) *ProjectUpdateOne {
+// SetNillableExecutionLocation sets the "execution_location" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableExecutionLocation(s *string) *ProjectUpdateOne {
 	if s != nil {
-		puo.SetStage(*s)
+		puo.SetExecutionLocation(*s)
 	}
 	return puo
 }
 
-// SetDeliveryStratigies sets the "delivery_stratigies" field.
-func (puo *ProjectUpdateOne) SetDeliveryStratigies(s string) *ProjectUpdateOne {
-	puo.mutation.SetDeliveryStratigies(s)
+// AddLeaderIDs adds the "leader" edge to the User entity by IDs.
+func (puo *ProjectUpdateOne) AddLeaderIDs(ids ...int) *ProjectUpdateOne {
+	puo.mutation.AddLeaderIDs(ids...)
 	return puo
 }
 
-// SetNillableDeliveryStratigies sets the "delivery_stratigies" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableDeliveryStratigies(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetDeliveryStratigies(*s)
+// AddLeader adds the "leader" edges to the User entity.
+func (puo *ProjectUpdateOne) AddLeader(u ...*User) *ProjectUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
+	return puo.AddLeaderIDs(ids...)
+}
+
+// AddCoordinatorIDs adds the "coordinator" edge to the User entity by IDs.
+func (puo *ProjectUpdateOne) AddCoordinatorIDs(ids ...int) *ProjectUpdateOne {
+	puo.mutation.AddCoordinatorIDs(ids...)
 	return puo
 }
 
-// SetContractingStratigies sets the "contracting_stratigies" field.
-func (puo *ProjectUpdateOne) SetContractingStratigies(s string) *ProjectUpdateOne {
-	puo.mutation.SetContractingStratigies(s)
-	return puo
-}
-
-// SetNillableContractingStratigies sets the "contracting_stratigies" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableContractingStratigies(s *string) *ProjectUpdateOne {
-	if s != nil {
-		puo.SetContractingStratigies(*s)
+// AddCoordinator adds the "coordinator" edges to the User entity.
+func (puo *ProjectUpdateOne) AddCoordinator(u ...*User) *ProjectUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
+	return puo.AddCoordinatorIDs(ids...)
+}
+
+// AddMemberIDs adds the "members" edge to the User entity by IDs.
+func (puo *ProjectUpdateOne) AddMemberIDs(ids ...int) *ProjectUpdateOne {
+	puo.mutation.AddMemberIDs(ids...)
 	return puo
 }
 
-// SetUserID sets the "user" edge to the User entity by ID.
-func (puo *ProjectUpdateOne) SetUserID(id int) *ProjectUpdateOne {
-	puo.mutation.SetUserID(id)
-	return puo
-}
-
-// SetUser sets the "user" edge to the User entity.
-func (puo *ProjectUpdateOne) SetUser(u *User) *ProjectUpdateOne {
-	return puo.SetUserID(u.ID)
+// AddMembers adds the "members" edges to the User entity.
+func (puo *ProjectUpdateOne) AddMembers(u ...*User) *ProjectUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return puo.AddMemberIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -698,10 +747,67 @@ func (puo *ProjectUpdateOne) Mutation() *ProjectMutation {
 	return puo.mutation
 }
 
-// ClearUser clears the "user" edge to the User entity.
-func (puo *ProjectUpdateOne) ClearUser() *ProjectUpdateOne {
-	puo.mutation.ClearUser()
+// ClearLeader clears all "leader" edges to the User entity.
+func (puo *ProjectUpdateOne) ClearLeader() *ProjectUpdateOne {
+	puo.mutation.ClearLeader()
 	return puo
+}
+
+// RemoveLeaderIDs removes the "leader" edge to User entities by IDs.
+func (puo *ProjectUpdateOne) RemoveLeaderIDs(ids ...int) *ProjectUpdateOne {
+	puo.mutation.RemoveLeaderIDs(ids...)
+	return puo
+}
+
+// RemoveLeader removes "leader" edges to User entities.
+func (puo *ProjectUpdateOne) RemoveLeader(u ...*User) *ProjectUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return puo.RemoveLeaderIDs(ids...)
+}
+
+// ClearCoordinator clears all "coordinator" edges to the User entity.
+func (puo *ProjectUpdateOne) ClearCoordinator() *ProjectUpdateOne {
+	puo.mutation.ClearCoordinator()
+	return puo
+}
+
+// RemoveCoordinatorIDs removes the "coordinator" edge to User entities by IDs.
+func (puo *ProjectUpdateOne) RemoveCoordinatorIDs(ids ...int) *ProjectUpdateOne {
+	puo.mutation.RemoveCoordinatorIDs(ids...)
+	return puo
+}
+
+// RemoveCoordinator removes "coordinator" edges to User entities.
+func (puo *ProjectUpdateOne) RemoveCoordinator(u ...*User) *ProjectUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return puo.RemoveCoordinatorIDs(ids...)
+}
+
+// ClearMembers clears all "members" edges to the User entity.
+func (puo *ProjectUpdateOne) ClearMembers() *ProjectUpdateOne {
+	puo.mutation.ClearMembers()
+	return puo
+}
+
+// RemoveMemberIDs removes the "members" edge to User entities by IDs.
+func (puo *ProjectUpdateOne) RemoveMemberIDs(ids ...int) *ProjectUpdateOne {
+	puo.mutation.RemoveMemberIDs(ids...)
+	return puo
+}
+
+// RemoveMembers removes "members" edges to User entities.
+func (puo *ProjectUpdateOne) RemoveMembers(u ...*User) *ProjectUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return puo.RemoveMemberIDs(ids...)
 }
 
 // Where appends a list predicates to the ProjectUpdate builder.
@@ -746,21 +852,6 @@ func (puo *ProjectUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *ProjectUpdateOne) check() error {
-	if v, ok := puo.mutation.Name(); ok {
-		if err := project.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Project.name": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.Owner(); ok {
-		if err := project.OwnerValidator(v); err != nil {
-			return &ValidationError{Name: "owner", err: fmt.Errorf(`ent: validator failed for field "Project.owner": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.Location(); ok {
-		if err := project.LocationValidator(v); err != nil {
-			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "Project.location": %w`, err)}
-		}
-	}
 	if v, ok := puo.mutation.GetType(); ok {
 		if err := project.TypeValidator(v); err != nil {
 			return &ValidationError{Name: "type", err: fmt.Errorf(`ent: validator failed for field "Project.type": %w`, err)}
@@ -768,51 +859,28 @@ func (puo *ProjectUpdateOne) check() error {
 	}
 	if v, ok := puo.mutation.ProjectNature(); ok {
 		if err := project.ProjectNatureValidator(v); err != nil {
-			return &ValidationError{Name: "Project_nature", err: fmt.Errorf(`ent: validator failed for field "Project.Project_nature": %w`, err)}
+			return &ValidationError{Name: "project_nature", err: fmt.Errorf(`ent: validator failed for field "Project.project_nature": %w`, err)}
 		}
 	}
-	if v, ok := puo.mutation.TopLevelPackagesNumber(); ok {
-		if err := project.TopLevelPackagesNumberValidator(v); err != nil {
-			return &ValidationError{Name: "top_level_packages_number", err: fmt.Errorf(`ent: validator failed for field "Project.top_level_packages_number": %w`, err)}
+	if v, ok := puo.mutation.DeliveryStrategies(); ok {
+		if err := project.DeliveryStrategiesValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_strategies", err: fmt.Errorf(`ent: validator failed for field "Project.delivery_strategies": %w`, err)}
 		}
 	}
-	if v, ok := puo.mutation.JointVentureNumber(); ok {
-		if err := project.JointVentureNumberValidator(v); err != nil {
-			return &ValidationError{Name: "joint_venture_number", err: fmt.Errorf(`ent: validator failed for field "Project.joint_venture_number": %w`, err)}
+	if v, ok := puo.mutation.State(); ok {
+		if err := project.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Project.state": %w`, err)}
 		}
 	}
-	if v, ok := puo.mutation.ExecutionLocation(); ok {
-		if err := project.ExecutionLocationValidator(v); err != nil {
-			return &ValidationError{Name: "execution_location", err: fmt.Errorf(`ent: validator failed for field "Project.execution_location": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.InvolvedStockholders(); ok {
-		if err := project.InvolvedStockholdersValidator(v); err != nil {
-			return &ValidationError{Name: "involved_stockholders", err: fmt.Errorf(`ent: validator failed for field "Project.involved_stockholders": %w`, err)}
+	if v, ok := puo.mutation.ContractingStrategies(); ok {
+		if err := project.ContractingStrategiesValidator(v); err != nil {
+			return &ValidationError{Name: "contracting_strategies", err: fmt.Errorf(`ent: validator failed for field "Project.contracting_strategies": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.DollarValue(); ok {
 		if err := project.DollarValueValidator(v); err != nil {
 			return &ValidationError{Name: "dollar_value", err: fmt.Errorf(`ent: validator failed for field "Project.dollar_value": %w`, err)}
 		}
-	}
-	if v, ok := puo.mutation.Stage(); ok {
-		if err := project.StageValidator(v); err != nil {
-			return &ValidationError{Name: "stage", err: fmt.Errorf(`ent: validator failed for field "Project.stage": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.DeliveryStratigies(); ok {
-		if err := project.DeliveryStratigiesValidator(v); err != nil {
-			return &ValidationError{Name: "delivery_stratigies", err: fmt.Errorf(`ent: validator failed for field "Project.delivery_stratigies": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.ContractingStratigies(); ok {
-		if err := project.ContractingStratigiesValidator(v); err != nil {
-			return &ValidationError{Name: "contracting_stratigies", err: fmt.Errorf(`ent: validator failed for field "Project.contracting_stratigies": %w`, err)}
-		}
-	}
-	if _, ok := puo.mutation.UserID(); puo.mutation.UserCleared() && !ok {
-		return errors.New(`ent: clearing a required unique edge "Project.user"`)
 	}
 	return nil
 }
@@ -856,31 +924,19 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 		_spec.SetField(project.FieldLocation, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.GetType(); ok {
-		_spec.SetField(project.FieldType, field.TypeString, value)
+		_spec.SetField(project.FieldType, field.TypeEnum, value)
 	}
 	if value, ok := puo.mutation.ProjectNature(); ok {
 		_spec.SetField(project.FieldProjectNature, field.TypeEnum, value)
 	}
-	if value, ok := puo.mutation.TopLevelPackagesNumber(); ok {
-		_spec.SetField(project.FieldTopLevelPackagesNumber, field.TypeInt, value)
+	if value, ok := puo.mutation.DeliveryStrategies(); ok {
+		_spec.SetField(project.FieldDeliveryStrategies, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.AddedTopLevelPackagesNumber(); ok {
-		_spec.AddField(project.FieldTopLevelPackagesNumber, field.TypeInt, value)
+	if value, ok := puo.mutation.State(); ok {
+		_spec.SetField(project.FieldState, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.JointVentureNumber(); ok {
-		_spec.SetField(project.FieldJointVentureNumber, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedJointVentureNumber(); ok {
-		_spec.AddField(project.FieldJointVentureNumber, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.ExecutionLocation(); ok {
-		_spec.SetField(project.FieldExecutionLocation, field.TypeString, value)
-	}
-	if value, ok := puo.mutation.InvolvedStockholders(); ok {
-		_spec.SetField(project.FieldInvolvedStockholders, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedInvolvedStockholders(); ok {
-		_spec.AddField(project.FieldInvolvedStockholders, field.TypeInt, value)
+	if value, ok := puo.mutation.ContractingStrategies(); ok {
+		_spec.SetField(project.FieldContractingStrategies, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.DollarValue(); ok {
 		_spec.SetField(project.FieldDollarValue, field.TypeInt, value)
@@ -888,21 +944,15 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	if value, ok := puo.mutation.AddedDollarValue(); ok {
 		_spec.AddField(project.FieldDollarValue, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.Stage(); ok {
-		_spec.SetField(project.FieldStage, field.TypeString, value)
+	if value, ok := puo.mutation.ExecutionLocation(); ok {
+		_spec.SetField(project.FieldExecutionLocation, field.TypeString, value)
 	}
-	if value, ok := puo.mutation.DeliveryStratigies(); ok {
-		_spec.SetField(project.FieldDeliveryStratigies, field.TypeString, value)
-	}
-	if value, ok := puo.mutation.ContractingStratigies(); ok {
-		_spec.SetField(project.FieldContractingStratigies, field.TypeString, value)
-	}
-	if puo.mutation.UserCleared() {
+	if puo.mutation.LeaderCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   project.UserTable,
-			Columns: []string{project.UserColumn},
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -910,12 +960,118 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.UserIDs(); len(nodes) > 0 {
+	if nodes := puo.mutation.RemovedLeaderIDs(); len(nodes) > 0 && !puo.mutation.LeaderCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   project.UserTable,
-			Columns: []string{project.UserColumn},
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.CoordinatorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedCoordinatorIDs(); len(nodes) > 0 && !puo.mutation.CoordinatorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.CoordinatorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.MembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedMembersIDs(); len(nodes) > 0 && !puo.mutation.MembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.MembersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),

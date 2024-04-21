@@ -27,9 +27,25 @@ func (uc *UserCreate) SetName(s string) *UserCreate {
 	return uc
 }
 
-// SetPassowrd sets the "passowrd" field.
-func (uc *UserCreate) SetPassowrd(s string) *UserCreate {
-	uc.mutation.SetPassowrd(s)
+// SetNillableName sets the "name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetName(*s)
+	}
+	return uc
+}
+
+// SetPassword sets the "password" field.
+func (uc *UserCreate) SetPassword(s string) *UserCreate {
+	uc.mutation.SetPassword(s)
+	return uc
+}
+
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePassword(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPassword(*s)
+	}
 	return uc
 }
 
@@ -42,6 +58,14 @@ func (uc *UserCreate) SetEmail(s string) *UserCreate {
 // SetPhone sets the "phone" field.
 func (uc *UserCreate) SetPhone(s string) *UserCreate {
 	uc.mutation.SetPhone(s)
+	return uc
+}
+
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePhone(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPhone(*s)
+	}
 	return uc
 }
 
@@ -59,15 +83,45 @@ func (uc *UserCreate) SetNillableCreatedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
-// SetOrganization sets the "Organization" field.
+// SetOrganization sets the "organization" field.
 func (uc *UserCreate) SetOrganization(s string) *UserCreate {
 	uc.mutation.SetOrganization(s)
 	return uc
 }
 
-// SetTitle sets the "Title" field.
+// SetNillableOrganization sets the "organization" field if the given value is not nil.
+func (uc *UserCreate) SetNillableOrganization(s *string) *UserCreate {
+	if s != nil {
+		uc.SetOrganization(*s)
+	}
+	return uc
+}
+
+// SetTitle sets the "title" field.
 func (uc *UserCreate) SetTitle(s string) *UserCreate {
 	uc.mutation.SetTitle(s)
+	return uc
+}
+
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (uc *UserCreate) SetNillableTitle(s *string) *UserCreate {
+	if s != nil {
+		uc.SetTitle(*s)
+	}
+	return uc
+}
+
+// SetIsActive sets the "is_active" field.
+func (uc *UserCreate) SetIsActive(b bool) *UserCreate {
+	uc.mutation.SetIsActive(b)
+	return uc
+}
+
+// SetNillableIsActive sets the "is_active" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsActive(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetIsActive(*b)
+	}
 	return uc
 }
 
@@ -90,6 +144,36 @@ func (uc *UserCreate) AddProjects(p ...*Project) *UserCreate {
 		ids[i] = p[i].ID
 	}
 	return uc.AddProjectIDs(ids...)
+}
+
+// AddLeaderOfProjectIDs adds the "leader_of_project" edge to the Project entity by IDs.
+func (uc *UserCreate) AddLeaderOfProjectIDs(ids ...int) *UserCreate {
+	uc.mutation.AddLeaderOfProjectIDs(ids...)
+	return uc
+}
+
+// AddLeaderOfProject adds the "leader_of_project" edges to the Project entity.
+func (uc *UserCreate) AddLeaderOfProject(p ...*Project) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddLeaderOfProjectIDs(ids...)
+}
+
+// AddCoordinatorOfProjectIDs adds the "coordinator_of_project" edge to the Project entity by IDs.
+func (uc *UserCreate) AddCoordinatorOfProjectIDs(ids ...int) *UserCreate {
+	uc.mutation.AddCoordinatorOfProjectIDs(ids...)
+	return uc
+}
+
+// AddCoordinatorOfProject adds the "coordinator_of_project" edges to the Project entity.
+func (uc *UserCreate) AddCoordinatorOfProject(p ...*Project) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddCoordinatorOfProjectIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -131,60 +215,22 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultCreatedAt()
 		uc.mutation.SetCreatedAt(v)
 	}
+	if _, ok := uc.mutation.IsActive(); !ok {
+		v := user.DefaultIsActive
+		uc.mutation.SetIsActive(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (uc *UserCreate) check() error {
-	if _, ok := uc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "User.name"`)}
-	}
-	if v, ok := uc.mutation.Name(); ok {
-		if err := user.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
-		}
-	}
-	if _, ok := uc.mutation.Passowrd(); !ok {
-		return &ValidationError{Name: "passowrd", err: errors.New(`ent: missing required field "User.passowrd"`)}
-	}
-	if v, ok := uc.mutation.Passowrd(); ok {
-		if err := user.PassowrdValidator(v); err != nil {
-			return &ValidationError{Name: "passowrd", err: fmt.Errorf(`ent: validator failed for field "User.passowrd": %w`, err)}
-		}
-	}
 	if _, ok := uc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
-	}
-	if v, ok := uc.mutation.Email(); ok {
-		if err := user.EmailValidator(v); err != nil {
-			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "User.email": %w`, err)}
-		}
-	}
-	if _, ok := uc.mutation.Phone(); !ok {
-		return &ValidationError{Name: "phone", err: errors.New(`ent: missing required field "User.phone"`)}
-	}
-	if v, ok := uc.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "User.phone": %w`, err)}
-		}
 	}
 	if _, ok := uc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "User.created_at"`)}
 	}
-	if _, ok := uc.mutation.Organization(); !ok {
-		return &ValidationError{Name: "Organization", err: errors.New(`ent: missing required field "User.Organization"`)}
-	}
-	if v, ok := uc.mutation.Organization(); ok {
-		if err := user.OrganizationValidator(v); err != nil {
-			return &ValidationError{Name: "Organization", err: fmt.Errorf(`ent: validator failed for field "User.Organization": %w`, err)}
-		}
-	}
-	if _, ok := uc.mutation.Title(); !ok {
-		return &ValidationError{Name: "Title", err: errors.New(`ent: missing required field "User.Title"`)}
-	}
-	if v, ok := uc.mutation.Title(); ok {
-		if err := user.TitleValidator(v); err != nil {
-			return &ValidationError{Name: "Title", err: fmt.Errorf(`ent: validator failed for field "User.Title": %w`, err)}
-		}
+	if _, ok := uc.mutation.IsActive(); !ok {
+		return &ValidationError{Name: "is_active", err: errors.New(`ent: missing required field "User.is_active"`)}
 	}
 	if _, ok := uc.mutation.GetType(); !ok {
 		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "User.type"`)}
@@ -224,9 +270,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := uc.mutation.Passowrd(); ok {
-		_spec.SetField(user.FieldPassowrd, field.TypeString, value)
-		_node.Passowrd = value
+	if value, ok := uc.mutation.Password(); ok {
+		_spec.SetField(user.FieldPassword, field.TypeString, value)
+		_node.Password = value
 	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
@@ -248,16 +294,52 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldTitle, field.TypeString, value)
 		_node.Title = value
 	}
+	if value, ok := uc.mutation.IsActive(); ok {
+		_spec.SetField(user.FieldIsActive, field.TypeBool, value)
+		_node.IsActive = value
+	}
 	if value, ok := uc.mutation.GetType(); ok {
 		_spec.SetField(user.FieldType, field.TypeEnum, value)
 		_node.Type = value
 	}
 	if nodes := uc.mutation.ProjectsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
 			Table:   user.ProjectsTable,
-			Columns: []string{user.ProjectsColumn},
+			Columns: user.ProjectsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.LeaderOfProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.LeaderOfProjectTable,
+			Columns: user.LeaderOfProjectPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.CoordinatorOfProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.CoordinatorOfProjectTable,
+			Columns: user.CoordinatorOfProjectPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),

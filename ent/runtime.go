@@ -23,126 +23,30 @@ func init() {
 	discipline.NameValidator = disciplineDescName.Validators[0].(func(string) error)
 	projectFields := schema.Project{}.Fields()
 	_ = projectFields
-	// projectDescName is the schema descriptor for name field.
-	projectDescName := projectFields[0].Descriptor()
-	// project.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	project.NameValidator = projectDescName.Validators[0].(func(string) error)
-	// projectDescOwner is the schema descriptor for owner field.
-	projectDescOwner := projectFields[1].Descriptor()
-	// project.OwnerValidator is a validator for the "owner" field. It is called by the builders before save.
-	project.OwnerValidator = projectDescOwner.Validators[0].(func(string) error)
-	// projectDescLocation is the schema descriptor for location field.
-	projectDescLocation := projectFields[2].Descriptor()
-	// project.LocationValidator is a validator for the "location" field. It is called by the builders before save.
-	project.LocationValidator = projectDescLocation.Validators[0].(func(string) error)
-	// projectDescType is the schema descriptor for type field.
-	projectDescType := projectFields[3].Descriptor()
-	// project.TypeValidator is a validator for the "type" field. It is called by the builders before save.
-	project.TypeValidator = projectDescType.Validators[0].(func(string) error)
-	// projectDescTopLevelPackagesNumber is the schema descriptor for top_level_packages_number field.
-	projectDescTopLevelPackagesNumber := projectFields[5].Descriptor()
-	// project.TopLevelPackagesNumberValidator is a validator for the "top_level_packages_number" field. It is called by the builders before save.
-	project.TopLevelPackagesNumberValidator = projectDescTopLevelPackagesNumber.Validators[0].(func(int) error)
-	// projectDescJointVentureNumber is the schema descriptor for joint_venture_number field.
-	projectDescJointVentureNumber := projectFields[6].Descriptor()
-	// project.JointVentureNumberValidator is a validator for the "joint_venture_number" field. It is called by the builders before save.
-	project.JointVentureNumberValidator = projectDescJointVentureNumber.Validators[0].(func(int) error)
-	// projectDescExecutionLocation is the schema descriptor for execution_location field.
-	projectDescExecutionLocation := projectFields[7].Descriptor()
-	// project.ExecutionLocationValidator is a validator for the "execution_location" field. It is called by the builders before save.
-	project.ExecutionLocationValidator = projectDescExecutionLocation.Validators[0].(func(string) error)
-	// projectDescInvolvedStockholders is the schema descriptor for involved_stockholders field.
-	projectDescInvolvedStockholders := projectFields[8].Descriptor()
-	// project.InvolvedStockholdersValidator is a validator for the "involved_stockholders" field. It is called by the builders before save.
-	project.InvolvedStockholdersValidator = projectDescInvolvedStockholders.Validators[0].(func(int) error)
+	// projectDescDeliveryStrategies is the schema descriptor for delivery_strategies field.
+	projectDescDeliveryStrategies := projectFields[5].Descriptor()
+	// project.DeliveryStrategiesValidator is a validator for the "delivery_strategies" field. It is called by the builders before save.
+	project.DeliveryStrategiesValidator = projectDescDeliveryStrategies.Validators[0].(func(string) error)
+	// projectDescState is the schema descriptor for state field.
+	projectDescState := projectFields[6].Descriptor()
+	// project.StateValidator is a validator for the "state" field. It is called by the builders before save.
+	project.StateValidator = projectDescState.Validators[0].(func(string) error)
+	// projectDescContractingStrategies is the schema descriptor for contracting_strategies field.
+	projectDescContractingStrategies := projectFields[7].Descriptor()
+	// project.ContractingStrategiesValidator is a validator for the "contracting_strategies" field. It is called by the builders before save.
+	project.ContractingStrategiesValidator = projectDescContractingStrategies.Validators[0].(func(string) error)
 	// projectDescDollarValue is the schema descriptor for dollar_value field.
-	projectDescDollarValue := projectFields[9].Descriptor()
+	projectDescDollarValue := projectFields[8].Descriptor()
 	// project.DollarValueValidator is a validator for the "dollar_value" field. It is called by the builders before save.
 	project.DollarValueValidator = projectDescDollarValue.Validators[0].(func(int) error)
-	// projectDescStage is the schema descriptor for stage field.
-	projectDescStage := projectFields[10].Descriptor()
-	// project.StageValidator is a validator for the "stage" field. It is called by the builders before save.
-	project.StageValidator = projectDescStage.Validators[0].(func(string) error)
-	// projectDescDeliveryStratigies is the schema descriptor for delivery_stratigies field.
-	projectDescDeliveryStratigies := projectFields[11].Descriptor()
-	// project.DeliveryStratigiesValidator is a validator for the "delivery_stratigies" field. It is called by the builders before save.
-	project.DeliveryStratigiesValidator = projectDescDeliveryStratigies.Validators[0].(func(string) error)
-	// projectDescContractingStratigies is the schema descriptor for contracting_stratigies field.
-	projectDescContractingStratigies := projectFields[12].Descriptor()
-	// project.ContractingStratigiesValidator is a validator for the "contracting_stratigies" field. It is called by the builders before save.
-	project.ContractingStratigiesValidator = projectDescContractingStratigies.Validators[0].(func(string) error)
 	userFields := schema.User{}.Fields()
 	_ = userFields
-	// userDescName is the schema descriptor for name field.
-	userDescName := userFields[0].Descriptor()
-	// user.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	user.NameValidator = userDescName.Validators[0].(func(string) error)
-	// userDescPassowrd is the schema descriptor for passowrd field.
-	userDescPassowrd := userFields[1].Descriptor()
-	// user.PassowrdValidator is a validator for the "passowrd" field. It is called by the builders before save.
-	user.PassowrdValidator = func() func(string) error {
-		validators := userDescPassowrd.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(passowrd string) error {
-			for _, fn := range fns {
-				if err := fn(passowrd); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[2].Descriptor()
-	// user.EmailValidator is a validator for the "email" field. It is called by the builders before save.
-	user.EmailValidator = func() func(string) error {
-		validators := userDescEmail.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-			validators[2].(func(string) error),
-		}
-		return func(email string) error {
-			for _, fn := range fns {
-				if err := fn(email); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// userDescPhone is the schema descriptor for phone field.
-	userDescPhone := userFields[3].Descriptor()
-	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	user.PhoneValidator = func() func(string) error {
-		validators := userDescPhone.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-			validators[2].(func(string) error),
-		}
-		return func(phone string) error {
-			for _, fn := range fns {
-				if err := fn(phone); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
 	// userDescCreatedAt is the schema descriptor for created_at field.
 	userDescCreatedAt := userFields[4].Descriptor()
 	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
 	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
-	// userDescOrganization is the schema descriptor for Organization field.
-	userDescOrganization := userFields[5].Descriptor()
-	// user.OrganizationValidator is a validator for the "Organization" field. It is called by the builders before save.
-	user.OrganizationValidator = userDescOrganization.Validators[0].(func(string) error)
-	// userDescTitle is the schema descriptor for Title field.
-	userDescTitle := userFields[6].Descriptor()
-	// user.TitleValidator is a validator for the "Title" field. It is called by the builders before save.
-	user.TitleValidator = userDescTitle.Validators[0].(func(string) error)
+	// userDescIsActive is the schema descriptor for is_active field.
+	userDescIsActive := userFields[7].Descriptor()
+	// user.DefaultIsActive holds the default value on creation for the is_active field.
+	user.DefaultIsActive = userDescIsActive.Default.(bool)
 }

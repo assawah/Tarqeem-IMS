@@ -54,7 +54,6 @@ ul li:nth-child(odd) {
   color: var(--hover-color);
 }
 
-
 .custom-btn {
   color: white;
   border-radius: 10px;
@@ -63,6 +62,7 @@ ul li:nth-child(odd) {
   padding: 10px 20px;
   width: 200px;
   font-size: 18px;
+  margin-top: 100px;
   border-radius: 10px;
 }
 

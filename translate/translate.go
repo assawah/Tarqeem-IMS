@@ -12,30 +12,39 @@ var English map[string]string = map[string]string{
 	"password":       "Password",
 	"login":          "Login",
 	"email":          "Email address",
+	"create_project": "Create Project",
 }
 
-var ValidProjectDeliverayStratigies []string = []string{}
-var ValidProjectContractingStratigies []string
+var ValidProjectDeliveryStrategies []string = []string{
+	"Waterfall",
+	"Agile",
+	"Lean",
+}
+var ValidProjectContractingStrategies = []string{
+	"Maximum Price",
+	"Fixed Price",
+	"Unit Price",
+}
 var ValidProjectTypes []string = []string{
-	"Chemical manufacturing",
-	"Stadium musuem",
+	"Chemical Manufacturing",
+	"Stadium Musuem",
 	"Dam",
-	"Metal refining/processing",
-	"Oil exploration/production",
+	"Metal refining or processing",
+	"Oil exploration or production",
 	"Oil refining",
 	"Natural gas processing",
 	"Highway",
 	"Power generation",
-	"Water/wastewater",
+	"Water or wastewater",
 	"Consumer products manufacturing",
 }
 
-var ValidProjectStages []string = []string{
+var ValidProjectStates []string = []string{
 	"Front-end planning",
 	"Design",
 	"Procurement",
 	"Construction",
-	"Commissions",
+	"Construction",
 	"Start-up",
 	"Completed",
 }

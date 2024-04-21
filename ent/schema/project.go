@@ -18,23 +18,26 @@ type Project struct {
 // Fields of the Project.
 func (Project) Fields() []ent.Field {
 	return []ent.Field{
-		String("name"),
-		String("owner"),
-		String("location"),
-		StringOneOf("type", ValidProjectTypes),
-		field.Enum("Project_nature").Values("greenfield", "brownfield"),
-		NonNegative("top_level_packages_number"),
-		NonNegative("joint_venture_number"),
-		String("execution_location"),
-		NonNegative("involved_stockholders"),
-		NonNegative("dollar_value"),
-		StringOneOf("stage", ValidProjectStages),
-		StringOneOf("delivery_stratigies", ValidProjectDeliverayStratigies),
-		StringOneOf("contracting_stratigies", ValidProjectContractingStratigies),
+		field.String("name").Unique(),
+		field.String("owner"),
+		field.String("location"),
+		field.Enum("type").Values(ValidProjectTypes...),
+		field.Enum("project_nature").Values("Greenfield", "Brownfield"),
+		StringOneOf("delivery_strategies", ValidProjectDeliveryStrategies),
+		StringOneOf("state", ValidProjectStates),
+		StringOneOf("contracting_strategies", ValidProjectContractingStrategies),
+		field.Int("dollar_value").NonNegative(),
+		field.String("execution_location"),
 	}
 }
 
 // Edges of the Project.
 func (Project) Edges() []ent.Edge {
-	return []ent.Edge{edge.From("user", User.Type).Ref("projects").Unique().Required()}
+	return []ent.Edge{
+		edge.From("leader", User.Type).
+			Ref("leader_of_project"),
+		edge.From("coordinator", User.Type).
+			Ref("coordinator_of_project"),
+		edge.To("members", User.Type),
+	}
 }

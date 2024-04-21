@@ -22,45 +22,34 @@ var (
 	// ProjectsColumns holds the columns for the "projects" table.
 	ProjectsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "owner", Type: field.TypeString},
 		{Name: "location", Type: field.TypeString},
-		{Name: "type", Type: field.TypeString},
-		{Name: "project_nature", Type: field.TypeEnum, Enums: []string{"greenfield", "brownfield"}},
-		{Name: "top_level_packages_number", Type: field.TypeInt},
-		{Name: "joint_venture_number", Type: field.TypeInt},
-		{Name: "execution_location", Type: field.TypeString},
-		{Name: "involved_stockholders", Type: field.TypeInt},
+		{Name: "type", Type: field.TypeEnum, Enums: []string{"Chemical Manufacturing", "Stadium Musuem", "Dam", "Metal refining or processing", "Oil exploration or production", "Oil refining", "Natural gas processing", "Highway", "Power generation", "Water or wastewater", "Consumer products manufacturing"}},
+		{Name: "project_nature", Type: field.TypeEnum, Enums: []string{"Greenfield", "Brownfield"}},
+		{Name: "delivery_strategies", Type: field.TypeString},
+		{Name: "state", Type: field.TypeString},
+		{Name: "contracting_strategies", Type: field.TypeString},
 		{Name: "dollar_value", Type: field.TypeInt},
-		{Name: "stage", Type: field.TypeString},
-		{Name: "delivery_stratigies", Type: field.TypeString},
-		{Name: "contracting_stratigies", Type: field.TypeString},
-		{Name: "user_projects", Type: field.TypeInt},
+		{Name: "execution_location", Type: field.TypeString},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{
 		Name:       "projects",
 		Columns:    ProjectsColumns,
 		PrimaryKey: []*schema.Column{ProjectsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "projects_users_projects",
-				Columns:    []*schema.Column{ProjectsColumns[14]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.NoAction,
-			},
-		},
 	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
-		{Name: "passowrd", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString, Size: 300},
-		{Name: "phone", Type: field.TypeString, Unique: true, Size: 2},
+		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "password", Type: field.TypeString, Nullable: true},
+		{Name: "email", Type: field.TypeString, Unique: true},
+		{Name: "phone", Type: field.TypeString, Nullable: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "organization", Type: field.TypeString},
-		{Name: "title", Type: field.TypeString},
+		{Name: "organization", Type: field.TypeString, Nullable: true},
+		{Name: "title", Type: field.TypeString, Nullable: true},
+		{Name: "is_active", Type: field.TypeBool, Default: true},
 		{Name: "type", Type: field.TypeEnum, Enums: []string{"coordinator", "member"}},
 	}
 	// UsersTable holds the schema information for the "users" table.
@@ -69,14 +58,97 @@ var (
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 	}
+	// ProjectMembersColumns holds the columns for the "project_members" table.
+	ProjectMembersColumns = []*schema.Column{
+		{Name: "project_id", Type: field.TypeInt},
+		{Name: "user_id", Type: field.TypeInt},
+	}
+	// ProjectMembersTable holds the schema information for the "project_members" table.
+	ProjectMembersTable = &schema.Table{
+		Name:       "project_members",
+		Columns:    ProjectMembersColumns,
+		PrimaryKey: []*schema.Column{ProjectMembersColumns[0], ProjectMembersColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "project_members_project_id",
+				Columns:    []*schema.Column{ProjectMembersColumns[0]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "project_members_user_id",
+				Columns:    []*schema.Column{ProjectMembersColumns[1]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// UserLeaderOfProjectColumns holds the columns for the "user_leader_of_project" table.
+	UserLeaderOfProjectColumns = []*schema.Column{
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "project_id", Type: field.TypeInt},
+	}
+	// UserLeaderOfProjectTable holds the schema information for the "user_leader_of_project" table.
+	UserLeaderOfProjectTable = &schema.Table{
+		Name:       "user_leader_of_project",
+		Columns:    UserLeaderOfProjectColumns,
+		PrimaryKey: []*schema.Column{UserLeaderOfProjectColumns[0], UserLeaderOfProjectColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "user_leader_of_project_user_id",
+				Columns:    []*schema.Column{UserLeaderOfProjectColumns[0]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "user_leader_of_project_project_id",
+				Columns:    []*schema.Column{UserLeaderOfProjectColumns[1]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// UserCoordinatorOfProjectColumns holds the columns for the "user_coordinator_of_project" table.
+	UserCoordinatorOfProjectColumns = []*schema.Column{
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "project_id", Type: field.TypeInt},
+	}
+	// UserCoordinatorOfProjectTable holds the schema information for the "user_coordinator_of_project" table.
+	UserCoordinatorOfProjectTable = &schema.Table{
+		Name:       "user_coordinator_of_project",
+		Columns:    UserCoordinatorOfProjectColumns,
+		PrimaryKey: []*schema.Column{UserCoordinatorOfProjectColumns[0], UserCoordinatorOfProjectColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "user_coordinator_of_project_user_id",
+				Columns:    []*schema.Column{UserCoordinatorOfProjectColumns[0]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "user_coordinator_of_project_project_id",
+				Columns:    []*schema.Column{UserCoordinatorOfProjectColumns[1]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		DisciplinesTable,
 		ProjectsTable,
 		UsersTable,
+		ProjectMembersTable,
+		UserLeaderOfProjectTable,
+		UserCoordinatorOfProjectTable,
 	}
 )
 
 func init() {
-	ProjectsTable.ForeignKeys[0].RefTable = UsersTable
+	ProjectMembersTable.ForeignKeys[0].RefTable = ProjectsTable
+	ProjectMembersTable.ForeignKeys[1].RefTable = UsersTable
+	UserLeaderOfProjectTable.ForeignKeys[0].RefTable = UsersTable
+	UserLeaderOfProjectTable.ForeignKeys[1].RefTable = ProjectsTable
+	UserCoordinatorOfProjectTable.ForeignKeys[0].RefTable = UsersTable
+	UserCoordinatorOfProjectTable.ForeignKeys[1].RefTable = ProjectsTable
 }
