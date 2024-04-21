@@ -69,6 +69,7 @@ func createProject() {
 			return c.Render(http.StatusInternalServerError, "fail",
 				&ProjectDTO{Err: err.Error()})
 		}
+		r.Members = append(r.Members, r.Leader)
 		if err = addMembers(c, proj, r.Members); err != nil {
 			fmt.Print("Error adding members: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
