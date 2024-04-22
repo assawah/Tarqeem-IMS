@@ -39,38 +39,32 @@ func (pc *ProjectCreate) SetLocation(s string) *ProjectCreate {
 }
 
 // SetType sets the "type" field.
-func (pc *ProjectCreate) SetType(s string) *ProjectCreate {
-	pc.mutation.SetType(s)
+func (pc *ProjectCreate) SetType(pr project.Type) *ProjectCreate {
+	pc.mutation.SetType(pr)
 	return pc
 }
 
-// SetProjectNature sets the "Project_nature" field.
+// SetProjectNature sets the "project_nature" field.
 func (pc *ProjectCreate) SetProjectNature(pn project.ProjectNature) *ProjectCreate {
 	pc.mutation.SetProjectNature(pn)
 	return pc
 }
 
-// SetTopLevelPackagesNumber sets the "top_level_packages_number" field.
-func (pc *ProjectCreate) SetTopLevelPackagesNumber(i int) *ProjectCreate {
-	pc.mutation.SetTopLevelPackagesNumber(i)
+// SetDeliveryStrategies sets the "delivery_strategies" field.
+func (pc *ProjectCreate) SetDeliveryStrategies(s string) *ProjectCreate {
+	pc.mutation.SetDeliveryStrategies(s)
 	return pc
 }
 
-// SetJointVentureNumber sets the "joint_venture_number" field.
-func (pc *ProjectCreate) SetJointVentureNumber(i int) *ProjectCreate {
-	pc.mutation.SetJointVentureNumber(i)
+// SetState sets the "state" field.
+func (pc *ProjectCreate) SetState(s string) *ProjectCreate {
+	pc.mutation.SetState(s)
 	return pc
 }
 
-// SetExecutionLocation sets the "execution_location" field.
-func (pc *ProjectCreate) SetExecutionLocation(s string) *ProjectCreate {
-	pc.mutation.SetExecutionLocation(s)
-	return pc
-}
-
-// SetInvolvedStockholders sets the "involved_stockholders" field.
-func (pc *ProjectCreate) SetInvolvedStockholders(i int) *ProjectCreate {
-	pc.mutation.SetInvolvedStockholders(i)
+// SetContractingStrategies sets the "contracting_strategies" field.
+func (pc *ProjectCreate) SetContractingStrategies(s string) *ProjectCreate {
+	pc.mutation.SetContractingStrategies(s)
 	return pc
 }
 
@@ -80,33 +74,55 @@ func (pc *ProjectCreate) SetDollarValue(i int) *ProjectCreate {
 	return pc
 }
 
-// SetStage sets the "stage" field.
-func (pc *ProjectCreate) SetStage(s string) *ProjectCreate {
-	pc.mutation.SetStage(s)
+// SetExecutionLocation sets the "execution_location" field.
+func (pc *ProjectCreate) SetExecutionLocation(s string) *ProjectCreate {
+	pc.mutation.SetExecutionLocation(s)
 	return pc
 }
 
-// SetDeliveryStratigies sets the "delivery_stratigies" field.
-func (pc *ProjectCreate) SetDeliveryStratigies(s string) *ProjectCreate {
-	pc.mutation.SetDeliveryStratigies(s)
+// AddLeaderIDs adds the "leader" edge to the User entity by IDs.
+func (pc *ProjectCreate) AddLeaderIDs(ids ...int) *ProjectCreate {
+	pc.mutation.AddLeaderIDs(ids...)
 	return pc
 }
 
-// SetContractingStratigies sets the "contracting_stratigies" field.
-func (pc *ProjectCreate) SetContractingStratigies(s string) *ProjectCreate {
-	pc.mutation.SetContractingStratigies(s)
+// AddLeader adds the "leader" edges to the User entity.
+func (pc *ProjectCreate) AddLeader(u ...*User) *ProjectCreate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pc.AddLeaderIDs(ids...)
+}
+
+// AddCoordinatorIDs adds the "coordinator" edge to the User entity by IDs.
+func (pc *ProjectCreate) AddCoordinatorIDs(ids ...int) *ProjectCreate {
+	pc.mutation.AddCoordinatorIDs(ids...)
 	return pc
 }
 
-// SetUserID sets the "user" edge to the User entity by ID.
-func (pc *ProjectCreate) SetUserID(id int) *ProjectCreate {
-	pc.mutation.SetUserID(id)
+// AddCoordinator adds the "coordinator" edges to the User entity.
+func (pc *ProjectCreate) AddCoordinator(u ...*User) *ProjectCreate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pc.AddCoordinatorIDs(ids...)
+}
+
+// AddMemberIDs adds the "members" edge to the User entity by IDs.
+func (pc *ProjectCreate) AddMemberIDs(ids ...int) *ProjectCreate {
+	pc.mutation.AddMemberIDs(ids...)
 	return pc
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (pc *ProjectCreate) SetUser(u *User) *ProjectCreate {
-	return pc.SetUserID(u.ID)
+// AddMembers adds the "members" edges to the User entity.
+func (pc *ProjectCreate) AddMembers(u ...*User) *ProjectCreate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pc.AddMemberIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -146,26 +162,11 @@ func (pc *ProjectCreate) check() error {
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Project.name"`)}
 	}
-	if v, ok := pc.mutation.Name(); ok {
-		if err := project.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Project.name": %w`, err)}
-		}
-	}
 	if _, ok := pc.mutation.Owner(); !ok {
 		return &ValidationError{Name: "owner", err: errors.New(`ent: missing required field "Project.owner"`)}
 	}
-	if v, ok := pc.mutation.Owner(); ok {
-		if err := project.OwnerValidator(v); err != nil {
-			return &ValidationError{Name: "owner", err: fmt.Errorf(`ent: validator failed for field "Project.owner": %w`, err)}
-		}
-	}
 	if _, ok := pc.mutation.Location(); !ok {
 		return &ValidationError{Name: "location", err: errors.New(`ent: missing required field "Project.location"`)}
-	}
-	if v, ok := pc.mutation.Location(); ok {
-		if err := project.LocationValidator(v); err != nil {
-			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "Project.location": %w`, err)}
-		}
 	}
 	if _, ok := pc.mutation.GetType(); !ok {
 		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "Project.type"`)}
@@ -176,43 +177,35 @@ func (pc *ProjectCreate) check() error {
 		}
 	}
 	if _, ok := pc.mutation.ProjectNature(); !ok {
-		return &ValidationError{Name: "Project_nature", err: errors.New(`ent: missing required field "Project.Project_nature"`)}
+		return &ValidationError{Name: "project_nature", err: errors.New(`ent: missing required field "Project.project_nature"`)}
 	}
 	if v, ok := pc.mutation.ProjectNature(); ok {
 		if err := project.ProjectNatureValidator(v); err != nil {
-			return &ValidationError{Name: "Project_nature", err: fmt.Errorf(`ent: validator failed for field "Project.Project_nature": %w`, err)}
+			return &ValidationError{Name: "project_nature", err: fmt.Errorf(`ent: validator failed for field "Project.project_nature": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.TopLevelPackagesNumber(); !ok {
-		return &ValidationError{Name: "top_level_packages_number", err: errors.New(`ent: missing required field "Project.top_level_packages_number"`)}
+	if _, ok := pc.mutation.DeliveryStrategies(); !ok {
+		return &ValidationError{Name: "delivery_strategies", err: errors.New(`ent: missing required field "Project.delivery_strategies"`)}
 	}
-	if v, ok := pc.mutation.TopLevelPackagesNumber(); ok {
-		if err := project.TopLevelPackagesNumberValidator(v); err != nil {
-			return &ValidationError{Name: "top_level_packages_number", err: fmt.Errorf(`ent: validator failed for field "Project.top_level_packages_number": %w`, err)}
+	if v, ok := pc.mutation.DeliveryStrategies(); ok {
+		if err := project.DeliveryStrategiesValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_strategies", err: fmt.Errorf(`ent: validator failed for field "Project.delivery_strategies": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.JointVentureNumber(); !ok {
-		return &ValidationError{Name: "joint_venture_number", err: errors.New(`ent: missing required field "Project.joint_venture_number"`)}
+	if _, ok := pc.mutation.State(); !ok {
+		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "Project.state"`)}
 	}
-	if v, ok := pc.mutation.JointVentureNumber(); ok {
-		if err := project.JointVentureNumberValidator(v); err != nil {
-			return &ValidationError{Name: "joint_venture_number", err: fmt.Errorf(`ent: validator failed for field "Project.joint_venture_number": %w`, err)}
+	if v, ok := pc.mutation.State(); ok {
+		if err := project.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Project.state": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.ExecutionLocation(); !ok {
-		return &ValidationError{Name: "execution_location", err: errors.New(`ent: missing required field "Project.execution_location"`)}
+	if _, ok := pc.mutation.ContractingStrategies(); !ok {
+		return &ValidationError{Name: "contracting_strategies", err: errors.New(`ent: missing required field "Project.contracting_strategies"`)}
 	}
-	if v, ok := pc.mutation.ExecutionLocation(); ok {
-		if err := project.ExecutionLocationValidator(v); err != nil {
-			return &ValidationError{Name: "execution_location", err: fmt.Errorf(`ent: validator failed for field "Project.execution_location": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.InvolvedStockholders(); !ok {
-		return &ValidationError{Name: "involved_stockholders", err: errors.New(`ent: missing required field "Project.involved_stockholders"`)}
-	}
-	if v, ok := pc.mutation.InvolvedStockholders(); ok {
-		if err := project.InvolvedStockholdersValidator(v); err != nil {
-			return &ValidationError{Name: "involved_stockholders", err: fmt.Errorf(`ent: validator failed for field "Project.involved_stockholders": %w`, err)}
+	if v, ok := pc.mutation.ContractingStrategies(); ok {
+		if err := project.ContractingStrategiesValidator(v); err != nil {
+			return &ValidationError{Name: "contracting_strategies", err: fmt.Errorf(`ent: validator failed for field "Project.contracting_strategies": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.DollarValue(); !ok {
@@ -223,32 +216,8 @@ func (pc *ProjectCreate) check() error {
 			return &ValidationError{Name: "dollar_value", err: fmt.Errorf(`ent: validator failed for field "Project.dollar_value": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.Stage(); !ok {
-		return &ValidationError{Name: "stage", err: errors.New(`ent: missing required field "Project.stage"`)}
-	}
-	if v, ok := pc.mutation.Stage(); ok {
-		if err := project.StageValidator(v); err != nil {
-			return &ValidationError{Name: "stage", err: fmt.Errorf(`ent: validator failed for field "Project.stage": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.DeliveryStratigies(); !ok {
-		return &ValidationError{Name: "delivery_stratigies", err: errors.New(`ent: missing required field "Project.delivery_stratigies"`)}
-	}
-	if v, ok := pc.mutation.DeliveryStratigies(); ok {
-		if err := project.DeliveryStratigiesValidator(v); err != nil {
-			return &ValidationError{Name: "delivery_stratigies", err: fmt.Errorf(`ent: validator failed for field "Project.delivery_stratigies": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.ContractingStratigies(); !ok {
-		return &ValidationError{Name: "contracting_stratigies", err: errors.New(`ent: missing required field "Project.contracting_stratigies"`)}
-	}
-	if v, ok := pc.mutation.ContractingStratigies(); ok {
-		if err := project.ContractingStratigiesValidator(v); err != nil {
-			return &ValidationError{Name: "contracting_stratigies", err: fmt.Errorf(`ent: validator failed for field "Project.contracting_stratigies": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user", err: errors.New(`ent: missing required edge "Project.user"`)}
+	if _, ok := pc.mutation.ExecutionLocation(); !ok {
+		return &ValidationError{Name: "execution_location", err: errors.New(`ent: missing required field "Project.execution_location"`)}
 	}
 	return nil
 }
@@ -289,51 +258,39 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_node.Location = value
 	}
 	if value, ok := pc.mutation.GetType(); ok {
-		_spec.SetField(project.FieldType, field.TypeString, value)
+		_spec.SetField(project.FieldType, field.TypeEnum, value)
 		_node.Type = value
 	}
 	if value, ok := pc.mutation.ProjectNature(); ok {
 		_spec.SetField(project.FieldProjectNature, field.TypeEnum, value)
 		_node.ProjectNature = value
 	}
-	if value, ok := pc.mutation.TopLevelPackagesNumber(); ok {
-		_spec.SetField(project.FieldTopLevelPackagesNumber, field.TypeInt, value)
-		_node.TopLevelPackagesNumber = value
+	if value, ok := pc.mutation.DeliveryStrategies(); ok {
+		_spec.SetField(project.FieldDeliveryStrategies, field.TypeString, value)
+		_node.DeliveryStrategies = value
 	}
-	if value, ok := pc.mutation.JointVentureNumber(); ok {
-		_spec.SetField(project.FieldJointVentureNumber, field.TypeInt, value)
-		_node.JointVentureNumber = value
+	if value, ok := pc.mutation.State(); ok {
+		_spec.SetField(project.FieldState, field.TypeString, value)
+		_node.State = value
 	}
-	if value, ok := pc.mutation.ExecutionLocation(); ok {
-		_spec.SetField(project.FieldExecutionLocation, field.TypeString, value)
-		_node.ExecutionLocation = value
-	}
-	if value, ok := pc.mutation.InvolvedStockholders(); ok {
-		_spec.SetField(project.FieldInvolvedStockholders, field.TypeInt, value)
-		_node.InvolvedStockholders = value
+	if value, ok := pc.mutation.ContractingStrategies(); ok {
+		_spec.SetField(project.FieldContractingStrategies, field.TypeString, value)
+		_node.ContractingStrategies = value
 	}
 	if value, ok := pc.mutation.DollarValue(); ok {
 		_spec.SetField(project.FieldDollarValue, field.TypeInt, value)
 		_node.DollarValue = value
 	}
-	if value, ok := pc.mutation.Stage(); ok {
-		_spec.SetField(project.FieldStage, field.TypeString, value)
-		_node.Stage = value
+	if value, ok := pc.mutation.ExecutionLocation(); ok {
+		_spec.SetField(project.FieldExecutionLocation, field.TypeString, value)
+		_node.ExecutionLocation = value
 	}
-	if value, ok := pc.mutation.DeliveryStratigies(); ok {
-		_spec.SetField(project.FieldDeliveryStratigies, field.TypeString, value)
-		_node.DeliveryStratigies = value
-	}
-	if value, ok := pc.mutation.ContractingStratigies(); ok {
-		_spec.SetField(project.FieldContractingStratigies, field.TypeString, value)
-		_node.ContractingStratigies = value
-	}
-	if nodes := pc.mutation.UserIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.LeaderIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   project.UserTable,
-			Columns: []string{project.UserColumn},
+			Table:   project.LeaderTable,
+			Columns: project.LeaderPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -342,7 +299,38 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.user_projects = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.CoordinatorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   project.CoordinatorTable,
+			Columns: project.CoordinatorPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.MembersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.MembersTable,
+			Columns: project.MembersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

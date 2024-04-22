@@ -9,7 +9,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/tarqeem/ims/ent/project"
-	"github.com/tarqeem/ims/ent/user"
 )
 
 // Project is the model entity for the Project schema.
@@ -24,50 +23,63 @@ type Project struct {
 	// Location holds the value of the "location" field.
 	Location string `json:"location,omitempty"`
 	// Type holds the value of the "type" field.
-	Type string `json:"type,omitempty"`
-	// ProjectNature holds the value of the "Project_nature" field.
-	ProjectNature project.ProjectNature `json:"Project_nature,omitempty"`
-	// TopLevelPackagesNumber holds the value of the "top_level_packages_number" field.
-	TopLevelPackagesNumber int `json:"top_level_packages_number,omitempty"`
-	// JointVentureNumber holds the value of the "joint_venture_number" field.
-	JointVentureNumber int `json:"joint_venture_number,omitempty"`
-	// ExecutionLocation holds the value of the "execution_location" field.
-	ExecutionLocation string `json:"execution_location,omitempty"`
-	// InvolvedStockholders holds the value of the "involved_stockholders" field.
-	InvolvedStockholders int `json:"involved_stockholders,omitempty"`
+	Type project.Type `json:"type,omitempty"`
+	// ProjectNature holds the value of the "project_nature" field.
+	ProjectNature project.ProjectNature `json:"project_nature,omitempty"`
+	// DeliveryStrategies holds the value of the "delivery_strategies" field.
+	DeliveryStrategies string `json:"delivery_strategies,omitempty"`
+	// State holds the value of the "state" field.
+	State string `json:"state,omitempty"`
+	// ContractingStrategies holds the value of the "contracting_strategies" field.
+	ContractingStrategies string `json:"contracting_strategies,omitempty"`
 	// DollarValue holds the value of the "dollar_value" field.
 	DollarValue int `json:"dollar_value,omitempty"`
-	// Stage holds the value of the "stage" field.
-	Stage string `json:"stage,omitempty"`
-	// DeliveryStratigies holds the value of the "delivery_stratigies" field.
-	DeliveryStratigies string `json:"delivery_stratigies,omitempty"`
-	// ContractingStratigies holds the value of the "contracting_stratigies" field.
-	ContractingStratigies string `json:"contracting_stratigies,omitempty"`
+	// ExecutionLocation holds the value of the "execution_location" field.
+	ExecutionLocation string `json:"execution_location,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
-	Edges         ProjectEdges `json:"edges"`
-	user_projects *int
-	selectValues  sql.SelectValues
+	Edges        ProjectEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // ProjectEdges holds the relations/edges for other nodes in the graph.
 type ProjectEdges struct {
-	// User holds the value of the user edge.
-	User *User `json:"user,omitempty"`
+	// Leader holds the value of the leader edge.
+	Leader []*User `json:"leader,omitempty"`
+	// Coordinator holds the value of the coordinator edge.
+	Coordinator []*User `json:"coordinator,omitempty"`
+	// Members holds the value of the members edge.
+	Members []*User `json:"members,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [3]bool
 }
 
-// UserOrErr returns the User value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e ProjectEdges) UserOrErr() (*User, error) {
-	if e.User != nil {
-		return e.User, nil
-	} else if e.loadedTypes[0] {
-		return nil, &NotFoundError{label: user.Label}
+// LeaderOrErr returns the Leader value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectEdges) LeaderOrErr() ([]*User, error) {
+	if e.loadedTypes[0] {
+		return e.Leader, nil
 	}
-	return nil, &NotLoadedError{edge: "user"}
+	return nil, &NotLoadedError{edge: "leader"}
+}
+
+// CoordinatorOrErr returns the Coordinator value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectEdges) CoordinatorOrErr() ([]*User, error) {
+	if e.loadedTypes[1] {
+		return e.Coordinator, nil
+	}
+	return nil, &NotLoadedError{edge: "coordinator"}
+}
+
+// MembersOrErr returns the Members value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectEdges) MembersOrErr() ([]*User, error) {
+	if e.loadedTypes[2] {
+		return e.Members, nil
+	}
+	return nil, &NotLoadedError{edge: "members"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -75,12 +87,10 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case project.FieldID, project.FieldTopLevelPackagesNumber, project.FieldJointVentureNumber, project.FieldInvolvedStockholders, project.FieldDollarValue:
+		case project.FieldID, project.FieldDollarValue:
 			values[i] = new(sql.NullInt64)
-		case project.FieldName, project.FieldOwner, project.FieldLocation, project.FieldType, project.FieldProjectNature, project.FieldExecutionLocation, project.FieldStage, project.FieldDeliveryStratigies, project.FieldContractingStratigies:
+		case project.FieldName, project.FieldOwner, project.FieldLocation, project.FieldType, project.FieldProjectNature, project.FieldDeliveryStrategies, project.FieldState, project.FieldContractingStrategies, project.FieldExecutionLocation:
 			values[i] = new(sql.NullString)
-		case project.ForeignKeys[0]: // user_projects
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -124,37 +134,31 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				pr.Type = value.String
+				pr.Type = project.Type(value.String)
 			}
 		case project.FieldProjectNature:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field Project_nature", values[i])
+				return fmt.Errorf("unexpected type %T for field project_nature", values[i])
 			} else if value.Valid {
 				pr.ProjectNature = project.ProjectNature(value.String)
 			}
-		case project.FieldTopLevelPackagesNumber:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field top_level_packages_number", values[i])
-			} else if value.Valid {
-				pr.TopLevelPackagesNumber = int(value.Int64)
-			}
-		case project.FieldJointVentureNumber:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field joint_venture_number", values[i])
-			} else if value.Valid {
-				pr.JointVentureNumber = int(value.Int64)
-			}
-		case project.FieldExecutionLocation:
+		case project.FieldDeliveryStrategies:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field execution_location", values[i])
+				return fmt.Errorf("unexpected type %T for field delivery_strategies", values[i])
 			} else if value.Valid {
-				pr.ExecutionLocation = value.String
+				pr.DeliveryStrategies = value.String
 			}
-		case project.FieldInvolvedStockholders:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field involved_stockholders", values[i])
+		case project.FieldState:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field state", values[i])
 			} else if value.Valid {
-				pr.InvolvedStockholders = int(value.Int64)
+				pr.State = value.String
+			}
+		case project.FieldContractingStrategies:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contracting_strategies", values[i])
+			} else if value.Valid {
+				pr.ContractingStrategies = value.String
 			}
 		case project.FieldDollarValue:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -162,30 +166,11 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.DollarValue = int(value.Int64)
 			}
-		case project.FieldStage:
+		case project.FieldExecutionLocation:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field stage", values[i])
+				return fmt.Errorf("unexpected type %T for field execution_location", values[i])
 			} else if value.Valid {
-				pr.Stage = value.String
-			}
-		case project.FieldDeliveryStratigies:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field delivery_stratigies", values[i])
-			} else if value.Valid {
-				pr.DeliveryStratigies = value.String
-			}
-		case project.FieldContractingStratigies:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field contracting_stratigies", values[i])
-			} else if value.Valid {
-				pr.ContractingStratigies = value.String
-			}
-		case project.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field user_projects", value)
-			} else if value.Valid {
-				pr.user_projects = new(int)
-				*pr.user_projects = int(value.Int64)
+				pr.ExecutionLocation = value.String
 			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
@@ -200,9 +185,19 @@ func (pr *Project) Value(name string) (ent.Value, error) {
 	return pr.selectValues.Get(name)
 }
 
-// QueryUser queries the "user" edge of the Project entity.
-func (pr *Project) QueryUser() *UserQuery {
-	return NewProjectClient(pr.config).QueryUser(pr)
+// QueryLeader queries the "leader" edge of the Project entity.
+func (pr *Project) QueryLeader() *UserQuery {
+	return NewProjectClient(pr.config).QueryLeader(pr)
+}
+
+// QueryCoordinator queries the "coordinator" edge of the Project entity.
+func (pr *Project) QueryCoordinator() *UserQuery {
+	return NewProjectClient(pr.config).QueryCoordinator(pr)
+}
+
+// QueryMembers queries the "members" edge of the Project entity.
+func (pr *Project) QueryMembers() *UserQuery {
+	return NewProjectClient(pr.config).QueryMembers(pr)
 }
 
 // Update returns a builder for updating this Project.
@@ -238,34 +233,25 @@ func (pr *Project) String() string {
 	builder.WriteString(pr.Location)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(pr.Type)
+	builder.WriteString(fmt.Sprintf("%v", pr.Type))
 	builder.WriteString(", ")
-	builder.WriteString("Project_nature=")
+	builder.WriteString("project_nature=")
 	builder.WriteString(fmt.Sprintf("%v", pr.ProjectNature))
 	builder.WriteString(", ")
-	builder.WriteString("top_level_packages_number=")
-	builder.WriteString(fmt.Sprintf("%v", pr.TopLevelPackagesNumber))
+	builder.WriteString("delivery_strategies=")
+	builder.WriteString(pr.DeliveryStrategies)
 	builder.WriteString(", ")
-	builder.WriteString("joint_venture_number=")
-	builder.WriteString(fmt.Sprintf("%v", pr.JointVentureNumber))
+	builder.WriteString("state=")
+	builder.WriteString(pr.State)
 	builder.WriteString(", ")
-	builder.WriteString("execution_location=")
-	builder.WriteString(pr.ExecutionLocation)
-	builder.WriteString(", ")
-	builder.WriteString("involved_stockholders=")
-	builder.WriteString(fmt.Sprintf("%v", pr.InvolvedStockholders))
+	builder.WriteString("contracting_strategies=")
+	builder.WriteString(pr.ContractingStrategies)
 	builder.WriteString(", ")
 	builder.WriteString("dollar_value=")
 	builder.WriteString(fmt.Sprintf("%v", pr.DollarValue))
 	builder.WriteString(", ")
-	builder.WriteString("stage=")
-	builder.WriteString(pr.Stage)
-	builder.WriteString(", ")
-	builder.WriteString("delivery_stratigies=")
-	builder.WriteString(pr.DeliveryStratigies)
-	builder.WriteString(", ")
-	builder.WriteString("contracting_stratigies=")
-	builder.WriteString(pr.ContractingStratigies)
+	builder.WriteString("execution_location=")
+	builder.WriteString(pr.ExecutionLocation)
 	builder.WriteByte(')')
 	return builder.String()
 }

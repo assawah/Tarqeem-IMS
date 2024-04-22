@@ -1,0 +1,147 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"github.com/labstack/echo/v4"
+	"github.com/tarqeem/ims/ent"
+	"github.com/tarqeem/ims/ent/project"
+	"github.com/tarqeem/ims/ent/user"
+	"net/http"
+)
+
+var CreateProjectEnd = "/create-project"
+
+type ProjectDTO struct {
+	Name                string `form:"name"`
+	Owner               string `form:"owner"`
+	Location            string `form:"location"`
+	Type                string `form:"type"`
+	DeliveryStrategy    string `form:"deliveryStrategy"`
+	CurrentState        string `form:"currentState"`
+	ContractingStrategy string `form:"contractingStrategy"`
+	DollarValue         int    `form:"dollarValue"`
+
+	ExecutionLocation string `form:"executionLocation"`
+
+	ProjectNature string   `form:"projectNature"`
+	Leader        string   `form:"leader"`
+	Members       []string `form:"members[]"`
+	PageTitle     string
+	Err           string
+}
+
+func createProject() {
+	E.POST(CreateProjectEnd, func(c echo.Context) error {
+
+		p := "success"
+
+		r := &ProjectDTO{}
+		if err := c.Bind(r); err != nil {
+			return c.String(http.StatusBadRequest, "bad request")
+		}
+
+		proj, err := Client.Project.Create().
+			SetName(r.Name).
+			SetOwner(r.Owner).
+			SetLocation(r.Location).
+			SetType(project.Type(r.Type)).
+			SetProjectNature(project.ProjectNature(r.ProjectNature)).
+			SetDeliveryStrategies(r.DeliveryStrategy).
+			SetState(r.CurrentState).
+			SetContractingStrategies(r.ContractingStrategy).
+			SetDollarValue(r.DollarValue).
+			SetExecutionLocation(r.ExecutionLocation).
+			Save(c.Request().Context())
+
+		if err != nil {
+			fmt.Print("Error creating project: " + err.Error())
+			return c.Render(http.StatusInternalServerError, "fail",
+				&ProjectDTO{Err: err.Error()})
+		}
+		if err = addCoordinator(c, proj); err != nil {
+			fmt.Print("Error adding coordinator: " + err.Error())
+			return c.Render(http.StatusInternalServerError, "fail",
+				&ProjectDTO{Err: err.Error()})
+		}
+		if err = addLeader(c, proj, r.Leader); err != nil {
+			fmt.Print("Error adding leader: " + err.Error())
+			return c.Render(http.StatusInternalServerError, "fail",
+				&ProjectDTO{Err: err.Error()})
+		}
+		r.Members = append(r.Members, r.Leader)
+		if err = addMembers(c, proj, r.Members); err != nil {
+			fmt.Print("Error adding members: " + err.Error())
+			return c.Render(http.StatusInternalServerError, "fail",
+				&ProjectDTO{Err: err.Error()})
+		}
+
+		err = c.Render(http.StatusOK, p, nil)
+		if err != nil {
+			return err
+		}
+
+		return c.Redirect(http.StatusOK, DashboardEnd)
+	})
+}
+
+func addCoordinator(c echo.Context, proj *ent.Project) error {
+	id, err := authenticated(c)
+	if err != nil {
+		return c.String(http.StatusUnauthorized, "unauthorized")
+	}
+	u, err := Client.User.Query().Where(user.ID(id)).Only(c.Request().Context())
+	if err != nil {
+		E.Logger.Error(err)
+		return err
+	}
+
+	if _, err := proj.Update().AddCoordinator(u).Save(c.Request().Context()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func addLeader(c echo.Context, proj *ent.Project, leader string) error {
+	u, err := ensureUser(c, leader)
+	if err != nil {
+		return err
+	}
+	if _, err = proj.Update().AddLeader(u).Save(c.Request().Context()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func addMembers(c echo.Context, proj *ent.Project, members []string) error {
+	for _, member := range members {
+		u, err := ensureUser(c, member)
+		if err != nil {
+			return err
+		}
+		if _, err = u.Update().AddProjects(proj).Save(c.Request().Context()); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func ensureUser(c echo.Context, email string) (*ent.User, error) {
+	u, err := Client.User.
+		Query().
+		Where(user.EmailEQ(email)). // Query using the unique email.
+		Only(context.Background())
+	if ent.IsNotFound(err) {
+		u, err = Client.User.Create().
+			SetEmail(email).
+			SetIsActive(false).
+			SetType(user.TypeMember).Save(c.Request().Context())
+		if err != nil {
+			return nil, err
+		}
+	} else if err != nil {
+		return nil, err
+	}
+	return u, nil
+}

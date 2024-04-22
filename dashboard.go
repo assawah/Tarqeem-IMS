@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -10,8 +11,9 @@ import (
 )
 
 type DashboardDTO struct {
-	*ent.User
-	Err string
+	User     *ent.User
+	Projects []*ent.Project
+	Err      string
 }
 
 var DashboardEnd string = "/dashboard"
@@ -19,24 +21,43 @@ var DashboardEnd string = "/dashboard"
 func dashboard() {
 	E.GET(DashboardEnd, func(c echo.Context) error {
 		p := "dashboard"
+		data := DashboardDTO{}
 		id, err := authenticated(c)
 		if err != nil && errors.Is(err, UserNotFound) {
 			return c.Redirect(http.StatusTemporaryRedirect, LoginEnd)
 		} else if err != nil {
 			E.Logger.Errorf("authentication failed: %s", err.Error())
 			return c.Render(http.StatusInternalServerError,
-				p,
+				"fail",
 				&DashboardDTO{Err: err.Error()})
 		}
 
 		u, err := Client.User.Query().Where(user.ID(id)).Only(c.Request().Context())
 		if err != nil {
 			E.Logger.Error(err)
-			return c.Render(http.StatusInternalServerError, p,
+			return c.Render(http.StatusInternalServerError, "fail",
 				&DashboardDTO{Err: err.Error()})
 		}
+		data.User = u
+		memberProjects, err := u.
+			QueryProjects().
+			All(context.Background())
+		if err != nil {
+			return c.Render(http.StatusInternalServerError, "fail",
+				&DashboardDTO{Err: err.Error()})
+		}
+		data.Projects = append(data.Projects, memberProjects...)
 
-		return c.Render(http.StatusOK, p, &DashboardDTO{User: u})
+		coordinatorProjects, err := u.
+			QueryCoordinatorOfProject().
+			All(context.Background())
+		if err != nil {
+			return c.Render(http.StatusInternalServerError, "fail",
+				&DashboardDTO{Err: err.Error()})
+		}
+		data.Projects = append(data.Projects, coordinatorProjects...)
+
+		return c.Render(http.StatusOK, p, data)
 	})
 
 }

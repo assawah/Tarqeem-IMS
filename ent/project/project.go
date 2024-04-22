@@ -24,33 +24,39 @@ const (
 	FieldType = "type"
 	// FieldProjectNature holds the string denoting the project_nature field in the database.
 	FieldProjectNature = "project_nature"
-	// FieldTopLevelPackagesNumber holds the string denoting the top_level_packages_number field in the database.
-	FieldTopLevelPackagesNumber = "top_level_packages_number"
-	// FieldJointVentureNumber holds the string denoting the joint_venture_number field in the database.
-	FieldJointVentureNumber = "joint_venture_number"
-	// FieldExecutionLocation holds the string denoting the execution_location field in the database.
-	FieldExecutionLocation = "execution_location"
-	// FieldInvolvedStockholders holds the string denoting the involved_stockholders field in the database.
-	FieldInvolvedStockholders = "involved_stockholders"
+	// FieldDeliveryStrategies holds the string denoting the delivery_strategies field in the database.
+	FieldDeliveryStrategies = "delivery_strategies"
+	// FieldState holds the string denoting the state field in the database.
+	FieldState = "state"
+	// FieldContractingStrategies holds the string denoting the contracting_strategies field in the database.
+	FieldContractingStrategies = "contracting_strategies"
 	// FieldDollarValue holds the string denoting the dollar_value field in the database.
 	FieldDollarValue = "dollar_value"
-	// FieldStage holds the string denoting the stage field in the database.
-	FieldStage = "stage"
-	// FieldDeliveryStratigies holds the string denoting the delivery_stratigies field in the database.
-	FieldDeliveryStratigies = "delivery_stratigies"
-	// FieldContractingStratigies holds the string denoting the contracting_stratigies field in the database.
-	FieldContractingStratigies = "contracting_stratigies"
-	// EdgeUser holds the string denoting the user edge name in mutations.
-	EdgeUser = "user"
+	// FieldExecutionLocation holds the string denoting the execution_location field in the database.
+	FieldExecutionLocation = "execution_location"
+	// EdgeLeader holds the string denoting the leader edge name in mutations.
+	EdgeLeader = "leader"
+	// EdgeCoordinator holds the string denoting the coordinator edge name in mutations.
+	EdgeCoordinator = "coordinator"
+	// EdgeMembers holds the string denoting the members edge name in mutations.
+	EdgeMembers = "members"
 	// Table holds the table name of the project in the database.
 	Table = "projects"
-	// UserTable is the table that holds the user relation/edge.
-	UserTable = "projects"
-	// UserInverseTable is the table name for the User entity.
+	// LeaderTable is the table that holds the leader relation/edge. The primary key declared below.
+	LeaderTable = "user_leader_of_project"
+	// LeaderInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
-	UserInverseTable = "users"
-	// UserColumn is the table column denoting the user relation/edge.
-	UserColumn = "user_projects"
+	LeaderInverseTable = "users"
+	// CoordinatorTable is the table that holds the coordinator relation/edge. The primary key declared below.
+	CoordinatorTable = "user_coordinator_of_project"
+	// CoordinatorInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	CoordinatorInverseTable = "users"
+	// MembersTable is the table that holds the members relation/edge. The primary key declared below.
+	MembersTable = "project_members"
+	// MembersInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	MembersInverseTable = "users"
 )
 
 // Columns holds all SQL columns for project fields.
@@ -61,21 +67,24 @@ var Columns = []string{
 	FieldLocation,
 	FieldType,
 	FieldProjectNature,
-	FieldTopLevelPackagesNumber,
-	FieldJointVentureNumber,
-	FieldExecutionLocation,
-	FieldInvolvedStockholders,
+	FieldDeliveryStrategies,
+	FieldState,
+	FieldContractingStrategies,
 	FieldDollarValue,
-	FieldStage,
-	FieldDeliveryStratigies,
-	FieldContractingStratigies,
+	FieldExecutionLocation,
 }
 
-// ForeignKeys holds the SQL foreign-keys that are owned by the "projects"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"user_projects",
-}
+var (
+	// LeaderPrimaryKey and LeaderColumn2 are the table columns denoting the
+	// primary key for the leader relation (M2M).
+	LeaderPrimaryKey = []string{"user_id", "project_id"}
+	// CoordinatorPrimaryKey and CoordinatorColumn2 are the table columns denoting the
+	// primary key for the coordinator relation (M2M).
+	CoordinatorPrimaryKey = []string{"user_id", "project_id"}
+	// MembersPrimaryKey and MembersColumn2 are the table columns denoting the
+	// primary key for the members relation (M2M).
+	MembersPrimaryKey = []string{"project_id", "user_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -84,61 +93,72 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
-			return true
-		}
-	}
 	return false
 }
 
 var (
-	// NameValidator is a validator for the "name" field. It is called by the builders before save.
-	NameValidator func(string) error
-	// OwnerValidator is a validator for the "owner" field. It is called by the builders before save.
-	OwnerValidator func(string) error
-	// LocationValidator is a validator for the "location" field. It is called by the builders before save.
-	LocationValidator func(string) error
-	// TypeValidator is a validator for the "type" field. It is called by the builders before save.
-	TypeValidator func(string) error
-	// TopLevelPackagesNumberValidator is a validator for the "top_level_packages_number" field. It is called by the builders before save.
-	TopLevelPackagesNumberValidator func(int) error
-	// JointVentureNumberValidator is a validator for the "joint_venture_number" field. It is called by the builders before save.
-	JointVentureNumberValidator func(int) error
-	// ExecutionLocationValidator is a validator for the "execution_location" field. It is called by the builders before save.
-	ExecutionLocationValidator func(string) error
-	// InvolvedStockholdersValidator is a validator for the "involved_stockholders" field. It is called by the builders before save.
-	InvolvedStockholdersValidator func(int) error
+	// DeliveryStrategiesValidator is a validator for the "delivery_strategies" field. It is called by the builders before save.
+	DeliveryStrategiesValidator func(string) error
+	// StateValidator is a validator for the "state" field. It is called by the builders before save.
+	StateValidator func(string) error
+	// ContractingStrategiesValidator is a validator for the "contracting_strategies" field. It is called by the builders before save.
+	ContractingStrategiesValidator func(string) error
 	// DollarValueValidator is a validator for the "dollar_value" field. It is called by the builders before save.
 	DollarValueValidator func(int) error
-	// StageValidator is a validator for the "stage" field. It is called by the builders before save.
-	StageValidator func(string) error
-	// DeliveryStratigiesValidator is a validator for the "delivery_stratigies" field. It is called by the builders before save.
-	DeliveryStratigiesValidator func(string) error
-	// ContractingStratigiesValidator is a validator for the "contracting_stratigies" field. It is called by the builders before save.
-	ContractingStratigiesValidator func(string) error
 )
 
-// ProjectNature defines the type for the "Project_nature" enum field.
+// Type defines the type for the "type" enum field.
+type Type string
+
+// Type values.
+const (
+	TypeChemicalManufacturing         Type = "Chemical Manufacturing"
+	TypeStadiumMusuem                 Type = "Stadium Musuem"
+	TypeDam                           Type = "Dam"
+	TypeMetalRefiningOrProcessing     Type = "Metal refining or processing"
+	TypeOilExplorationOrProduction    Type = "Oil exploration or production"
+	TypeOilRefining                   Type = "Oil refining"
+	TypeNaturalGasProcessing          Type = "Natural gas processing"
+	TypeHighway                       Type = "Highway"
+	TypePowerGeneration               Type = "Power generation"
+	TypeWaterOrWastewater             Type = "Water or wastewater"
+	TypeConsumerProductsManufacturing Type = "Consumer products manufacturing"
+)
+
+func (_type Type) String() string {
+	return string(_type)
+}
+
+// TypeValidator is a validator for the "type" field enum values. It is called by the builders before save.
+func TypeValidator(_type Type) error {
+	switch _type {
+	case TypeChemicalManufacturing, TypeStadiumMusuem, TypeDam, TypeMetalRefiningOrProcessing, TypeOilExplorationOrProduction, TypeOilRefining, TypeNaturalGasProcessing, TypeHighway, TypePowerGeneration, TypeWaterOrWastewater, TypeConsumerProductsManufacturing:
+		return nil
+	default:
+		return fmt.Errorf("project: invalid enum value for type field: %q", _type)
+	}
+}
+
+// ProjectNature defines the type for the "project_nature" enum field.
 type ProjectNature string
 
 // ProjectNature values.
 const (
-	ProjectNatureGreenfield ProjectNature = "greenfield"
-	ProjectNatureBrownfield ProjectNature = "brownfield"
+	ProjectNatureGreenfield ProjectNature = "Greenfield"
+	ProjectNatureBrownfield ProjectNature = "Brownfield"
 )
 
-func (_project_nature ProjectNature) String() string {
-	return string(_project_nature)
+func (pn ProjectNature) String() string {
+	return string(pn)
 }
 
-// ProjectNatureValidator is a validator for the "Project_nature" field enum values. It is called by the builders before save.
-func ProjectNatureValidator(_project_nature ProjectNature) error {
-	switch _project_nature {
+// ProjectNatureValidator is a validator for the "project_nature" field enum values. It is called by the builders before save.
+func ProjectNatureValidator(pn ProjectNature) error {
+	switch pn {
 	case ProjectNatureGreenfield, ProjectNatureBrownfield:
 		return nil
 	default:
-		return fmt.Errorf("project: invalid enum value for Project_nature field: %q", _project_nature)
+		return fmt.Errorf("project: invalid enum value for project_nature field: %q", pn)
 	}
 }
 
@@ -170,29 +190,24 @@ func ByType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldType, opts...).ToFunc()
 }
 
-// ByProjectNature orders the results by the Project_nature field.
+// ByProjectNature orders the results by the project_nature field.
 func ByProjectNature(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProjectNature, opts...).ToFunc()
 }
 
-// ByTopLevelPackagesNumber orders the results by the top_level_packages_number field.
-func ByTopLevelPackagesNumber(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTopLevelPackagesNumber, opts...).ToFunc()
+// ByDeliveryStrategies orders the results by the delivery_strategies field.
+func ByDeliveryStrategies(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeliveryStrategies, opts...).ToFunc()
 }
 
-// ByJointVentureNumber orders the results by the joint_venture_number field.
-func ByJointVentureNumber(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldJointVentureNumber, opts...).ToFunc()
+// ByState orders the results by the state field.
+func ByState(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldState, opts...).ToFunc()
 }
 
-// ByExecutionLocation orders the results by the execution_location field.
-func ByExecutionLocation(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldExecutionLocation, opts...).ToFunc()
-}
-
-// ByInvolvedStockholders orders the results by the involved_stockholders field.
-func ByInvolvedStockholders(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldInvolvedStockholders, opts...).ToFunc()
+// ByContractingStrategies orders the results by the contracting_strategies field.
+func ByContractingStrategies(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractingStrategies, opts...).ToFunc()
 }
 
 // ByDollarValue orders the results by the dollar_value field.
@@ -200,31 +215,70 @@ func ByDollarValue(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDollarValue, opts...).ToFunc()
 }
 
-// ByStage orders the results by the stage field.
-func ByStage(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStage, opts...).ToFunc()
+// ByExecutionLocation orders the results by the execution_location field.
+func ByExecutionLocation(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldExecutionLocation, opts...).ToFunc()
 }
 
-// ByDeliveryStratigies orders the results by the delivery_stratigies field.
-func ByDeliveryStratigies(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeliveryStratigies, opts...).ToFunc()
-}
-
-// ByContractingStratigies orders the results by the contracting_stratigies field.
-func ByContractingStratigies(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldContractingStratigies, opts...).ToFunc()
-}
-
-// ByUserField orders the results by user field.
-func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByLeaderCount orders the results by leader count.
+func ByLeaderCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborsCount(s, newLeaderStep(), opts...)
 	}
 }
-func newUserStep() *sqlgraph.Step {
+
+// ByLeader orders the results by leader terms.
+func ByLeader(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLeaderStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByCoordinatorCount orders the results by coordinator count.
+func ByCoordinatorCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCoordinatorStep(), opts...)
+	}
+}
+
+// ByCoordinator orders the results by coordinator terms.
+func ByCoordinator(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCoordinatorStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByMembersCount orders the results by members count.
+func ByMembersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newMembersStep(), opts...)
+	}
+}
+
+// ByMembers orders the results by members terms.
+func ByMembers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newMembersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newLeaderStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(UserInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
+		sqlgraph.To(LeaderInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, LeaderTable, LeaderPrimaryKey...),
+	)
+}
+func newCoordinatorStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CoordinatorInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, CoordinatorTable, CoordinatorPrimaryKey...),
+	)
+}
+func newMembersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(MembersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, MembersTable, MembersPrimaryKey...),
 	)
 }

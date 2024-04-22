@@ -17,8 +17,8 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldPassowrd holds the string denoting the passowrd field in the database.
-	FieldPassowrd = "passowrd"
+	// FieldPassword holds the string denoting the password field in the database.
+	FieldPassword = "password"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
 	// FieldPhone holds the string denoting the phone field in the database.
@@ -29,33 +29,60 @@ const (
 	FieldOrganization = "organization"
 	// FieldTitle holds the string denoting the title field in the database.
 	FieldTitle = "title"
+	// FieldIsActive holds the string denoting the is_active field in the database.
+	FieldIsActive = "is_active"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
 	// EdgeProjects holds the string denoting the projects edge name in mutations.
 	EdgeProjects = "projects"
+	// EdgeLeaderOfProject holds the string denoting the leader_of_project edge name in mutations.
+	EdgeLeaderOfProject = "leader_of_project"
+	// EdgeCoordinatorOfProject holds the string denoting the coordinator_of_project edge name in mutations.
+	EdgeCoordinatorOfProject = "coordinator_of_project"
 	// Table holds the table name of the user in the database.
 	Table = "users"
-	// ProjectsTable is the table that holds the projects relation/edge.
-	ProjectsTable = "projects"
+	// ProjectsTable is the table that holds the projects relation/edge. The primary key declared below.
+	ProjectsTable = "project_members"
 	// ProjectsInverseTable is the table name for the Project entity.
 	// It exists in this package in order to avoid circular dependency with the "project" package.
 	ProjectsInverseTable = "projects"
-	// ProjectsColumn is the table column denoting the projects relation/edge.
-	ProjectsColumn = "user_projects"
+	// LeaderOfProjectTable is the table that holds the leader_of_project relation/edge. The primary key declared below.
+	LeaderOfProjectTable = "user_leader_of_project"
+	// LeaderOfProjectInverseTable is the table name for the Project entity.
+	// It exists in this package in order to avoid circular dependency with the "project" package.
+	LeaderOfProjectInverseTable = "projects"
+	// CoordinatorOfProjectTable is the table that holds the coordinator_of_project relation/edge. The primary key declared below.
+	CoordinatorOfProjectTable = "user_coordinator_of_project"
+	// CoordinatorOfProjectInverseTable is the table name for the Project entity.
+	// It exists in this package in order to avoid circular dependency with the "project" package.
+	CoordinatorOfProjectInverseTable = "projects"
 )
 
 // Columns holds all SQL columns for user fields.
 var Columns = []string{
 	FieldID,
 	FieldName,
-	FieldPassowrd,
+	FieldPassword,
 	FieldEmail,
 	FieldPhone,
 	FieldCreatedAt,
 	FieldOrganization,
 	FieldTitle,
+	FieldIsActive,
 	FieldType,
 }
+
+var (
+	// ProjectsPrimaryKey and ProjectsColumn2 are the table columns denoting the
+	// primary key for the projects relation (M2M).
+	ProjectsPrimaryKey = []string{"project_id", "user_id"}
+	// LeaderOfProjectPrimaryKey and LeaderOfProjectColumn2 are the table columns denoting the
+	// primary key for the leader_of_project relation (M2M).
+	LeaderOfProjectPrimaryKey = []string{"user_id", "project_id"}
+	// CoordinatorOfProjectPrimaryKey and CoordinatorOfProjectColumn2 are the table columns denoting the
+	// primary key for the coordinator_of_project relation (M2M).
+	CoordinatorOfProjectPrimaryKey = []string{"user_id", "project_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -68,20 +95,10 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// NameValidator is a validator for the "name" field. It is called by the builders before save.
-	NameValidator func(string) error
-	// PassowrdValidator is a validator for the "passowrd" field. It is called by the builders before save.
-	PassowrdValidator func(string) error
-	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
-	EmailValidator func(string) error
-	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	PhoneValidator func(string) error
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// OrganizationValidator is a validator for the "Organization" field. It is called by the builders before save.
-	OrganizationValidator func(string) error
-	// TitleValidator is a validator for the "Title" field. It is called by the builders before save.
-	TitleValidator func(string) error
+	// DefaultIsActive holds the default value on creation for the "is_active" field.
+	DefaultIsActive bool
 )
 
 // Type defines the type for the "type" enum field.
@@ -120,9 +137,9 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByPassowrd orders the results by the passowrd field.
-func ByPassowrd(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPassowrd, opts...).ToFunc()
+// ByPassword orders the results by the password field.
+func ByPassword(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPassword, opts...).ToFunc()
 }
 
 // ByEmail orders the results by the email field.
@@ -140,14 +157,19 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByOrganization orders the results by the Organization field.
+// ByOrganization orders the results by the organization field.
 func ByOrganization(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOrganization, opts...).ToFunc()
 }
 
-// ByTitle orders the results by the Title field.
+// ByTitle orders the results by the title field.
 func ByTitle(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTitle, opts...).ToFunc()
+}
+
+// ByIsActive orders the results by the is_active field.
+func ByIsActive(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsActive, opts...).ToFunc()
 }
 
 // ByType orders the results by the type field.
@@ -168,10 +190,52 @@ func ByProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newProjectsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByLeaderOfProjectCount orders the results by leader_of_project count.
+func ByLeaderOfProjectCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLeaderOfProjectStep(), opts...)
+	}
+}
+
+// ByLeaderOfProject orders the results by leader_of_project terms.
+func ByLeaderOfProject(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLeaderOfProjectStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByCoordinatorOfProjectCount orders the results by coordinator_of_project count.
+func ByCoordinatorOfProjectCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCoordinatorOfProjectStep(), opts...)
+	}
+}
+
+// ByCoordinatorOfProject orders the results by coordinator_of_project terms.
+func ByCoordinatorOfProject(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCoordinatorOfProjectStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newProjectsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ProjectsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProjectsTable, ProjectsColumn),
+		sqlgraph.Edge(sqlgraph.M2M, true, ProjectsTable, ProjectsPrimaryKey...),
+	)
+}
+func newLeaderOfProjectStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LeaderOfProjectInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, LeaderOfProjectTable, LeaderOfProjectPrimaryKey...),
+	)
+}
+func newCoordinatorOfProjectStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CoordinatorOfProjectInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, CoordinatorOfProjectTable, CoordinatorOfProjectPrimaryKey...),
 	)
 }

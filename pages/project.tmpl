@@ -5,86 +5,130 @@
 
 <body>
     <section class="project">
-        <form action="/create-project" id="project">
+        <form action="/create-project"  method="post" id="project">
             <h1>create a new project</h1>
             <div class="row">
                 <div class="col">
                     <label for="project-name">Project Name</label>
-                    <input type="text" class="form-control" id="project-name" placeholder="Project Name"
+                    <input type="text" class="form-control" id="project-name" name="name" placeholder="Project Name"
                         aria-label="Project Name">
                 </div>
                 <div class="col">
                     <label for="project-type">Project Type</label>
-                    <select name="project-type" id="project-type" class="form-control">
-                        <option value="type1">type 1</option>
-                        <option value="type2">type 2</option>
-                        <option value="type3">type 3</option>
+                    <select id="project-type" class="form-control" name="type">
+                        <option value="Chemical Manufacturing">Chemical Manufacturing</option>
+                        <option value="Stadium Musuem">Stadium Musuem</option>
+                        <option value="Metal refining or processing">Metal refining/processing</option>
+                        <option value="Oil exploration or production">Oil exploration/production</option>
+                        <option value="Oil refining">Oil refining</option>
+                        <option value="Natural gas processing">Natural gas processing</option>
+                        <option value="Highway">Highway</option>
+                        <option value="Power generation">Power generation</option>
                     </select>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="project-delivery">Project Delivery Strategies</label>
-                    <select name="project-type" id="project-delivery" class="form-control">
-                        <option value="Strategy">Strategy 1</option>
-                        <option value="Strategy">Strategy 2</option>
-                        <option value="Strategy">Strategy 3</option>
+                    <select id="project-delivery" class="form-control" name="deliveryStrategy">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
                     </select>
                 </div>
                 <div class="col">
-                    <label for="project-current-state">Project Current State:</label>
-                    <select name="project-type" id="project-current-state" class="form-control">
-                        <option value="State">State 1</option>
-                        <option value="State">State 2</option>
-                        <option value="State">State 3</option>
+                    <label for="project-current-state">Project Current State</label>
+                    <select id="project-current-state" class="form-control", name="currentState">
+                        <option value="Front-end planning">Front-end planning</option>
+                        <option value="Design">In Design</option>
+                        <option value="Procurement">Procurement</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Start-up">Start-up</option>
+                        <option value="Completed">Completed</option>
                     </select>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="project-contracting-strategies">Project Contracting Strategies</label>
-                    <select name="project-type" id="project-contracting-strategies" class="form-control ">
-                        <option value="Strategy">Strategy 1</option>
-                        <option value="Strategy">Strategy 2</option>
-                        <option value="Strategy">Strategy 3</option>
+                    <select id="project-contracting-strategies" class="form-control" name="contractingStrategy">
+                        <option value="Fixed Price">Fixed Price</option>
+                        <option value="Unit Price">Unit Price</option>
+                        <option value="Maximum Price">Maximum Price</option>
                     </select>
                 </div>
                 <div class="col">
                     <label for="dollarValue">Project Dollar Value:</label>
-                    <input type="number" class="form-control" id="dollarValue" placeholder="$">
+                    <input type="number" class="form-control" id="dollarValue" name="dollarValue" placeholder="$">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="project-location">Location</label>
-                    <input type="text" class="form-control" id="project-location" placeholder="Location">
+                    <input type="text" class="form-control" id="project-location" name="location" placeholder="Location">
                 </div>
                 <div class="col">
                     <label for="execution-locations">Project Execution Location</label>
-                    <input type="text" class="form-control" id="execution-locations" placeholder="locattion">
+                    <input type="text" class="form-control" id="execution-locations" name="executionLocation" placeholder="Location">
 
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="owners">Owners</label>
-                    <input type="text" class="form-control" id="owners" placeholder="owner Name">
+                    <input type="text" class="form-control" id="owners" name="owner" placeholder="Name of Owner">
 
                 </div>
                 <div class="col">
-                    <label for="project-nature">project Nature</label>
-                    <select name="project-type" id="project-nature" class="form-control ">
-                        <option value="option1"> 1</option>
-                        <option value="option2"> 2</option>
+                    <label for="project-nature">Project Nature</label>
+                    <select  id="project-nature" class="form-control" name="projectNature">
+                        <option value="Greenfield"> Greenfield </option>
+                        <option value="Brownfield"> Brownfield </option>
                     </select>
                 </div>
             </div>
 
+            <div class="row">
+                    <div class="col">
+                        <label for="leader">Leader</label>
+                        <input type="email" class="form-control" id="leader" name="leader" placeholder="Email of Project Leader">
+                    </div>
+            </div>
+
+            <div id="emailInputs">
+
+                    <div>
+                        <label for="members">Members</label>
+                        <span style="background-color: #007bff; padding: 5px; border-radius: 5px;">
+                            <button type="button"  onclick="addEmailInput()" style="background-color: transparent; color: white; border: none; cursor: pointer;"> Add Email
+                            </button>
+                        </span>
+                    </div>
+                    <div>
+                        <input type="email" name="members[]" id="members" placeholder="Email of Member">
+                    </div>
+            </div>
+            <div style="margin-bottom: 20px;"></div>
+
             <button type="submit" class="custom-btn">Create</button>
         </form>
+
     </section>
 
 </body>
 
 </html>
+
+<script>
+    function addEmailInput() {
+        var emailInputs = document.getElementById("emailInputs");
+        var newInput = document.createElement("input");
+        newInput.type = "email";
+        newInput.name = "members[]";
+        newInput.placeholder = "Email of Member";
+        emailInputs.appendChild(newInput);
+    }
+</script>
+
 {{end}}

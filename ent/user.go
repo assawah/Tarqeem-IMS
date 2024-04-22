@@ -19,18 +19,20 @@ type User struct {
 	ID int `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// Passowrd holds the value of the "passowrd" field.
-	Passowrd string `json:"-"`
+	// Password holds the value of the "password" field.
+	Password string `json:"password,omitempty"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// Organization holds the value of the "Organization" field.
-	Organization string `json:"Organization,omitempty"`
-	// Title holds the value of the "Title" field.
-	Title string `json:"Title,omitempty"`
+	// Organization holds the value of the "organization" field.
+	Organization string `json:"organization,omitempty"`
+	// Title holds the value of the "title" field.
+	Title string `json:"title,omitempty"`
+	// IsActive holds the value of the "is_active" field.
+	IsActive bool `json:"is_active,omitempty"`
 	// Type holds the value of the "type" field.
 	Type user.Type `json:"type,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -43,9 +45,13 @@ type User struct {
 type UserEdges struct {
 	// Projects holds the value of the projects edge.
 	Projects []*Project `json:"projects,omitempty"`
+	// LeaderOfProject holds the value of the leader_of_project edge.
+	LeaderOfProject []*Project `json:"leader_of_project,omitempty"`
+	// CoordinatorOfProject holds the value of the coordinator_of_project edge.
+	CoordinatorOfProject []*Project `json:"coordinator_of_project,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [3]bool
 }
 
 // ProjectsOrErr returns the Projects value or an error if the edge
@@ -57,14 +63,34 @@ func (e UserEdges) ProjectsOrErr() ([]*Project, error) {
 	return nil, &NotLoadedError{edge: "projects"}
 }
 
+// LeaderOfProjectOrErr returns the LeaderOfProject value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) LeaderOfProjectOrErr() ([]*Project, error) {
+	if e.loadedTypes[1] {
+		return e.LeaderOfProject, nil
+	}
+	return nil, &NotLoadedError{edge: "leader_of_project"}
+}
+
+// CoordinatorOfProjectOrErr returns the CoordinatorOfProject value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) CoordinatorOfProjectOrErr() ([]*Project, error) {
+	if e.loadedTypes[2] {
+		return e.CoordinatorOfProject, nil
+	}
+	return nil, &NotLoadedError{edge: "coordinator_of_project"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case user.FieldIsActive:
+			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldName, user.FieldPassowrd, user.FieldEmail, user.FieldPhone, user.FieldOrganization, user.FieldTitle, user.FieldType:
+		case user.FieldName, user.FieldPassword, user.FieldEmail, user.FieldPhone, user.FieldOrganization, user.FieldTitle, user.FieldType:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
@@ -95,11 +121,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Name = value.String
 			}
-		case user.FieldPassowrd:
+		case user.FieldPassword:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field passowrd", values[i])
+				return fmt.Errorf("unexpected type %T for field password", values[i])
 			} else if value.Valid {
-				u.Passowrd = value.String
+				u.Password = value.String
 			}
 		case user.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -121,15 +147,21 @@ func (u *User) assignValues(columns []string, values []any) error {
 			}
 		case user.FieldOrganization:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field Organization", values[i])
+				return fmt.Errorf("unexpected type %T for field organization", values[i])
 			} else if value.Valid {
 				u.Organization = value.String
 			}
 		case user.FieldTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field Title", values[i])
+				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
 				u.Title = value.String
+			}
+		case user.FieldIsActive:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_active", values[i])
+			} else if value.Valid {
+				u.IsActive = value.Bool
 			}
 		case user.FieldType:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -153,6 +185,16 @@ func (u *User) Value(name string) (ent.Value, error) {
 // QueryProjects queries the "projects" edge of the User entity.
 func (u *User) QueryProjects() *ProjectQuery {
 	return NewUserClient(u.config).QueryProjects(u)
+}
+
+// QueryLeaderOfProject queries the "leader_of_project" edge of the User entity.
+func (u *User) QueryLeaderOfProject() *ProjectQuery {
+	return NewUserClient(u.config).QueryLeaderOfProject(u)
+}
+
+// QueryCoordinatorOfProject queries the "coordinator_of_project" edge of the User entity.
+func (u *User) QueryCoordinatorOfProject() *ProjectQuery {
+	return NewUserClient(u.config).QueryCoordinatorOfProject(u)
 }
 
 // Update returns a builder for updating this User.
@@ -181,7 +223,8 @@ func (u *User) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(u.Name)
 	builder.WriteString(", ")
-	builder.WriteString("passowrd=<sensitive>")
+	builder.WriteString("password=")
+	builder.WriteString(u.Password)
 	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(u.Email)
@@ -192,11 +235,14 @@ func (u *User) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(u.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("Organization=")
+	builder.WriteString("organization=")
 	builder.WriteString(u.Organization)
 	builder.WriteString(", ")
-	builder.WriteString("Title=")
+	builder.WriteString("title=")
 	builder.WriteString(u.Title)
+	builder.WriteString(", ")
+	builder.WriteString("is_active=")
+	builder.WriteString(fmt.Sprintf("%v", u.IsActive))
 	builder.WriteString(", ")
 	builder.WriteString("type=")
 	builder.WriteString(fmt.Sprintf("%v", u.Type))

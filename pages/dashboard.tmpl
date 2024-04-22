@@ -1,10 +1,33 @@
 {{define "dashboard"}}
 <html lang='en'>
 {{template "head" .}}
-
+<head>
+    <title>Project List</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center; /* Center the title */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
 <body>
     {{template "header" .}}
-    <h3>Hello, {{.Name}}</h3>
+    <h3>Hello, {{.User.Name}}</h3>
     {{template "interface-table" .}}
     {{template "footer" .}}
 </body>
