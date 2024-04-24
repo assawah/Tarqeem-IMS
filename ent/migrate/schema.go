@@ -8,6 +8,18 @@ import (
 )
 
 var (
+	// CommentsColumns holds the columns for the "comments" table.
+	CommentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "content", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+	}
+	// CommentsTable holds the schema information for the "comments" table.
+	CommentsTable = &schema.Table{
+		Name:       "comments",
+		Columns:    CommentsColumns,
+		PrimaryKey: []*schema.Column{CommentsColumns[0]},
+	}
 	// DisciplinesColumns holds the columns for the "disciplines" table.
 	DisciplinesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -18,6 +30,43 @@ var (
 		Name:       "disciplines",
 		Columns:    DisciplinesColumns,
 		PrimaryKey: []*schema.Column{DisciplinesColumns[0]},
+	}
+	// FilesColumns holds the columns for the "files" table.
+	FilesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "file_path", Type: field.TypeString, Nullable: true},
+		{Name: "file_name", Type: field.TypeString, Nullable: true},
+		{Name: "file_size", Type: field.TypeInt64, Nullable: true, Default: 0},
+	}
+	// FilesTable holds the schema information for the "files" table.
+	FilesTable = &schema.Table{
+		Name:       "files",
+		Columns:    FilesColumns,
+		PrimaryKey: []*schema.Column{FilesColumns[0]},
+	}
+	// IssuesColumns holds the columns for the "issues" table.
+	IssuesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "title", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString},
+		{Name: "creator", Type: field.TypeString, Default: "guest"},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"Pending", "Approved", "Declined"}, Default: "Pending"},
+		{Name: "date", Type: field.TypeString, Default: "24 Apr 2024"},
+		{Name: "project_issues", Type: field.TypeInt, Nullable: true},
+	}
+	// IssuesTable holds the schema information for the "issues" table.
+	IssuesTable = &schema.Table{
+		Name:       "issues",
+		Columns:    IssuesColumns,
+		PrimaryKey: []*schema.Column{IssuesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "issues_projects_issues",
+				Columns:    []*schema.Column{IssuesColumns[6]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// ProjectsColumns holds the columns for the "projects" table.
 	ProjectsColumns = []*schema.Column{
@@ -45,10 +94,10 @@ var (
 		{Name: "name", Type: field.TypeString, Nullable: true},
 		{Name: "password", Type: field.TypeString, Nullable: true},
 		{Name: "email", Type: field.TypeString, Unique: true},
+		{Name: "username", Type: field.TypeString, Unique: true},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "organization", Type: field.TypeString, Nullable: true},
-		{Name: "title", Type: field.TypeString, Nullable: true},
 		{Name: "is_active", Type: field.TypeBool, Default: true},
 		{Name: "type", Type: field.TypeEnum, Enums: []string{"coordinator", "member"}},
 	}
@@ -57,6 +106,56 @@ var (
 		Name:       "users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	}
+	// IssueCommentsColumns holds the columns for the "issue_comments" table.
+	IssueCommentsColumns = []*schema.Column{
+		{Name: "issue_id", Type: field.TypeInt},
+		{Name: "comment_id", Type: field.TypeInt},
+	}
+	// IssueCommentsTable holds the schema information for the "issue_comments" table.
+	IssueCommentsTable = &schema.Table{
+		Name:       "issue_comments",
+		Columns:    IssueCommentsColumns,
+		PrimaryKey: []*schema.Column{IssueCommentsColumns[0], IssueCommentsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "issue_comments_issue_id",
+				Columns:    []*schema.Column{IssueCommentsColumns[0]},
+				RefColumns: []*schema.Column{IssuesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "issue_comments_comment_id",
+				Columns:    []*schema.Column{IssueCommentsColumns[1]},
+				RefColumns: []*schema.Column{CommentsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// IssueFilesColumns holds the columns for the "issue_files" table.
+	IssueFilesColumns = []*schema.Column{
+		{Name: "issue_id", Type: field.TypeInt},
+		{Name: "file_id", Type: field.TypeInt},
+	}
+	// IssueFilesTable holds the schema information for the "issue_files" table.
+	IssueFilesTable = &schema.Table{
+		Name:       "issue_files",
+		Columns:    IssueFilesColumns,
+		PrimaryKey: []*schema.Column{IssueFilesColumns[0], IssueFilesColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "issue_files_issue_id",
+				Columns:    []*schema.Column{IssueFilesColumns[0]},
+				RefColumns: []*schema.Column{IssuesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "issue_files_file_id",
+				Columns:    []*schema.Column{IssueFilesColumns[1]},
+				RefColumns: []*schema.Column{FilesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
 	}
 	// ProjectMembersColumns holds the columns for the "project_members" table.
 	ProjectMembersColumns = []*schema.Column{
@@ -135,9 +234,14 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		CommentsTable,
 		DisciplinesTable,
+		FilesTable,
+		IssuesTable,
 		ProjectsTable,
 		UsersTable,
+		IssueCommentsTable,
+		IssueFilesTable,
 		ProjectMembersTable,
 		UserLeaderOfProjectTable,
 		UserCoordinatorOfProjectTable,
@@ -145,6 +249,11 @@ var (
 )
 
 func init() {
+	IssuesTable.ForeignKeys[0].RefTable = ProjectsTable
+	IssueCommentsTable.ForeignKeys[0].RefTable = IssuesTable
+	IssueCommentsTable.ForeignKeys[1].RefTable = CommentsTable
+	IssueFilesTable.ForeignKeys[0].RefTable = IssuesTable
+	IssueFilesTable.ForeignKeys[1].RefTable = FilesTable
 	ProjectMembersTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProjectMembersTable.ForeignKeys[1].RefTable = UsersTable
 	UserLeaderOfProjectTable.ForeignKeys[0].RefTable = UsersTable

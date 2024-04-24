@@ -55,6 +55,12 @@ func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	return uc
 }
 
+// SetUsername sets the "username" field.
+func (uc *UserCreate) SetUsername(s string) *UserCreate {
+	uc.mutation.SetUsername(s)
+	return uc
+}
+
 // SetPhone sets the "phone" field.
 func (uc *UserCreate) SetPhone(s string) *UserCreate {
 	uc.mutation.SetPhone(s)
@@ -93,20 +99,6 @@ func (uc *UserCreate) SetOrganization(s string) *UserCreate {
 func (uc *UserCreate) SetNillableOrganization(s *string) *UserCreate {
 	if s != nil {
 		uc.SetOrganization(*s)
-	}
-	return uc
-}
-
-// SetTitle sets the "title" field.
-func (uc *UserCreate) SetTitle(s string) *UserCreate {
-	uc.mutation.SetTitle(s)
-	return uc
-}
-
-// SetNillableTitle sets the "title" field if the given value is not nil.
-func (uc *UserCreate) SetNillableTitle(s *string) *UserCreate {
-	if s != nil {
-		uc.SetTitle(*s)
 	}
 	return uc
 }
@@ -226,6 +218,9 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
 	}
+	if _, ok := uc.mutation.Username(); !ok {
+		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
+	}
 	if _, ok := uc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "User.created_at"`)}
 	}
@@ -278,6 +273,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 		_node.Email = value
 	}
+	if value, ok := uc.mutation.Username(); ok {
+		_spec.SetField(user.FieldUsername, field.TypeString, value)
+		_node.Username = value
+	}
 	if value, ok := uc.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 		_node.Phone = value
@@ -289,10 +288,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Organization(); ok {
 		_spec.SetField(user.FieldOrganization, field.TypeString, value)
 		_node.Organization = value
-	}
-	if value, ok := uc.mutation.Title(); ok {
-		_spec.SetField(user.FieldTitle, field.TypeString, value)
-		_node.Title = value
 	}
 	if value, ok := uc.mutation.IsActive(); ok {
 		_spec.SetField(user.FieldIsActive, field.TypeBool, value)

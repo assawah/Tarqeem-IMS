@@ -1,134 +1,138 @@
 {{define "project"}}
+<html lang='en'>
 
-<html>
 {{template "head" .}}
 
+<head>
+    <link rel="stylesheet" href="/project.css">
+</head>
 <body>
-    <section class="project">
-        <form action="/create-project"  method="post" id="project">
-            <h1>create a new project</h1>
-            <div class="row">
-                <div class="col">
-                    <label for="project-name">Project Name</label>
-                    <input type="text" class="form-control" id="project-name" name="name" placeholder="Project Name"
-                        aria-label="Project Name">
-                </div>
-                <div class="col">
-                    <label for="project-type">Project Type</label>
-                    <select id="project-type" class="form-control" name="type">
-                        <option value="Chemical Manufacturing">Chemical Manufacturing</option>
-                        <option value="Stadium Musuem">Stadium Musuem</option>
-                        <option value="Metal refining or processing">Metal refining/processing</option>
-                        <option value="Oil exploration or production">Oil exploration/production</option>
-                        <option value="Oil refining">Oil refining</option>
-                        <option value="Natural gas processing">Natural gas processing</option>
-                        <option value="Highway">Highway</option>
-                        <option value="Power generation">Power generation</option>
-                    </select>
+    {{template "header" .}}
+
+     <div class="container">
+         <h1 class="styled-heading" > Issues for <span class="bold-word"> {{ .Project.Name }} </span> Project</h1>
+           <!-- Create Issue button -->
+        <button class="create-issue-btn" onclick="openModal()">Create Issue</button>
+        <div class="space-below-button"></div>
+
+        {{range .Issues}}
+           <div class="issue">
+               <div class="issue-header">
+                   <div class="issue-title">{{.Title}}</div>
+                   <div class="issue-meta">Opened by {{.Creator}} on {{.Date}}</div>
+               </div>
+               <div class="issue-body">{{.Description}}</div>
+           </div>
+        {{end}}
+
+        <div class="not-modal-overlay" id="modalOverlay">
+          <div class="not-modal-content">
+            <div class="success-message" id="successMessage" style="display: none;"></div>
+            <div class="error-message" id="errorMessage" style="display: none;"></div>
+          </div>
+        </div>
+
+
+
+        <!-- Modal for creating new issues -->
+        <div id="createIssueModal" class="modal">
+
+
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+
+                <div class="create-issue-form">
+                    <h2>Create New Issue</h2>
+                    <input type="text" id="issue-title" placeholder="Enter issue title" required>
+                    <textarea id="issue-description" placeholder="Enter issue description"></textarea>
+                    <input type="file" id="issue-file" accept=".pdf,.doc,.docx" multiple>
+                    <button onclick="createIssue()">Create Issue</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <label for="project-delivery">Project Delivery Strategies</label>
-                    <select id="project-delivery" class="form-control" name="deliveryStrategy">
-                        <option value="Waterfall">Waterfall</option>
-                        <option value="Agile">Agile </option>
-                        <option value="Lean">Lean</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="project-current-state">Project Current State</label>
-                    <select id="project-current-state" class="form-control", name="currentState">
-                        <option value="Front-end planning">Front-end planning</option>
-                        <option value="Design">In Design</option>
-                        <option value="Procurement">Procurement</option>
-                        <option value="Construction">Construction</option>
-                        <option value="Construction">Construction</option>
-                        <option value="Start-up">Start-up</option>
-                        <option value="Completed">Completed</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label for="project-contracting-strategies">Project Contracting Strategies</label>
-                    <select id="project-contracting-strategies" class="form-control" name="contractingStrategy">
-                        <option value="Fixed Price">Fixed Price</option>
-                        <option value="Unit Price">Unit Price</option>
-                        <option value="Maximum Price">Maximum Price</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="dollarValue">Project Dollar Value:</label>
-                    <input type="number" class="form-control" id="dollarValue" name="dollarValue" placeholder="$">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label for="project-location">Location</label>
-                    <input type="text" class="form-control" id="project-location" name="location" placeholder="Location">
-                </div>
-                <div class="col">
-                    <label for="execution-locations">Project Execution Location</label>
-                    <input type="text" class="form-control" id="execution-locations" name="executionLocation" placeholder="Location">
+        </div>
+    </div>
 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label for="owners">Owners</label>
-                    <input type="text" class="form-control" id="owners" name="owner" placeholder="Name of Owner">
+    <!-- Add any additional scripts here -->
+    <script>
+        function openModal() {
+            document.getElementById("createIssueModal").style.display = "block";
+        }
 
-                </div>
-                <div class="col">
-                    <label for="project-nature">Project Nature</label>
-                    <select  id="project-nature" class="form-control" name="projectNature">
-                        <option value="Greenfield"> Greenfield </option>
-                        <option value="Brownfield"> Brownfield </option>
-                    </select>
-                </div>
-            </div>
+        function closeModal() {
+            document.getElementById("createIssueModal").style.display = "none";
+        }
 
-            <div class="row">
-                    <div class="col">
-                        <label for="leader">Leader</label>
-                        <input type="email" class="form-control" id="leader" name="leader" placeholder="Email of Project Leader">
-                    </div>
-            </div>
+        function createIssue() {
+            // Retrieve issue details from input fields
+            var issueTitle = document.getElementById("issue-title").value;
+            var issueDescription = document.getElementById("issue-description").value;
+            var issueFiles = document.getElementById("issue-file").files;
+             if (issueTitle === "") {
+                document.getElementById("errorMessage").innerText = "Title can not be empty";
+                document.getElementById("modalOverlay").style.display = "flex";
+                document.getElementById("errorMessage").style.display = "block"; // Show error message
+                 setTimeout(function() {
+                    document.getElementById("errorMessage").style.display = "none";
+                    document.getElementById("modalOverlay").style.display = "none";// Hide success message
+                }, 2000);
+                return;
+            }
 
-            <div id="emailInputs">
 
-                    <div>
-                        <label for="members">Members</label>
-                        <span style="background-color: #007bff; padding: 5px; border-radius: 5px;">
-                            <button type="button"  onclick="addEmailInput()" style="background-color: transparent; color: white; border: none; cursor: pointer;"> Add Email
-                            </button>
-                        </span>
-                    </div>
-                    <div>
-                        <input type="email" name="members[]" id="members" placeholder="Email of Member">
-                    </div>
-            </div>
-            <div style="margin-bottom: 20px;"></div>
+             // Create FormData object to send data with files
+            var formData = new FormData();
+            formData.append("title", issueTitle);
+            formData.append("description", issueDescription);
+            for (var i = 0; i < issueFiles.length; i++) {
+                formData.append("files[]", issueFiles[i]);
+            }
 
-            <button type="submit" class="custom-btn">Create</button>
-        </form>
+            // Create XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
 
-    </section>
+            // Define POST request parameters
+            xhr.open("POST", "/create-issue", true);
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
+            // Set up callback function for when the request completes
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Success
+
+                        var response = JSON.parse(xhr.responseText);
+                        document.getElementById("modalOverlay").style.display = "flex";
+                        document.getElementById("successMessage").innerText = response.message;
+                        document.getElementById("successMessage").style.display = "block"; // Show success message
+                        setTimeout(function() {
+                            document.getElementById("successMessage").style.display = "none";
+                            document.getElementById("modalOverlay").style.display = "none";// Hide success message
+                            closeModal(); // Close the modal
+                            window.location.reload();
+                            document.getElementById("create-issue-form").reset(); // Reset the form
+                        }, 3000);
+                    } else {
+                        // Error
+                        document.getElementById("modalOverlay").style.display = "flex";
+                        document.getElementById("errorMessage").innerText = "Failed to create issue. Please try again.";
+                        document.getElementById("errorMessage").style.display = "block"; // Show error message
+                         setTimeout(function() {
+
+                            document.getElementById("modalOverlay").style.display = "none";
+                            document.getElementById("errorMessage").style.display = "none"; // Hide success message
+                            closeModal(); // Close the modal
+                            document.getElementById("create-issue-form").reset(); // Reset the form
+                        }, 3000);
+                    }
+                }
+            };
+
+            // Send the request with the FormData object as the data
+            xhr.send(formData);
+        }
+    </script>
+    {{template "footer" .}}
 </body>
 
 </html>
-
-<script>
-    function addEmailInput() {
-        var emailInputs = document.getElementById("emailInputs");
-        var newInput = document.createElement("input");
-        newInput.type = "email";
-        newInput.name = "members[]";
-        newInput.placeholder = "Email of Member";
-        emailInputs.appendChild(newInput);
-    }
-</script>
-
 {{end}}

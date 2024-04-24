@@ -83,6 +83,20 @@ func (uu *UserUpdate) SetNillableEmail(s *string) *UserUpdate {
 	return uu
 }
 
+// SetUsername sets the "username" field.
+func (uu *UserUpdate) SetUsername(s string) *UserUpdate {
+	uu.mutation.SetUsername(s)
+	return uu
+}
+
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableUsername(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetUsername(*s)
+	}
+	return uu
+}
+
 // SetPhone sets the "phone" field.
 func (uu *UserUpdate) SetPhone(s string) *UserUpdate {
 	uu.mutation.SetPhone(s)
@@ -134,26 +148,6 @@ func (uu *UserUpdate) SetNillableOrganization(s *string) *UserUpdate {
 // ClearOrganization clears the value of the "organization" field.
 func (uu *UserUpdate) ClearOrganization() *UserUpdate {
 	uu.mutation.ClearOrganization()
-	return uu
-}
-
-// SetTitle sets the "title" field.
-func (uu *UserUpdate) SetTitle(s string) *UserUpdate {
-	uu.mutation.SetTitle(s)
-	return uu
-}
-
-// SetNillableTitle sets the "title" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableTitle(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetTitle(*s)
-	}
-	return uu
-}
-
-// ClearTitle clears the value of the "title" field.
-func (uu *UserUpdate) ClearTitle() *UserUpdate {
-	uu.mutation.ClearTitle()
 	return uu
 }
 
@@ -362,6 +356,9 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 	}
+	if value, ok := uu.mutation.Username(); ok {
+		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	}
 	if value, ok := uu.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
@@ -376,12 +373,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if uu.mutation.OrganizationCleared() {
 		_spec.ClearField(user.FieldOrganization, field.TypeString)
-	}
-	if value, ok := uu.mutation.Title(); ok {
-		_spec.SetField(user.FieldTitle, field.TypeString, value)
-	}
-	if uu.mutation.TitleCleared() {
-		_spec.ClearField(user.FieldTitle, field.TypeString)
 	}
 	if value, ok := uu.mutation.IsActive(); ok {
 		_spec.SetField(user.FieldIsActive, field.TypeBool, value)
@@ -598,6 +589,20 @@ func (uuo *UserUpdateOne) SetNillableEmail(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// SetUsername sets the "username" field.
+func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
+	uuo.mutation.SetUsername(s)
+	return uuo
+}
+
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableUsername(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetUsername(*s)
+	}
+	return uuo
+}
+
 // SetPhone sets the "phone" field.
 func (uuo *UserUpdateOne) SetPhone(s string) *UserUpdateOne {
 	uuo.mutation.SetPhone(s)
@@ -649,26 +654,6 @@ func (uuo *UserUpdateOne) SetNillableOrganization(s *string) *UserUpdateOne {
 // ClearOrganization clears the value of the "organization" field.
 func (uuo *UserUpdateOne) ClearOrganization() *UserUpdateOne {
 	uuo.mutation.ClearOrganization()
-	return uuo
-}
-
-// SetTitle sets the "title" field.
-func (uuo *UserUpdateOne) SetTitle(s string) *UserUpdateOne {
-	uuo.mutation.SetTitle(s)
-	return uuo
-}
-
-// SetNillableTitle sets the "title" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableTitle(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetTitle(*s)
-	}
-	return uuo
-}
-
-// ClearTitle clears the value of the "title" field.
-func (uuo *UserUpdateOne) ClearTitle() *UserUpdateOne {
-	uuo.mutation.ClearTitle()
 	return uuo
 }
 
@@ -907,6 +892,9 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 	}
+	if value, ok := uuo.mutation.Username(); ok {
+		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	}
 	if value, ok := uuo.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
@@ -921,12 +909,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if uuo.mutation.OrganizationCleared() {
 		_spec.ClearField(user.FieldOrganization, field.TypeString)
-	}
-	if value, ok := uuo.mutation.Title(); ok {
-		_spec.SetField(user.FieldTitle, field.TypeString, value)
-	}
-	if uuo.mutation.TitleCleared() {
-		_spec.ClearField(user.FieldTitle, field.TypeString)
 	}
 	if value, ok := uuo.mutation.IsActive(); ok {
 		_spec.SetField(user.FieldIsActive, field.TypeBool, value)

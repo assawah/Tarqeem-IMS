@@ -12,7 +12,10 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/tarqeem/ims/ent/comment"
 	"github.com/tarqeem/ims/ent/discipline"
+	"github.com/tarqeem/ims/ent/file"
+	"github.com/tarqeem/ims/ent/issue"
 	"github.com/tarqeem/ims/ent/project"
 	"github.com/tarqeem/ims/ent/user"
 )
@@ -75,7 +78,10 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
+			comment.Table:    comment.ValidColumn,
 			discipline.Table: discipline.ValidColumn,
+			file.Table:       file.ValidColumn,
+			issue.Table:      issue.ValidColumn,
 			project.Table:    project.ValidColumn,
 			user.Table:       user.ValidColumn,
 		})

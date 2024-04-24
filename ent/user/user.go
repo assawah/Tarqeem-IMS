@@ -21,14 +21,14 @@ const (
 	FieldPassword = "password"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// FieldUsername holds the string denoting the username field in the database.
+	FieldUsername = "username"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
 	// FieldOrganization holds the string denoting the organization field in the database.
 	FieldOrganization = "organization"
-	// FieldTitle holds the string denoting the title field in the database.
-	FieldTitle = "title"
 	// FieldIsActive holds the string denoting the is_active field in the database.
 	FieldIsActive = "is_active"
 	// FieldType holds the string denoting the type field in the database.
@@ -64,10 +64,10 @@ var Columns = []string{
 	FieldName,
 	FieldPassword,
 	FieldEmail,
+	FieldUsername,
 	FieldPhone,
 	FieldCreatedAt,
 	FieldOrganization,
-	FieldTitle,
 	FieldIsActive,
 	FieldType,
 }
@@ -147,6 +147,11 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }
 
+// ByUsername orders the results by the username field.
+func ByUsername(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUsername, opts...).ToFunc()
+}
+
 // ByPhone orders the results by the phone field.
 func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
@@ -160,11 +165,6 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByOrganization orders the results by the organization field.
 func ByOrganization(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOrganization, opts...).ToFunc()
-}
-
-// ByTitle orders the results by the title field.
-func ByTitle(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTitle, opts...).ToFunc()
 }
 
 // ByIsActive orders the results by the is_active field.

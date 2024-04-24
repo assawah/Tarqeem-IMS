@@ -89,11 +89,10 @@ func main() {
 	dashboard()
 	login()
 
-	E.GET("/project", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "project", nil)
-	})
-
 	createProject()
+	projectView()
+	createIssue()
+	registerIssueRoutes()
 
 	E.GET("/404", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "notFound", nil)

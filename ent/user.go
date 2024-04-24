@@ -23,14 +23,14 @@ type User struct {
 	Password string `json:"password,omitempty"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
+	// Username holds the value of the "username" field.
+	Username string `json:"username,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// Organization holds the value of the "organization" field.
 	Organization string `json:"organization,omitempty"`
-	// Title holds the value of the "title" field.
-	Title string `json:"title,omitempty"`
 	// IsActive holds the value of the "is_active" field.
 	IsActive bool `json:"is_active,omitempty"`
 	// Type holds the value of the "type" field.
@@ -90,7 +90,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldName, user.FieldPassword, user.FieldEmail, user.FieldPhone, user.FieldOrganization, user.FieldTitle, user.FieldType:
+		case user.FieldName, user.FieldPassword, user.FieldEmail, user.FieldUsername, user.FieldPhone, user.FieldOrganization, user.FieldType:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
@@ -133,6 +133,12 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Email = value.String
 			}
+		case user.FieldUsername:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field username", values[i])
+			} else if value.Valid {
+				u.Username = value.String
+			}
 		case user.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field phone", values[i])
@@ -150,12 +156,6 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field organization", values[i])
 			} else if value.Valid {
 				u.Organization = value.String
-			}
-		case user.FieldTitle:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field title", values[i])
-			} else if value.Valid {
-				u.Title = value.String
 			}
 		case user.FieldIsActive:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -229,6 +229,9 @@ func (u *User) String() string {
 	builder.WriteString("email=")
 	builder.WriteString(u.Email)
 	builder.WriteString(", ")
+	builder.WriteString("username=")
+	builder.WriteString(u.Username)
+	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(u.Phone)
 	builder.WriteString(", ")
@@ -237,9 +240,6 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("organization=")
 	builder.WriteString(u.Organization)
-	builder.WriteString(", ")
-	builder.WriteString("title=")
-	builder.WriteString(u.Title)
 	builder.WriteString(", ")
 	builder.WriteString("is_active=")
 	builder.WriteString(fmt.Sprintf("%v", u.IsActive))

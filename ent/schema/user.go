@@ -18,10 +18,10 @@ func (User) Fields() []ent.Field {
 		field.String("name").Optional(),
 		field.String("password").Optional(),
 		field.String("email").Unique(),
+		field.String("username").Unique(),
 		field.String("phone").Optional(),
 		Created_at(),
 		field.String("organization").Optional(),
-		field.String("title").Optional(),
 		field.Bool("is_active").Default(true),
 		field.Enum("type").Values("coordinator", "member"),
 	}

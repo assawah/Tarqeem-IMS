@@ -6,8 +6,17 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// Comment is the predicate function for comment builders.
+type Comment func(*sql.Selector)
+
 // Discipline is the predicate function for discipline builders.
 type Discipline func(*sql.Selector)
+
+// File is the predicate function for file builders.
+type File func(*sql.Selector)
+
+// Issue is the predicate function for issue builders.
+type Issue func(*sql.Selector)
 
 // Project is the predicate function for project builders.
 type Project func(*sql.Selector)
