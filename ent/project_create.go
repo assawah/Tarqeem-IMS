@@ -9,6 +9,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/tarqeem/ims/ent/issue"
 	"github.com/tarqeem/ims/ent/project"
 	"github.com/tarqeem/ims/ent/user"
 )
@@ -123,6 +124,21 @@ func (pc *ProjectCreate) AddMembers(u ...*User) *ProjectCreate {
 		ids[i] = u[i].ID
 	}
 	return pc.AddMemberIDs(ids...)
+}
+
+// AddIssueIDs adds the "issues" edge to the Issue entity by IDs.
+func (pc *ProjectCreate) AddIssueIDs(ids ...int) *ProjectCreate {
+	pc.mutation.AddIssueIDs(ids...)
+	return pc
+}
+
+// AddIssues adds the "issues" edges to the Issue entity.
+func (pc *ProjectCreate) AddIssues(i ...*Issue) *ProjectCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return pc.AddIssueIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -326,6 +342,22 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.IssuesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.IssuesTable,
+			Columns: []string{project.IssuesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(issue.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

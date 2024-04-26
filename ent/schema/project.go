@@ -39,5 +39,6 @@ func (Project) Edges() []ent.Edge {
 		edge.From("coordinator", User.Type).
 			Ref("coordinator_of_project"),
 		edge.To("members", User.Type),
+		edge.To("issues", Issue.Type),
 	}
 }

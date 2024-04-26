@@ -14,7 +14,7 @@ var RegisterEnd string = "/register"
 type UserDTO struct {
 	Name         string `form:"name"`
 	Email        string `form:"email"`
-	Title        string `form:"title"`
+	Username     string `form:"username"`
 	Phone        string `form:"phone"`
 	Password     string `form:"password"`
 	Organization string `form:"organization"`
@@ -61,7 +61,7 @@ func register() {
 		u, err := Client.User.Create().
 			SetName(r.Name).
 			SetEmail(r.Email).
-			SetTitle(r.Title).
+			SetUsername(r.Username).
 			SetPhone(r.Phone).
 			SetPassword(r.Password).
 			SetOrganization(r.Organization).

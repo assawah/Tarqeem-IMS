@@ -1,0 +1,154 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f6f8fa;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    position: relative;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+}
+
+.styled-heading {
+    font-family: Arial, sans-serif; /* Choose your desired font */
+    font-size: 36px; /* Adjust the font size */
+    color: #333; /* Choose your desired text color */
+    text-align: left; /* Adjust text alignment as needed */
+    margin-top: 20px; /* Adjust top margin as needed */
+}
+
+.bold-word {
+    color: blue;
+    font-weight: bold;
+}
+
+.issue {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 5px;
+}
+.issue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.issue-title {
+    font-size: 24px; /* Larger font size for title */
+    font-weight: bold; /* Bold font weight for title */
+    color: #0366d6; /* Custom color for title */
+}
+.issue-meta {
+    font-size: 14px;
+    color: #586069;
+}
+.issue-body {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.create-issue-btn {
+    position: absolute;
+    background-color: #28a745;
+    padding:  10px 20px;
+    color: #fff;
+    top: 20px; /* Distance from the top of the viewport */
+    right: 20px;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.space-below-button {
+    margin-top: 30px; /* Adjust margin as needed */
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    overflow: auto;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    border-radius: 5px;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.create-issue-form textarea,
+.create-issue-form input[type="text"],
+.create-issue-form input[type="file"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.create-issue-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.not-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of other content */
+}
+
+/* Modal content styles */
+.not-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Success and error message styles */
+.success-message, .error-message {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.success-message {
+    color: #28a745; /* Green color for success */
+}
+
+.error-message {
+    color: #dc3545; /* Red color for error */
+}

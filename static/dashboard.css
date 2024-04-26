@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+.table-container {
+    margin: 0 auto; /* This centers the div horizontally */
+    width: 70%;
+    padding-bottom: 50px;
+    position: relative;
+}
+h3 {
+    padding-top: 20px;
+    padding-left: 10px;
+    text-align: left;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    padding-top: 20px;
+}
+th, td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+.styled-heading {
+    font-family: Arial, sans-serif; /* Choose your desired font */
+    font-size: 36px; /* Adjust the font size */
+    color: #333; /* Choose your desired text color */
+    text-align: left; /* Adjust text alignment as needed */
+    margin-top: 20px; /* Adjust top margin as needed */
+}
+
+/* Style for the green button */
+.green-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px; /* Adjust top margin as needed */
+    margin-right: 10px; /* Adjust right margin as needed */
+    background-color: #4CAF50; /* Green background color */
+    border: none;
+    color: white;
+    padding: 12px 22px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+
+/* Hover effect for the button */
+.green-button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+}
+

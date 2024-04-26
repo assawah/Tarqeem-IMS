@@ -50,9 +50,11 @@ type ProjectEdges struct {
 	Coordinator []*User `json:"coordinator,omitempty"`
 	// Members holds the value of the members edge.
 	Members []*User `json:"members,omitempty"`
+	// Issues holds the value of the issues edge.
+	Issues []*Issue `json:"issues,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 }
 
 // LeaderOrErr returns the Leader value or an error if the edge
@@ -80,6 +82,15 @@ func (e ProjectEdges) MembersOrErr() ([]*User, error) {
 		return e.Members, nil
 	}
 	return nil, &NotLoadedError{edge: "members"}
+}
+
+// IssuesOrErr returns the Issues value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectEdges) IssuesOrErr() ([]*Issue, error) {
+	if e.loadedTypes[3] {
+		return e.Issues, nil
+	}
+	return nil, &NotLoadedError{edge: "issues"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -198,6 +209,11 @@ func (pr *Project) QueryCoordinator() *UserQuery {
 // QueryMembers queries the "members" edge of the Project entity.
 func (pr *Project) QueryMembers() *UserQuery {
 	return NewProjectClient(pr.config).QueryMembers(pr)
+}
+
+// QueryIssues queries the "issues" edge of the Project entity.
+func (pr *Project) QueryIssues() *IssueQuery {
+	return NewProjectClient(pr.config).QueryIssues(pr)
 }
 
 // Update returns a builder for updating this Project.

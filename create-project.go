@@ -12,7 +12,7 @@ import (
 
 var CreateProjectEnd = "/create-project"
 
-type ProjectDTO struct {
+type CreateProjectDTO struct {
 	Name                string `form:"name"`
 	Owner               string `form:"owner"`
 	Location            string `form:"location"`
@@ -32,11 +32,15 @@ type ProjectDTO struct {
 }
 
 func createProject() {
+	E.GET("/create-project", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "create-project", nil)
+	})
+
 	E.POST(CreateProjectEnd, func(c echo.Context) error {
 
 		p := "success"
 
-		r := &ProjectDTO{}
+		r := &CreateProjectDTO{}
 		if err := c.Bind(r); err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
@@ -57,23 +61,23 @@ func createProject() {
 		if err != nil {
 			fmt.Print("Error creating project: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
-				&ProjectDTO{Err: err.Error()})
+				&CreateProjectDTO{Err: err.Error()})
 		}
 		if err = addCoordinator(c, proj); err != nil {
 			fmt.Print("Error adding coordinator: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
-				&ProjectDTO{Err: err.Error()})
+				&CreateProjectDTO{Err: err.Error()})
 		}
 		if err = addLeader(c, proj, r.Leader); err != nil {
 			fmt.Print("Error adding leader: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
-				&ProjectDTO{Err: err.Error()})
+				&CreateProjectDTO{Err: err.Error()})
 		}
 		r.Members = append(r.Members, r.Leader)
 		if err = addMembers(c, proj, r.Members); err != nil {
 			fmt.Print("Error adding members: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
-				&ProjectDTO{Err: err.Error()})
+				&CreateProjectDTO{Err: err.Error()})
 		}
 
 		err = c.Render(http.StatusOK, p, nil)
@@ -86,16 +90,10 @@ func createProject() {
 }
 
 func addCoordinator(c echo.Context, proj *ent.Project) error {
-	id, err := authenticated(c)
+	u, err := getCurrentUserID(c)
 	if err != nil {
-		return c.String(http.StatusUnauthorized, "unauthorized")
-	}
-	u, err := Client.User.Query().Where(user.ID(id)).Only(c.Request().Context())
-	if err != nil {
-		E.Logger.Error(err)
 		return err
 	}
-
 	if _, err := proj.Update().AddCoordinator(u).Save(c.Request().Context()); err != nil {
 		return err
 	}
@@ -135,6 +133,7 @@ func ensureUser(c echo.Context, email string) (*ent.User, error) {
 	if ent.IsNotFound(err) {
 		u, err = Client.User.Create().
 			SetEmail(email).
+			SetUsername(fmt.Sprintf("user-%s", randSeq(4))).
 			SetIsActive(false).
 			SetType(user.TypeMember).Save(c.Request().Context())
 		if err != nil {

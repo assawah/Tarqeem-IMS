@@ -2,33 +2,43 @@
 <html lang='en'>
 {{template "head" .}}
 <head>
-    <title>Project List</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            text-align: center; /* Center the title */
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+     <link rel="stylesheet" href="/dashboard.css">
 </head>
 <body>
     {{template "header" .}}
-    <h3>Hello, {{.User.Name}}</h3>
-    {{template "interface-table" .}}
+    <h3 class="styled-heading">  Hello, {{.User.Name}}</h3>
+    <div class="dashboard">
+        <div class="table-container">
+             <h3>Projects</h3>
+             {{ if eq .User.Type "coordinator" }}
+
+              <button class="green-button" onclick="window.location.href='/create-project?t=c';">
+              {{message "create_project"}}
+              </button>
+
+             {{ end }}
+             <table style="width: 100%;">
+                   <thead>
+                       <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>State</th>
+                           <th>Project Nature</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       {{range .Projects}}
+                       <tr>
+                           <td> <a href="/project?name={{.Name}}"> {{.Name}}</td>
+                           <td>{{.Type}}</td>
+                           <td>{{.State}}</td>
+                           <td>{{.ProjectNature}}</td>
+                       </tr>
+                       {{end}}
+                   </tbody>
+               </table>
+          </div>
+    </div>
     {{template "footer" .}}
 </body>
 

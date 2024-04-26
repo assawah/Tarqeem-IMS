@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/tarqeem/ims/ent/issue"
 	"github.com/tarqeem/ims/ent/predicate"
 	"github.com/tarqeem/ims/ent/project"
 	"github.com/tarqeem/ims/ent/user"
@@ -26,6 +27,7 @@ type ProjectQuery struct {
 	withLeader      *UserQuery
 	withCoordinator *UserQuery
 	withMembers     *UserQuery
+	withIssues      *IssueQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -121,6 +123,28 @@ func (pq *ProjectQuery) QueryMembers() *UserQuery {
 			sqlgraph.From(project.Table, project.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, project.MembersTable, project.MembersPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryIssues chains the current query on the "issues" edge.
+func (pq *ProjectQuery) QueryIssues() *IssueQuery {
+	query := (&IssueClient{config: pq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(project.Table, project.FieldID, selector),
+			sqlgraph.To(issue.Table, issue.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, project.IssuesTable, project.IssuesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -323,6 +347,7 @@ func (pq *ProjectQuery) Clone() *ProjectQuery {
 		withLeader:      pq.withLeader.Clone(),
 		withCoordinator: pq.withCoordinator.Clone(),
 		withMembers:     pq.withMembers.Clone(),
+		withIssues:      pq.withIssues.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -359,6 +384,17 @@ func (pq *ProjectQuery) WithMembers(opts ...func(*UserQuery)) *ProjectQuery {
 		opt(query)
 	}
 	pq.withMembers = query
+	return pq
+}
+
+// WithIssues tells the query-builder to eager-load the nodes that are connected to
+// the "issues" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProjectQuery) WithIssues(opts ...func(*IssueQuery)) *ProjectQuery {
+	query := (&IssueClient{config: pq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withIssues = query
 	return pq
 }
 
@@ -440,10 +476,11 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 	var (
 		nodes       = []*Project{}
 		_spec       = pq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			pq.withLeader != nil,
 			pq.withCoordinator != nil,
 			pq.withMembers != nil,
+			pq.withIssues != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -482,6 +519,13 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 		if err := pq.loadMembers(ctx, query, nodes,
 			func(n *Project) { n.Edges.Members = []*User{} },
 			func(n *Project, e *User) { n.Edges.Members = append(n.Edges.Members, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := pq.withIssues; query != nil {
+		if err := pq.loadIssues(ctx, query, nodes,
+			func(n *Project) { n.Edges.Issues = []*Issue{} },
+			func(n *Project, e *Issue) { n.Edges.Issues = append(n.Edges.Issues, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -668,6 +712,37 @@ func (pq *ProjectQuery) loadMembers(ctx context.Context, query *UserQuery, nodes
 		for kn := range nodes {
 			assign(kn, n)
 		}
+	}
+	return nil
+}
+func (pq *ProjectQuery) loadIssues(ctx context.Context, query *IssueQuery, nodes []*Project, init func(*Project), assign func(*Project, *Issue)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Project)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Issue(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(project.IssuesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.project_issues
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "project_issues" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "project_issues" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
