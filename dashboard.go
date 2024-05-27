@@ -1,18 +1,18 @@
 package main
 
 import (
-	"context"
 	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/tarqeem/ims/ent"
-	"github.com/tarqeem/ims/ent/user"
+	"github.com/tarqeem/ims/db"
 )
 
+// "github.com/tarqeem/ims/ent"
+
 type DashboardDTO struct {
-	User     *ent.User
-	Projects []*ent.Project
+	User     *db.User
+	Projects []*db.Project
 	Err      string
 }
 
@@ -32,25 +32,17 @@ func dashboard() {
 				&DashboardDTO{Err: err.Error()})
 		}
 
-		u, err := Client.User.Query().Where(user.ID(id)).Only(c.Request().Context())
+		u, err := db.GetUserByID(DB, id)
 		if err != nil {
 			E.Logger.Error(err)
 			return c.Render(http.StatusInternalServerError, "fail",
 				&DashboardDTO{Err: err.Error()})
 		}
 		data.User = u
-		memberProjects, err := u.
-			QueryProjects().
-			All(context.Background())
-		if err != nil {
-			return c.Render(http.StatusInternalServerError, "fail",
-				&DashboardDTO{Err: err.Error()})
-		}
+		memberProjects, err := db.GetProjectsByUserID(DB, u.ID)
 		data.Projects = append(data.Projects, memberProjects...)
 
-		coordinatorProjects, err := u.
-			QueryCoordinatorOfProject().
-			All(context.Background())
+		coordinatorProjects, err := db.GetProjectsByCoordinatorID(DB, u.ID)
 		if err != nil {
 			return c.Render(http.StatusInternalServerError, "fail",
 				&DashboardDTO{Err: err.Error()})

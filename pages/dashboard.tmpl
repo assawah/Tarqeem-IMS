@@ -6,7 +6,7 @@
 </head>
 <body>
     {{template "header" .}}
-    <h3 class="styled-heading">  Hello, {{.User.Name}}</h3>
+    <h3 class="styled-heading">  Hello, {{.User.Name}} </h3>
     <div class="dashboard">
         <div class="table-container">
              <h3>Projects</h3>
@@ -24,6 +24,7 @@
                            <th>Type</th>
                            <th>State</th>
                            <th>Project Nature</th>
+                           <th>Edit</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -33,6 +34,8 @@
                            <td>{{.Type}}</td>
                            <td>{{.State}}</td>
                            <td>{{.ProjectNature}}</td>
+                           <td> <a href="/edit-project?t=c&id={{.ID}}"> 
+                            edit_project</td>
                        </tr>
                        {{end}}
                    </tbody>

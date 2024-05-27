@@ -1,16 +1,15 @@
 package main
 
 import (
-	"context"
-	"github.com/labstack/echo/v4"
-	"github.com/tarqeem/ims/ent"
-	"github.com/tarqeem/ims/ent/project"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/tarqeem/ims/db"
 )
 
 type ProjectDTO struct {
-	Project *ent.Project
-	Issues  []*ent.Issue
+	Project *db.Project
+	Issues  []*db.Issue
 	Err     string
 }
 
@@ -22,18 +21,13 @@ func projectView() {
 		prName := c.QueryParam("name")
 		data := ProjectDTO{}
 
-		projectObject, err := Client.Project.Query().
-			Where(project.NameEQ(prName)).
-			Only(context.Background())
-
+		projectObject, err := db.GetProjectByName(DB, prName)
 		if err != nil {
 			return c.Render(http.StatusInternalServerError, "fail", nil)
 		}
 		data.Project = projectObject
 
-		issues, err := Client.Project.
-			QueryIssues(projectObject).
-			All(context.Background())
+		issues, err := db.GetIssuesByProjectID(DB, projectObject.ID)
 		if err != nil {
 			return c.Render(http.StatusInternalServerError, "fail", nil)
 		}

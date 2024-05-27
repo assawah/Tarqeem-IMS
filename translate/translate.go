@@ -13,6 +13,7 @@ var English map[string]string = map[string]string{
 	"login":          "Login",
 	"email":          "Email address",
 	"create_project": "Create Project",
+	"edit_project":   "Edit Project",
 }
 
 var ValidProjectDeliveryStrategies []string = []string{

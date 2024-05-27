@@ -1,13 +1,13 @@
 package main
 
 import (
-	"context"
+	"database/sql"
 	"fmt"
-	"github.com/labstack/echo/v4"
-	"github.com/tarqeem/ims/ent"
-	"github.com/tarqeem/ims/ent/project"
-	"github.com/tarqeem/ims/ent/user"
 	"net/http"
+	"strings"
+
+	"github.com/labstack/echo/v4"
+	"github.com/tarqeem/ims/db"
 )
 
 var CreateProjectEnd = "/create-project"
@@ -45,36 +45,43 @@ func createProject() {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
 
-		proj, err := Client.Project.Create().
-			SetName(r.Name).
-			SetOwner(r.Owner).
-			SetLocation(r.Location).
-			SetType(project.Type(r.Type)).
-			SetProjectNature(project.ProjectNature(r.ProjectNature)).
-			SetDeliveryStrategies(r.DeliveryStrategy).
-			SetState(r.CurrentState).
-			SetContractingStrategies(r.ContractingStrategy).
-			SetDollarValue(r.DollarValue).
-			SetExecutionLocation(r.ExecutionLocation).
-			Save(c.Request().Context())
+		newProject := db.Project{
+			Name:                  r.Name,
+			Owner:                 r.Owner,
+			Location:              r.Location,
+			Type:                  r.Type,
+			ProjectNature:         r.ProjectNature,
+			DeliveryStrategies:    r.DeliveryStrategy,
+			State:                 r.CurrentState,
+			ContractingStrategies: r.ContractingStrategy,
+			DollarValue:           r.DollarValue,
+			ExecutionLocation:     r.ExecutionLocation,
+		}
 
+		proj, err := db.CreateProject(DB, &newProject)
 		if err != nil {
 			fmt.Print("Error creating project: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
 				&CreateProjectDTO{Err: err.Error()})
 		}
-		if err = addCoordinator(c, proj); err != nil {
+		err = AddCoordinator(c, proj)
+		if err != nil {
+			_ = db.DeleteProject(DB, proj.ID)
 			fmt.Print("Error adding coordinator: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
 				&CreateProjectDTO{Err: err.Error()})
 		}
-		if err = addLeader(c, proj, r.Leader); err != nil {
+		err = AddLeader(proj, strings.TrimSpace(r.Leader))
+		if err != nil {
+			_ = db.DeleteProject(DB, proj.ID)
 			fmt.Print("Error adding leader: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
 				&CreateProjectDTO{Err: err.Error()})
 		}
-		r.Members = append(r.Members, r.Leader)
-		if err = addMembers(c, proj, r.Members); err != nil {
+		r.Members = append(r.Members, strings.TrimSpace(r.Leader))
+		err = AddMembers(proj, r.Members)
+		if err != nil {
+			_ = db.DeleteProject(DB, proj.ID)
 			fmt.Print("Error adding members: " + err.Error())
 			return c.Render(http.StatusInternalServerError, "fail",
 				&CreateProjectDTO{Err: err.Error()})
@@ -89,57 +96,54 @@ func createProject() {
 	})
 }
 
-func addCoordinator(c echo.Context, proj *ent.Project) error {
+func AddCoordinator(c echo.Context, proj *db.Project) error {
 	u, err := getCurrentUserID(c)
 	if err != nil {
 		return err
 	}
-	if _, err := proj.Update().AddCoordinator(u).Save(c.Request().Context()); err != nil {
-		return err
-	}
-	return nil
-}
-
-func addLeader(c echo.Context, proj *ent.Project, leader string) error {
-	u, err := ensureUser(c, leader)
+	_, err = proj.AddCoordinator(DB, u.ID)
 	if err != nil {
 		return err
 	}
-	if _, err = proj.Update().AddLeader(u).Save(c.Request().Context()); err != nil {
+	return nil
+}
+
+func AddLeader(proj *db.Project, leader string) error {
+	u, err := EnsureUser(leader)
+	if err != nil {
+		return err
+	}
+	_, err = proj.AddLeaderToProject(DB, u.ID)
+	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func addMembers(c echo.Context, proj *ent.Project, members []string) error {
+func AddMembers(proj *db.Project, members []string) error {
 	for _, member := range members {
-		u, err := ensureUser(c, member)
+		if member == "" {
+			continue
+		}
+		trimmedMember := strings.TrimSpace(member)
+		u, err := EnsureUser(trimmedMember)
 		if err != nil {
 			return err
 		}
-		if _, err = u.Update().AddProjects(proj).Save(c.Request().Context()); err != nil {
+		_, err = proj.AddMemberToProject(DB, u.ID)
+		if err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
-func ensureUser(c echo.Context, email string) (*ent.User, error) {
-	u, err := Client.User.
-		Query().
-		Where(user.EmailEQ(email)). // Query using the unique email.
-		Only(context.Background())
-	if ent.IsNotFound(err) {
-		u, err = Client.User.Create().
-			SetEmail(email).
-			SetUsername(fmt.Sprintf("user-%s", randSeq(4))).
-			SetIsActive(false).
-			SetType(user.TypeMember).Save(c.Request().Context())
-		if err != nil {
-			return nil, err
+func EnsureUser(email string) (*db.User, error) {
+	u, err := db.GetUserByEmail(DB, strings.TrimSpace(email))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("no user found with email: %s", email)
 		}
-	} else if err != nil {
 		return nil, err
 	}
 	return u, nil

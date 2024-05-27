@@ -1,7 +1,7 @@
 package main
 
 import (
-	"context"
+	"database/sql"
 	"embed"
 	"errors"
 	"io"
@@ -16,7 +16,9 @@ import (
 	"github.com/labstack/echo-contrib/session"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/tarqeem/ims/ent"
+	"github.com/tarqeem/ims/db"
+
+	// "github.com/tarqeem/ims/ent"
 	. "github.com/tarqeem/ims/translate"
 	. "github.com/tarqeem/template/utl"
 )
@@ -29,7 +31,9 @@ const debug = true
 var executor TemplateExecutor
 
 var E *echo.Echo
-var Client *ent.Client
+
+// var Client *ent.Client
+var DB *sql.DB
 
 func main() {
 	// Views
@@ -54,14 +58,25 @@ func main() {
 	}
 
 	// Database
-	Client, err = ent.Open("sqlite3", "file:ent.db?_fk=1")
+	// Client, err = ent.Open("sqlite3", "file:ent.db?_fk=1")
+	// if err != nil {
+	// 	log.Fatalf("failed opening connection to sqlite: %v", err)
+	// }
+	// defer Client.Close()
+	// // Run the auto migration tool.
+	// if err := Client.Schema.Create(context.Background()); err != nil {
+	// 	log.Fatalf("failed creating schema resources: %v", err)
+	// }
+
+	DB, err = sql.Open("sqlite3", "file:ent.db?_fk=1")
 	if err != nil {
-		log.Fatalf("failed opening connection to sqlite: %v", err)
+		log.Fatalf("failed opening raw connection to sqlite: %v", err)
 	}
-	defer Client.Close()
-	// Run the auto migration tool.
-	if err := Client.Schema.Create(context.Background()); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+	defer DB.Close()
+
+	err = db.InitDB(DB)
+	if err != nil {
+		log.Fatalf("failed initializing db: %v", err)
 	}
 
 	// middleware
@@ -90,9 +105,10 @@ func main() {
 	login()
 
 	createProject()
+	editProject()
 	projectView()
 	createIssue()
-	registerIssueRoutes()
+	// registerIssueRoutes()
 
 	E.GET("/404", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "notFound", nil)

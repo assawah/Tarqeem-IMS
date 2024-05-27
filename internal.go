@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
+
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
-	"github.com/tarqeem/ims/ent"
-	"github.com/tarqeem/ims/ent/user"
-	"math/rand"
-	"time"
+	"github.com/tarqeem/ims/db"
 )
 
 var UserNotFound error = fmt.Errorf("User was not found")
@@ -27,22 +27,37 @@ func cookie(c echo.Context) (*sessions.Session, error) {
 }
 
 func authenticated(c echo.Context) (id int, err error) {
+	fmt.Printf("+++++++++++++++++++++++++++context++++++++++++++++\n")
+	fmt.Printf("%+v\n", c)
+	fmt.Printf("+++++++++++++++++++++++++++context++++++++++++++++\n")
 	sess, err := cookie(c)
 	if err != nil {
 		return
 	}
 	if v, ok := sess.Values["id"]; ok {
+		fmt.Printf("+++++++++++++++++++++++++++id++++++++++++++++\n")
+		fmt.Printf("%+v\n", v)
+		fmt.Printf("+++++++++++++++++++++++++++id++++++++++++++++\n")
 		return v.(int), nil
 	}
+	fmt.Printf("+++++++++++++++++++++++++++no id found++++++++++++++++\n")
+
 	return -1, UserNotFound
 }
 
-func getCurrentUserID(c echo.Context) (*ent.User, error) {
+func getCurrentUserID(c echo.Context) (*db.User, error) {
+	fmt.Printf("+++++++++++++++++++++++++++context++++++++++++++++\n")
+	fmt.Printf("%+v\n", c)
+	fmt.Printf("+++++++++++++++++++++++++++context++++++++++++++++\n")
+
 	id, err := authenticated(c)
 	if err != nil {
 		return nil, err
 	}
-	usr, err := Client.User.Query().Where(user.ID(id)).Only(c.Request().Context())
+	fmt.Printf("+++++++++++++++++++++++++++id++++++++++++++++\n")
+	fmt.Printf("%+v\n", id)
+	fmt.Printf("+++++++++++++++++++++++++++id++++++++++++++++\n")
+	usr, err := db.GetUserByID(DB, id)
 	if err != nil {
 		E.Logger.Error(err)
 		return nil, err

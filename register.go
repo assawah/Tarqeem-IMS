@@ -1,12 +1,13 @@
 package main
 
 import (
-	"errors"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
-	"github.com/tarqeem/ims/ent/user"
-	. "github.com/tarqeem/ims/translate"
+
+	"github.com/tarqeem/ims/db"
+	"github.com/tarqeem/ims/translate"
 )
 
 var RegisterEnd string = "/register"
@@ -31,9 +32,9 @@ func register() {
 		m.Type = t
 
 		if t == "c" {
-			m.PageTitle = Message("regCoordinator")
+			m.PageTitle = translate.Message("regCoordinator")
 		} else if t == "m" {
-			m.PageTitle = Message("regMember")
+			m.PageTitle = translate.Message("regMember")
 		} else {
 			return c.Render(http.StatusNotFound, "404", nil)
 		}
@@ -46,27 +47,25 @@ func register() {
 		if err := c.Bind(r); err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
-
-		var t user.Type
+		t := ""
 		if r.Type == "c" {
-			t = user.TypeCoordinator
+			t = "coordinator"
 		} else if r.Type == "m" {
-			t = user.TypeMember
-		} else {
-			err := errors.New("trying to add value: " + r.Type + " to type")
-			E.Logger.Error(err)
-			return c.Render(http.StatusBadRequest, tmplt, &UserDTO{Err: err.Error()})
+			t = "member"
 		}
 
-		u, err := Client.User.Create().
-			SetName(r.Name).
-			SetEmail(r.Email).
-			SetUsername(r.Username).
-			SetPhone(r.Phone).
-			SetPassword(r.Password).
-			SetOrganization(r.Organization).
-			SetIsActive(true).
-			SetType(t).Save(c.Request().Context())
+		newUser := db.User{
+			Name:         &r.Name,
+			Password:     &r.Password,
+			Email:        r.Email,
+			Username:     r.Username,
+			Phone:        &r.Phone,
+			CreatedAt:    time.Now(),
+			Organization: &r.Organization,
+			IsActive:     true,
+			Type:         t,
+		}
+		u, err := db.CreateUser(DB, newUser)
 		if err != nil {
 			E.Logger.Errorf("ent: %s", err.Error())
 			return c.Render(http.StatusBadRequest, tmplt, &UserDTO{Err: err.Error(), Type: r.Type})

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"context"
-	"github.com/labstack/echo/v4"
-	"github.com/tarqeem/ims/ent/project"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
+
+	"github.com/labstack/echo/v4"
+	"github.com/tarqeem/ims/db"
 )
 
 // Issue represents the structure of an issue
@@ -47,21 +48,23 @@ func createIssue() {
 				"message": "Failed to create issue",
 			})
 		}
-		projObject, err := Client.Project.Query().
-			Where(project.NameEQ(projName)).
-			Only(context.Background())
+		projObject, err := db.GetProjectByName(DB, projName)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"message": "Failed to create issue",
 			})
 		}
 
-		issueObject, err := Client.Issue.Create().
-			SetTitle(issue.Title).
-			SetDescription(issue.Description).
-			SetProject(projObject).
-			SetCreator(usr.Username).
-			Save(c.Request().Context())
+		nowStr := time.Now().String()
+		newIssue := db.Issue{
+			Title:         issue.Title,
+			Description:   issue.Description,
+			Creator:       usr.Username,
+			Date:          nowStr,
+			ProjectIssues: &projObject.ID,
+		}
+
+		issueObject, err := db.CreateIssue(DB, &newIssue)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"message": "Failed to create issue",
@@ -69,17 +72,28 @@ func createIssue() {
 		}
 
 		for _, file := range issue.Files {
-			_, err = Client.File.Create().
-				SetFileName(file.Name).
-				SetFilePath(file.TempPath).
-				SetFileSize(file.Size).
-				AddIssue(issueObject).
-				Save(c.Request().Context())
+			newFile := db.File{
+				FilePath: &file.TempPath,
+				FileName: &file.Name,
+				FileSize: int(file.Size),
+			}
+			file, err := db.CreateFile(DB, &newFile)
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-					"message": "Failed to create issue",
+					"message": "Failed to create file for issue",
 				})
 			}
+			issueFile := db.IssueFile{
+				IssueID: issueObject.ID,
+				FileID:  file.ID,
+			}
+			err = db.CreateIssueFile(DB, &issueFile)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+					"message": "Failed to create  issue",
+				})
+			}
+
 		}
 
 		// Return a success response
