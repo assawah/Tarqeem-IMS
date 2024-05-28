@@ -108,6 +108,7 @@ func main() {
 	editProject()
 	projectView()
 	createIssue()
+	interfacePoint()
 	// registerIssueRoutes()
 
 	E.GET("/404", func(c echo.Context) error {

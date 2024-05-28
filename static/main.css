@@ -26,7 +26,6 @@ button {
   margin-left: -33px;
 }
 
-
 .tableOfContent li {
   list-style: none;
   display: flex;
@@ -72,7 +71,6 @@ ul li:nth-child(odd) {
   color: white;
 }
 
-
 /*  */
 section {
   height: 100vh;
@@ -87,11 +85,9 @@ form {
   width: 700px;
 }
 
-
-@media (max-width:700px) {
+@media (max-width: 700px) {
   form {
     width: 400px;
-
   }
 
   .row {
@@ -124,8 +120,6 @@ form .row {
   position: relative;
 } */
 
-
-
 #landloginform .dividing-line span {
   position: relative;
   top: 20px;
@@ -151,15 +145,13 @@ form .row {
   background-color: #8f8f8f;
 }
 
-@media(max-width:700px) {
-
+@media (max-width: 700px) {
   #landloginform .dividing-line span::before,
   #landloginform .dividing-line span::after {
     width: 100px;
     height: 2px;
   }
 }
-
 
 .notifications {
   position: fixed;
@@ -174,7 +166,7 @@ form .row {
   background-color: white;
 }
 
-@media(max-width:700px) {
+@media (max-width: 700px) {
   .notifications {
     width: 300px;
   }
@@ -182,7 +174,6 @@ form .row {
 
 .notifications.show {
   transform: translateX(0);
-
 }
 
 .icon {
@@ -194,7 +185,6 @@ form .row {
 
 .icon i {
   font-size: 50px;
-
 }
 
 .numberOfNotifications {
@@ -217,7 +207,6 @@ form .row {
 }
 
 .notifications .title {
-
   font-size: 26px;
   text-transform: capitalize;
   margin-bottom: 10px;
@@ -230,8 +219,6 @@ form .row {
   cursor: pointer;
   font-size: 40px;
 }
-
-
 
 .notifications .notifications_container {
   padding: 10px;
@@ -248,27 +235,37 @@ form .row {
   box-shadow: 0 1px 10px #cbcaca;
   border-radius: 5px;
   margin-bottom: 10px;
-
 }
 
-.notifications .notifications_container .notifications_content .notification .sub_title {
+.notifications
+  .notifications_container
+  .notifications_content
+  .notification
+  .sub_title {
   font-size: 22px;
   text-transform: capitalize;
   margin-bottom: 10px;
 }
 
-.notifications .notifications_container .notifications_content .notification .time {
+.notifications
+  .notifications_container
+  .notifications_content
+  .notification
+  .time {
   text-align: end;
   font-size: 14px;
   color: #8f8f8f;
 }
 
-.notifications .notifications_container .notifications_content .notification .close_btn {
+.notifications
+  .notifications_container
+  .notifications_content
+  .notification
+  .close_btn {
   text-align: start;
   border-top: 1px solid #cecaca;
   margin-top: 10px;
   padding-top: 10px;
-
 }
 
 .dismissAll_btn {
@@ -285,12 +282,10 @@ form .row {
 .dismissAll_btn button {
   color: white;
   border-radius: 50px;
-
 }
 
 .dismiss_btn {
   color: rgb(11, 169, 197);
-
 }
 
 ::-webkit-scrollbar {
@@ -324,4 +319,26 @@ form .row {
 
 .footer a:hover {
   transform: scale(1.1);
+}
+
+.disabled-input {
+  background-color: #e9ecef;
+  color: #6c757d;
+  border: 1px solid #ced4da;
+  cursor: not-allowed;
+}
+
+.left-div {
+  width: 70%;
+  float: left;
+  padding: 20px;
+}
+
+.right-div {
+  width: 30%;
+  float: left;
+  padding: 20px;
+}
+.small-font {
+  font-size: 12px;
 }

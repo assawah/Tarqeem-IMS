@@ -17,6 +17,7 @@ var tableCreationQueries = []string{
 	`CREATE TABLE IF NOT EXISTS user_coordinator_of_project (user_id integer NOT NULL, project_id integer NOT NULL, PRIMARY KEY (user_id, project_id), CONSTRAINT user_coordinator_of_project_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT user_coordinator_of_project_project_id FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE);`,
 	`CREATE TABLE IF NOT EXISTS user_leader_of_project (user_id integer NOT NULL, project_id integer NOT NULL, PRIMARY KEY (user_id, project_id), CONSTRAINT user_leader_of_project_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE, CONSTRAINT user_leader_of_project_project_id FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE);`,
 	`CREATE TABLE IF NOT EXISTS users (id integer NOT NULL PRIMARY KEY AUTOINCREMENT, name text NULL, password text NULL, email text NOT NULL, username text NOT NULL, phone text NULL, created_at datetime NOT NULL, organization text NULL, is_active bool NOT NULL DEFAULT (true), type text NOT NULL);`,
+	`CREATE TABLE IF NOT EXISTS interface_point (interface_point_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, interface_categories TEXT, project TEXT, title TEXT, budget_item_number TEXT, disciplines TEXT, area TEXT, system TEXT, raci_matrix TEXT, attach_file TEXT, description TEXT, status TEXT, create_date DATETIME, issue_date DATETIME, close_date DATETIME, recording_comments TEXT, boq TEXT, activities TEXT, interface_scope TEXT, interface_type TEXT);`,
 }
 
 func InitDB(db *sql.DB) error {

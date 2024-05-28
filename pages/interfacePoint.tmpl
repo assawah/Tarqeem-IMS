@@ -1,0 +1,208 @@
+{{define "interface-point"}}
+
+<html>
+{{template "head" .}}
+
+<body>
+    <section class="create-project" style = "display: flex;">
+        <form action="/create-project"  method="post" id="create-project" style = "display: flex;overflow: auto;" >
+        <div class="left-div">
+            <h1>Interface Point</h1>
+            <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-name" >Interface Point ID</label>
+                    <input type="text" class="form-control disabled-input" id="project-name" name="name" placeholder="Project Name"
+                        aria-label="Interface Point ID" value="This is uneditable" readonly>
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-type">Project</label>
+                    <input type="text" class="form-control  disabled-input" id="project-name" name="name" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-name" >Title</label>
+                    <input type="text" class="form-control" id="project-name" name="name" placeholder="Project Name"
+                        aria-label="Title">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-budget-item-number">Budget item number</label>
+                    <select id="project-budget-item-number" class="form-control" name="budgetItemNumber">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+            </div>
+                      <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-area" >Area</label>
+                    <select id="project-area" class="form-control" name="area">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+                    <div class="col">
+                    <label class = "small-font" for="disciplines" ><strong>Disciplines:</strong></label>
+                    <div id="disciplines" style="border: 1px solid #ccc; width: 200px; height: 100px; overflow-y: scroll;">
+                        <input type="checkbox" id="architectural" name="discipline" value="Architectural">
+                        <label class = "small-font" for="architectural">Architectural</label><br>
+                        <input type="checkbox" id="civil_structural" name="discipline" value="Civil / Structural">
+                        <label class = "small-font" for="civil_structural">Civil / Structural</label><br>
+                        <input type="checkbox" id="commissioning" name="discipline" value="Commissioning">
+                        <label class = "small-font" for="commissioning">Commissioning</label>
+                    </div>
+                </div>
+            </div>
+                      <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-system">System</label>
+                    <select id="project-system" class="form-control" name="system">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col">
+                    <label class = "small-font" for="project-lead-system-contracting-party">lead System Contracting Party</label>
+                    <input type="text" class="form-control  disabled-input" id="project-lead-system-contracting-party" name="name" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+
+            </div>
+                <div class="col">
+                    <label class = "small-font" for="project-interface-type">Interface Type</label>
+                    <select id="project-interface-type" class="form-control" name="interfaceType">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+            <h3>Lead</h3>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-package">Package</label>
+                    <select id="project-package" class="form-control" name="package">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-contracting-party">Contracting Party</label>
+                    <input type="text" class="form-control  disabled-input" id="project-contracting-party" name="contractingParty" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-interface-manager">Interface Manager</label>
+                    <input type="text" class="form-control  disabled-input" id="project-lead-system-contracting-party" name="interfaceManagaer" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+                </div>
+            </div>
+            
+            <div class="row">
+            <h3>Interface</h3>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-package">Package</label>
+                    <select id="project-package" class="form-control" name="package">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-contracting-party">Contracting Party</label>
+                    <input type="text" class="form-control  disabled-input" id="project-contracting-party" name="contractingParty" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-interface-manager">Interface Manager</label>
+                    <input type="text" class="form-control  disabled-input" id="project-lead-system-contracting-party" name="interfaceManagaer" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+                </div>
+            </div>
+
+            <div class="row">
+            <h3>Support</h3>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class = "small-font" for="project-package">Package</label>
+                    <select id="project-package" class="form-control" name="package">
+                        <option value="Waterfall">Waterfall</option>
+                        <option value="Agile">Agile </option>
+                        <option value="Lean">Lean</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-contracting-party">Contracting Party</label>
+                    <input type="text" class="form-control  disabled-input" id="project-contracting-party" name="contractingParty" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+
+                </div>
+                <div class="col">
+                    <label class = "small-font" for="project-interface-manager">Interface Manager</label>
+                    <input type="text" class="form-control  disabled-input" id="project-lead-system-contracting-party" name="interfaceManagaer" placeholder="Project Name"
+                        aria-label="Project" value="This is uneditable" readonly>
+                </div>
+            </div>
+        
+            <label for="interface-description">Description</label>
+            <textarea id="interface-description" name="interfaceDescription" rows="4" cols="50" style = "margin-left:11px;"></textarea>
+
+            <label for="key-references">Key References</label>
+            <textarea id="key-references" name="keyReferences" rows="2" cols="50" style = "margin-left:11px;"></textarea>
+
+
+            <button type="submit" class="custom-btn">Create</button>
+            <button type="button" style="background-color: red; color: white;" class="custom-btn" onclick="window.location.href='/dashboard'">Cancel</button>
+        </div>
+        </div>
+        <div class="right-div">
+         <div class="col">
+                <label class = "small-font" for="project-status">Status</label>
+                <input type="text" class="form-control disabled-input" id="project-status" name="name" placeholder="Project Name"
+                    aria-label="Status" value="This is uneditable" readonly>
+            </div>
+                        <div class="col">
+                <label class = "small-font" for="project-create_date">Create Date</label>
+                <input type="text" class="form-control disabled-input" id="project-create_date" name="name" placeholder="Project Name"
+                    aria-label="Create Date" value="This is uneditable" readonly>
+            </div>
+                        <div class="col">
+                <label class = "small-font" for="project-issue-date">Issue Date</label>
+                <input type="text" class="form-control disabled-input" id="project-issue-date" name="name" placeholder="Project Name"
+                    aria-label="Issue Date" value="This is uneditable" readonly>
+            </div>
+                        <div class="col">
+                <label class = "small-font" for="project-close-date">Close Date</label>
+                <input type="text" class="form-control disabled-input" id="project-close-date" name="name" placeholder="Project Name"
+                    aria-label="Close Date" value="This is uneditable" readonly>
+            </div>
+        
+        </div>
+       
+        
+        </form>
+
+    </section>
+    
+
+</body>
+
+</html>
+
+
+{{end}}
