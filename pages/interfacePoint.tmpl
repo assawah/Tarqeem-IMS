@@ -58,16 +58,91 @@
                     </div>
                 </div>
             </div>
-                      <div class="row">
+            <div class="row">
                 <div class="col">
-                    <label class = "small-font" for="project-system">System</label>
-                    <select id="project-system" class="form-control" name="system">
-                        <option value="Waterfall">Waterfall</option>
-                        <option value="Agile">Agile </option>
-                        <option value="Lean">Lean</option>
+                    <label class = "small-font" for="interface-scope">Interface scope</label>
+                    <select id="interface-scope" class="form-control" name="interfaceScope" onchange="showInputField()">
+                        <option value="empty"></option>
+                        <option value="interProject">Inter-project</option>
+                        <option value="intraProject">Intra-project </option>
+                        <option value="extraProject">Exta-project</option>
                     </select>
                 </div>
             </div>
+            
+            <div id="dynamic-div-inter" style="display:none">
+                <div class="row">
+                    <div class="col">
+                        <label class = "small-font" for="inter-discipline-one">Discipline</label>
+                        <input type="text" id="inter-discipline-one" class="form-control" name="interDisciplineOne" placeholder="Enter value">
+                    </div>
+                    <div class="col">
+                        <label class = "small-font" for="inter-discipline-two">Discipline</label>
+                        <input type="text" id="inter-discipline-two" class="form-control" name="interDisciplineTwo" placeholder="Enter value">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class = "small-font" for="inter-system-one">System</label>
+                        <input type="text" id="inter-system-one" class="form-control" name="interSystemOne" placeholder="Enter value">
+                    </div>
+                    <div class="col">
+                        <label class = "small-font" for="inter-discipline-two">System</label>
+                        <input type="text" id="inter-discipline-two" class="form-control" name="interSystemTwo" placeholder="Enter value">
+                    </div>
+                </div>
+            </div>
+            
+
+           
+            <div id="dynamic-div-intra" style="display:none">
+                <div class="row">
+                    <div class="col">
+                        <label class = "small-font" for="intra-discipline">Discipline</label>
+                        <input type="text" id="intra-discipline" class="form-control" name="intraDiscipline" placeholder="Enter value">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class = "small-font" for="inter-system-one">System</label>
+                        <input type="text" id="inter-system-one" class="form-control" name="interSystemOne" placeholder="Enter value">
+                    </div>
+                    <div class="col">
+                        <label class = "small-font" for="inter-system-two">system</label>
+                        <input type="text" id="inter-system-two" class="form-control" name="interSystemTwo" placeholder="Enter value">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class = "small-font" for="inter-subcontractor-one">Subcontractor</label>
+                        <input type="text" id="inter-subcontractor-one" class="form-control" name="interSubcontractorOne" placeholder="Enter value">
+                    </div>
+                    <div class="col">
+                        <label class = "small-font" for="inter-subcontractor">Subcontractor</label>
+                        <input type="text" id="inter-subcontractor-two" class="form-control" name="interSubcontractorTwo" placeholder="Enter value">
+                    </div>
+                </div>
+            </div>
+            
+
+            <div id="dynamic-div-extra" style="display:none">
+                <div class="row">
+                    <div class="col">
+                        <label class = "small-font" for="extra-discipline">Discipline</label>
+                        <input type="text" id="extra-discipline" class="form-control" name="extraDiscipline" placeholder="Enter value">
+                    </div>
+                    <div class="col">
+                        <label class = "small-font" for="extra-external-party">External party</label>
+                        <input type="text" id="extra-external-party" class="form-control" name="extraExternalParty" placeholder="Enter value">
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
             <div class="row">
             <div class="col">
                     <label class = "small-font" for="project-lead-system-contracting-party">lead System Contracting Party</label>
@@ -75,14 +150,15 @@
                         aria-label="Project" value="This is uneditable" readonly>
 
             </div>
-                <div class="col">
-                    <label class = "small-font" for="project-interface-type">Interface Type</label>
-                    <select id="project-interface-type" class="form-control" name="interfaceType">
-                        <option value="Waterfall">Waterfall</option>
-                        <option value="Agile">Agile </option>
-                        <option value="Lean">Lean</option>
-                    </select>
-                </div>
+            <div class="col">
+                <label class = "small-font" for="project-interface-type">Interface Type</label>
+                <select id="project-interface-type" class="form-control" name="interfaceType">
+                    <option value="Waterfall">Waterfall</option>
+                    <option value="Agile">Agile </option>
+                    <option value="Lean">Lean</option>
+                </select>
+            </div>
+            </div>
             </div>
             <div class="row">
             <h3>Lead</h3>
@@ -199,10 +275,46 @@
 
     </section>
     
+<script>
+        function showInputField() {
+            var selectElement = document.getElementById('interface-scope');
+            var selectedValue = selectElement.value;
+            var interDiv = document.getElementById('dynamic-div-inter');
+            var intraDiv = document.getElementById('dynamic-div-intra');
+            var extraDiv = document.getElementById('dynamic-div-extra');
 
+
+
+            switch (selectedValue) {
+                case "interProject":
+                    interDiv.style.display = 'block';
+                    intraDiv.style.display = 'none';
+                    extraDiv.style.display = 'none';
+                    break;
+                case "intraProject":
+                    intraDiv.style.display = 'block';
+                    interDiv.style.display = 'none';
+                    extraDiv.style.display = 'none';
+                    break;
+                case "extraProject":
+                    extraDiv.style.display = 'block';
+                    intraDiv.style.display = 'none';
+                    interDiv.style.display = 'none';
+                    break;
+                default:
+                    intraDiv.style.display = 'none';
+                    interDiv.style.display = 'none';
+                    extraDiv.style.display = 'none';
+
+                    break;
+            }
+        }
+    </script>
 </body>
 
 </html>
+
+
 
 
 {{end}}
