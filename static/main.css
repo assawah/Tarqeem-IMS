@@ -342,3 +342,30 @@ form .row {
 .small-font {
   font-size: 12px;
 }
+
+.mini-form-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+}
+.mini-form-group {
+  margin-bottom: 15px;
+}
+.mini-form-group-label {
+  display: block;
+  margin-bottom: 5px;
+}
+.mini-form-group-select {
+  width: 100%;
+  padding: 5px;
+  font-size: 1em;
+}
+.mini-form-row {
+  display: flex;
+  justify-content: space-between;
+}
+.mini-form-column {
+  width: 48%;
+}
