@@ -91,3 +91,28 @@ func interfacePoint() {
 	// 	return c.Redirect(http.StatusOK, DashboardEnd)
 	// })
 }
+
+type Option struct {
+    Value string `json:"value"`
+    Text  string `json:"text"`
+}
+
+func getOptions(c echo.Context) error {
+    options := []Option{
+        {Value: "option1", Text: "Oprion1"},
+        {Value: "option2", Text: "Option2"},
+        {Value: "option3", Text: "Option3"},
+    }
+    return c.JSON(http.StatusOK, options)
+}
+
+func getFiles(c echo.Context) error {
+    // taskID := c.QueryParam("task_id")
+    // Fetch files associated with the taskID from the database or filesystem
+    // Here, we assume a simple list of files for demonstration
+    files := []map[string]string{
+        {"filePath": "/uploads/file1.pdf", "fileName": "file1.pdf"},
+        {"filePath": "/uploads/file2.pdf", "fileName": "file2.pdf"},
+    }
+    return c.JSON(http.StatusOK, files)
+}

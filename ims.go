@@ -111,6 +111,14 @@ func main() {
 	interfacePoint()
 	interfaceAgreement()
 	// registerIssueRoutes()
+	// Register the comments route
+	createComments()
+	E.GET("/api/comments", getComments)
+	E.GET("/api/options", getOptions)
+	E.GET("/api/files", getFiles)
+	E.Static("/uploads", "uploads")
+
+
 
 	E.GET("/404", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "notFound", nil)
