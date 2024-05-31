@@ -17,12 +17,15 @@ type Project struct {
 	ContractingStrategies string
 	DollarValue           int
 	ExecutionLocation     string
+	NumberOfInvolvedInterfaceStakeholders int 
+	NumberOfJointVenturePartners int 
+	NumberOfTopLevelScopePackages int 
 }
 
 // Create a new project
 func CreateProject(db *sql.DB, project *Project) (*Project, error) {
-	query := `INSERT INTO projects (name, owner, location, type, project_nature, delivery_strategies, state, contracting_strategies, dollar_value, execution_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	result, err := db.Exec(query, project.Name, project.Owner, project.Location, project.Type, project.ProjectNature, project.DeliveryStrategies, project.State, project.ContractingStrategies, project.DollarValue, project.ExecutionLocation)
+	query := `INSERT INTO projects (name, owner, location, type, project_nature, delivery_strategies, state, contracting_strategies, dollar_value, execution_location, number_of_involved_interface_stakeholders, number_of_joint_venture_partners, number_of_top_level_scope_packages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	result, err := db.Exec(query, project.Name, project.Owner, project.Location, project.Type, project.ProjectNature, project.DeliveryStrategies, project.State, project.ContractingStrategies, project.DollarValue, project.ExecutionLocation, project.NumberOfInvolvedInterfaceStakeholders, project.NumberOfJointVenturePartners, project.NumberOfTopLevelScopePackages)
 	if err != nil {
 		return nil, err
 	}
@@ -39,10 +42,10 @@ func CreateProject(db *sql.DB, project *Project) (*Project, error) {
 
 // Retrieve a project by ID
 func GetProjectByID(db *sql.DB, id int) (*Project, error) {
-	query := `SELECT id, name, owner, location, type, project_nature, delivery_strategies, state, contracting_strategies, dollar_value, execution_location FROM projects WHERE id = ?`
+	query := `SELECT id, name, owner, location, type, project_nature, delivery_strategies, state, contracting_strategies, dollar_value, execution_location, number_of_involved_interface_stakeholders, number_of_joint_venture_partners, number_of_top_level_scope_packages FROM projects WHERE id = ?`
 	row := db.QueryRow(query, id)
 	project := &Project{}
-	err := row.Scan(&project.ID, &project.Name, &project.Owner, &project.Location, &project.Type, &project.ProjectNature, &project.DeliveryStrategies, &project.State, &project.ContractingStrategies, &project.DollarValue, &project.ExecutionLocation)
+	err := row.Scan(&project.ID, &project.Name, &project.Owner, &project.Location, &project.Type, &project.ProjectNature, &project.DeliveryStrategies, &project.State, &project.ContractingStrategies, &project.DollarValue, &project.ExecutionLocation, &project.NumberOfInvolvedInterfaceStakeholders, &project.NumberOfJointVenturePartners, &project.NumberOfTopLevelScopePackages)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("project not found")
@@ -53,10 +56,10 @@ func GetProjectByID(db *sql.DB, id int) (*Project, error) {
 }
 
 func GetProjectByName(db *sql.DB, name string) (*Project, error) {
-	query := `SELECT id, name, owner, location, type, project_nature, delivery_strategies, state, contracting_strategies, dollar_value, execution_location FROM projects WHERE name = ?`
+	query := `SELECT id, name, owner, location, type, project_nature, delivery_strategies, state, contracting_strategies, dollar_value, execution_location, number_of_involved_interface_stakeholders, number_of_joint_venture_partners, number_of_top_level_scope_packages FROM projects WHERE name = ?`
 	row := db.QueryRow(query, name)
 	project := &Project{}
-	err := row.Scan(&project.ID, &project.Name, &project.Owner, &project.Location, &project.Type, &project.ProjectNature, &project.DeliveryStrategies, &project.State, &project.ContractingStrategies, &project.DollarValue, &project.ExecutionLocation)
+	err := row.Scan(&project.ID, &project.Name, &project.Owner, &project.Location, &project.Type, &project.ProjectNature, &project.DeliveryStrategies, &project.State, &project.ContractingStrategies, &project.DollarValue, &project.ExecutionLocation, &project.NumberOfInvolvedInterfaceStakeholders, &project.NumberOfJointVenturePartners, &project.NumberOfTopLevelScopePackages)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("project not found")
@@ -68,8 +71,8 @@ func GetProjectByName(db *sql.DB, name string) (*Project, error) {
 
 // Update a project's information
 func UpdateProject(db *sql.DB, project *Project) error {
-	query := `UPDATE projects SET name = ?, owner = ?, location = ?, type = ?, project_nature = ?, delivery_strategies = ?, state = ?, contracting_strategies = ?, dollar_value = ?, execution_location = ? WHERE id = ?`
-	_, err := db.Exec(query, project.Name, project.Owner, project.Location, project.Type, project.ProjectNature, project.DeliveryStrategies, project.State, project.ContractingStrategies, project.DollarValue, project.ExecutionLocation, project.ID)
+	query := `UPDATE projects SET name = ?, owner = ?, location = ?, type = ?, project_nature = ?, delivery_strategies = ?, state = ?, contracting_strategies = ?, dollar_value = ?, execution_location = ?, number_of_involved_interface_stakeholders = ? , number_of_joint_venture_partners = ?, number_of_top_level_scope_packages = ? WHERE id = ?`
+	_, err := db.Exec(query, project.Name, project.Owner, project.Location, project.Type, project.ProjectNature, project.DeliveryStrategies, project.State, project.ContractingStrategies, project.DollarValue, project.ExecutionLocation, project.ID, project.NumberOfInvolvedInterfaceStakeholders, project.NumberOfJointVenturePartners, project.NumberOfTopLevelScopePackages)
 	return err
 }
 
@@ -94,7 +97,10 @@ func GetProjectsByUserID(db *sql.DB, userID int) ([]*Project, error) {
             COALESCE(p.state, '') AS state, 
             COALESCE(p.contracting_strategies, '') AS contracting_strategies, 
             COALESCE(p.dollar_value, 0) AS dollar_value, 
-            COALESCE(p.execution_location, '') AS execution_location
+            COALESCE(p.execution_location, '') AS execution_location,
+			COALESCE(p.number_of_top_level_scope_packages, 0) AS number_of_top_level_scope_packages,
+			COALESCE(p.number_of_joint_venture_partners, 0) AS number_of_joint_venture_partners,
+			COALESCE(p.number_of_involved_interface_stakeholders, 0) AS number_of_involved_interface_stakeholders
         FROM projects p
         JOIN project_members pm ON p.id = pm.project_id
         WHERE pm.user_id = ?
@@ -120,7 +126,10 @@ func GetProjectsByUserID(db *sql.DB, userID int) ([]*Project, error) {
 			&project.State,
 			&project.ContractingStrategies,
 			&project.DollarValue,
-			&project.ExecutionLocation); err != nil {
+			&project.ExecutionLocation,
+			&project.NumberOfTopLevelScopePackages,
+			&project.NumberOfJointVenturePartners,
+			&project.NumberOfInvolvedInterfaceStakeholders); err != nil {
 			return nil, err
 		}
 		projects = append(projects, &project)

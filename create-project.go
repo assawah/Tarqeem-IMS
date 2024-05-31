@@ -29,6 +29,10 @@ type CreateProjectDTO struct {
 	Members       []string `form:"members[]"`
 	PageTitle     string
 	Err           string
+
+	NumberOfInvolvedInterfaceStakeholders int `form:"numberOfInvolvedInterfaceStakeholders"`
+	NumberOfJointVenturePartners int `form:"numberOfJointVenturePartners"`
+	NumberOfTopLevelScopePackages int `form:"numberOfTopLevelScopePackages"`
 }
 
 func createProject() {
@@ -56,6 +60,9 @@ func createProject() {
 			ContractingStrategies: r.ContractingStrategy,
 			DollarValue:           r.DollarValue,
 			ExecutionLocation:     r.ExecutionLocation,
+			NumberOfInvolvedInterfaceStakeholders: r.NumberOfInvolvedInterfaceStakeholders,
+			NumberOfJointVenturePartners: r.NumberOfJointVenturePartners,
+			NumberOfTopLevelScopePackages: r.NumberOfTopLevelScopePackages,
 		}
 
 		proj, err := db.CreateProject(DB, &newProject)

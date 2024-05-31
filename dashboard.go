@@ -48,8 +48,22 @@ func dashboard() {
 				&DashboardDTO{Err: err.Error()})
 		}
 		data.Projects = append(data.Projects, coordinatorProjects...)
+		data.Projects = removeDuplicates(data.Projects)
 
 		return c.Render(http.StatusOK, p, data)
 	})
 
+}
+
+func removeDuplicates(projects []*db.Project) []*db.Project {
+    seen := make(map[int]struct{})
+    uniqueProjects := []*db.Project{}
+
+    for _, project := range projects {
+        if _, exists := seen[project.ID]; !exists {
+            seen[project.ID] = struct{}{}
+            uniqueProjects = append(uniqueProjects, project)
+        }
+    }
+    return uniqueProjects
 }
